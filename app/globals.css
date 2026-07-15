@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-abril);
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-cormorant);
+    font-style: italic;
+    color: theme("colors.brown");
+  }
+
+  .eyebrow-on-dark {
+    color: theme("colors.mint");
+  }
+
+  .field-label {
+    @apply block text-xs uppercase tracking-wider text-brown font-semibold mb-2;
+  }
+
+  .field-textarea {
+    @apply w-full rounded-card border border-dark/10 bg-white px-4 py-3 text-dark placeholder:text-dark/40 font-body text-[15px] leading-relaxed transition-shadow;
+  }
+
+  .field-textarea:focus {
+    outline: none;
+    border-width: 2px;
+    border-color: theme("colors.terracotta");
+    padding: 11px 15px;
+  }
+
+  .btn-primary {
+    @apply w-full rounded-card bg-brown text-white font-bold py-4 px-6 transition-all;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    @apply shadow-card-hover;
+    transform: scale(1.01);
+  }
+
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .card {
+    @apply bg-white border border-dark/[0.08] rounded-card shadow-card p-6 transition-shadow;
+  }
+
+  .card:hover {
+    @apply shadow-card-hover;
+  }
+}
