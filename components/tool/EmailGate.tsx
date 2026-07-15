@@ -26,13 +26,13 @@ export default function EmailGate({
 
   return (
     <div className="text-center">
-      <p className="eyebrow text-lg mb-3">for the exhausted and the easy to be around</p>
       <h1 className="text-4xl md:text-5xl mb-6 leading-tight">The Pattern Spotter</h1>
       <p className="text-dark/80 leading-relaxed mb-10 max-w-[560px] mx-auto">
-        You say yes when you mean no. You shrink to keep the peace. You perform
-        to avoid disappointing someone. Answer four questions and find out
-        which people pleasing pattern is actually running underneath it, where
-        it started, and where it is still running today.
+        You were never too much. You were just never safe enough to be
+        yourself. Whatever it looks like for you, performing, pleasing,
+        shrinking, carrying someone else's story as your own, there is a
+        pattern underneath it. Answer four questions and find out what it is,
+        where it started, and where it is still running today.
       </p>
 
       <form onSubmit={handleSubmit} className="max-w-md mx-auto text-left">
