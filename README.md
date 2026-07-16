@@ -32,6 +32,8 @@ Then fill in each value in `.env.local`:
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Same page, "anon public" key. (Not currently used by any client-side code in this app, since there's no login — it's included so the project matches the standard Supabase env var setup, in case you add client-side reads later.) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Same page, "service_role" key. **Keep this secret** — it bypasses all database security rules. It is only ever read inside API routes on the server, never sent to the browser. |
 | `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) → **API Keys** → Create Key. This key is billed per API call — see the cost note at the bottom of this file. |
+| `ACTIVECAMPAIGN_API_URL` | ActiveCampaign → **Settings → Developer** → "API URL". |
+| `ACTIVECAMPAIGN_API_KEY` | Same page, "API Key". Used server-side only, to sync each captured email into ActiveCampaign (tag `patternspotter`, list `Pattern Spotter`). The `Pattern Spotter` list must already exist in ActiveCampaign — create it once in the ActiveCampaign dashboard; the tag is created automatically on first use if missing. If either of these two vars is unset, the sync is silently skipped — it never blocks someone from using the tool. |
 
 Never commit `.env.local` — it's already in `.gitignore`.
 
@@ -61,10 +63,10 @@ whole product. `http://localhost:3000/` is just the placeholder salespage.
 1. Push this repo to GitHub (if it isn't already there).
 2. Go to [vercel.com](https://vercel.com) → **Add New… → Project** → import
    the repo.
-3. In the import screen, expand **Environment Variables** and add all four
+3. In the import screen, expand **Environment Variables** and add all six
    from your `.env.local`: `NEXT_PUBLIC_SUPABASE_URL`,
    `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
-   `ANTHROPIC_API_KEY`.
+   `ANTHROPIC_API_KEY`, `ACTIVECAMPAIGN_API_URL`, `ACTIVECAMPAIGN_API_KEY`.
 4. Click **Deploy**. Vercel will build and give you a live URL.
 5. Every subsequent `git push` to your main branch redeploys automatically.
 
@@ -90,7 +92,8 @@ app/
     hypotheses/route.ts     stage 2→3: 2-3 hypotheses from Anthropic
     generate/route.ts       stage 3→4: full reading, has_completed check + update
 components/tool/            UI pieces for each stage
-lib/                        prompts, product catalog, supabase/rate-limit helpers
+components/SiteHeader.tsx   logo header, shown on every page via layout.tsx
+lib/                        prompts, product catalog, supabase/rate-limit/AC helpers
 ```
 
 ## What to open first

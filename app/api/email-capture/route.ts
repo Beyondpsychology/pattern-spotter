@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
+import { syncToActiveCampaign } from "@/lib/activeCampaign";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -15,11 +16,12 @@ export async function POST(req: NextRequest) {
     const normalized = normalizeEmail(email);
     const supabase = getSupabaseAdmin();
 
-    const { data: existing, error: selectError } = await supabase
-      .from("email_captures")
-      .select("has_completed")
-      .eq("email", normalized)
-      .maybeSingle();
+    // Runs alongside the DB lookup; syncToActiveCampaign never throws, so
+    // this can't fail the request even if ActiveCampaign is unreachable.
+    const [{ data: existing, error: selectError }] = await Promise.all([
+      supabase.from("email_captures").select("has_completed").eq("email", normalized).maybeSingle(),
+      syncToActiveCampaign(normalized),
+    ]);
 
     if (selectError) {
       console.error("email-capture select error", selectError);
