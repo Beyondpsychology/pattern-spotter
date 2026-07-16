@@ -1,4 +1,4 @@
-export const PRODUCTS: Record<string, { slug: string; title: string }> = {
+export const PRODUCTS: Record<string, { slug: string; title: string; url?: string }> = {
   Invitation: {
     slug: "somatic-session-releasing-suppressed-emotions",
     title: "Invitation, a Guided Somatic Session for Releasing Suppressed Emotions",
@@ -102,6 +102,7 @@ export const PRODUCTS: Record<string, { slug: string; title: string }> = {
   "Overcome People Pleasing Toolkit": {
     slug: "overcome-people-pleasing",
     title: "The Overcome People Pleasing Toolkit",
+    url: "https://beyondpsychology.eu/overcome-people-pleasing/",
   },
   Appetite: {
     slug: "appetite-a-guided-somatic-session-to-stop-emotional-eating",
@@ -125,7 +126,8 @@ export function matchProduct(
   if (!trimmed) return null;
 
   if (PRODUCTS[trimmed]) {
-    return { name: PRODUCTS[trimmed].title, url: buildProductUrl(PRODUCTS[trimmed].slug) };
+    const entry = PRODUCTS[trimmed];
+    return { name: entry.title, url: entry.url ?? buildProductUrl(entry.slug) };
   }
 
   const lower = trimmed.toLowerCase();
@@ -134,7 +136,7 @@ export function matchProduct(
   );
   if (exactCiKey) {
     const entry = PRODUCTS[exactCiKey];
-    return { name: entry.title, url: buildProductUrl(entry.slug) };
+    return { name: entry.title, url: entry.url ?? buildProductUrl(entry.slug) };
   }
 
   const partialKey = Object.keys(PRODUCTS).find(
@@ -142,7 +144,7 @@ export function matchProduct(
   );
   if (partialKey) {
     const entry = PRODUCTS[partialKey];
-    return { name: entry.title, url: buildProductUrl(entry.slug) };
+    return { name: entry.title, url: entry.url ?? buildProductUrl(entry.slug) };
   }
 
   return null;

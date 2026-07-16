@@ -57,7 +57,7 @@ export default function ReadingResult({ reading }: { reading: ReadingResultData 
             {sessions.length > 0 && <div className="border-t border-cream/15 my-6" />}
             <p className="eyebrow eyebrow-on-dark text-base mb-4">Or, the complete path</p>
             <a
-              href="https://beyondpsychology.eu/product/overcome-people-pleasing"
+              href="https://beyondpsychology.eu/overcome-people-pleasing/"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center btn-primary bg-terracotta"

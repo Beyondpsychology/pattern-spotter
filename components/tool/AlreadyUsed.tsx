@@ -12,7 +12,7 @@ export default function AlreadyUsed() {
           See the shop
         </a>
         <a
-          href="https://beyondpsychology.eu/product/overcome-people-pleasing"
+          href="https://beyondpsychology.eu/overcome-people-pleasing/"
           target="_blank"
           rel="noopener noreferrer"
           className="btn-primary sm:w-auto px-8 bg-terracotta"
