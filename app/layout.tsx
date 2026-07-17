@@ -25,10 +25,21 @@ const openSans = Open_Sans({
   display: "swap",
 });
 
+const DESCRIPTION =
+  "Answer four questions and find out which pattern is actually running underneath it, where it started, and where it is still running today.";
+
 export const metadata: Metadata = {
   title: "The Pattern Spotter",
-  description:
-    "Answer four questions and find out which people pleasing pattern is actually running underneath it, where it started, and where it is still running today.",
+  description: DESCRIPTION,
+  openGraph: {
+    title: "The Pattern Spotter",
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: "The Pattern Spotter",
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
