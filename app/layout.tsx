@@ -26,7 +26,7 @@ const openSans = Open_Sans({
 });
 
 const DESCRIPTION =
-  "Answer four questions and find out which pattern is actually running underneath it, where it started, and where it is still running today.";
+  "There's a pattern running your life you haven't named yet. Answer four questions and find out what it is, where it started, and where it's still running today.";
 
 export const metadata: Metadata = {
   title: "The Pattern Spotter",
