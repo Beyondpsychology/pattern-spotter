@@ -19,6 +19,9 @@ import { parseGenerateResponse } from "@/lib/parseReading";
 import { matchProduct } from "@/lib/products";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
 import { checkIpRateLimit, getClientIp } from "@/lib/rateLimit";
+import { generateReadingPdf } from "@/lib/pdf";
+import { uploadReadingPdf } from "@/lib/pdfStorage";
+import { sendReadingPdfLink } from "@/lib/activeCampaign";
 
 export async function POST(req: NextRequest) {
   try {
@@ -102,17 +105,29 @@ export async function POST(req: NextRequest) {
       .map((name) => matchProduct(name))
       .filter((entry): entry is { name: string; url: string } => entry !== null);
 
+    const readingData = { sections, sessions, toolkitFit };
+
     // Upsert rather than update: the email-capture step should already have
-    // inserted this row, but upsert covers the case where it didn't.
-    const { error: updateError } = await supabase.from("email_captures").upsert(
-      {
-        email: normalizedEmail,
-        has_completed: true,
-        reading: { sections, sessions, toolkitFit },
-        completed_at: new Date().toISOString(),
-      },
-      { onConflict: "email" }
-    );
+    // inserted this row, but upsert covers the case where it didn't. Runs
+    // alongside the PDF generation/upload/email-link steps below, none of
+    // which can fail the response — they're best-effort side effects.
+    const [{ error: updateError }] = await Promise.all([
+      supabase.from("email_captures").upsert(
+        {
+          email: normalizedEmail,
+          has_completed: true,
+          reading: readingData,
+          completed_at: new Date().toISOString(),
+        },
+        { onConflict: "email" }
+      ),
+      generateReadingPdf(readingData)
+        .then((pdfBuffer) => uploadReadingPdf(supabase, normalizedEmail, pdfBuffer))
+        .then((pdfUrl) => {
+          if (pdfUrl) return sendReadingPdfLink(normalizedEmail, pdfUrl);
+        })
+        .catch((err) => console.error("PDF generation/email pipeline failed", err)),
+    ]);
 
     if (updateError) {
       console.error("Failed to persist reading", updateError);

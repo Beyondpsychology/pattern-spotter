@@ -69,8 +69,11 @@ export default function QuestionForm({
 
   return (
     <div>
-      <p className="text-xs uppercase tracking-wider text-brown font-semibold mb-8 text-center">
+      <p className="text-xs uppercase tracking-wider text-brown font-semibold mb-3 text-center">
         {answeredCount} / 4 answered
+      </p>
+      <p className="eyebrow text-base mb-8 text-center">
+        What you write here is private. It is used only to generate your reading, never stored, and never seen by us.
       </p>
 
       <form onSubmit={handleSubmit}>

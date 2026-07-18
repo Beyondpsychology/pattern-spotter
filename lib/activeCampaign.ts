@@ -1,5 +1,6 @@
 const TAG_NAME = "patternspotter";
 const LIST_NAME = "Pattern Spotter";
+const READING_URL_FIELD_TITLE = "Pattern Spotter Reading URL";
 
 function getConfig() {
   const apiUrl = process.env.ACTIVECAMPAIGN_API_URL;
@@ -84,6 +85,67 @@ async function addContactToList(
       contactList: { list: listId, contact: contactId, status: 1 },
     }),
   });
+}
+
+async function getFieldId(config: { apiUrl: string; apiKey: string }, fieldTitle: string) {
+  const data = await acFetch(config, "/api/3/fields?limit=100");
+  const field = data.fields?.find((f: { title: string }) => f.title === fieldTitle);
+  return field ? (field.id as string) : null;
+}
+
+async function setContactFieldValue(
+  config: { apiUrl: string; apiKey: string },
+  contactId: string,
+  fieldId: string,
+  value: string
+) {
+  const existing = await acFetch(config, `/api/3/contacts/${contactId}/fieldValues`);
+  const existingValue = existing.fieldValues?.find(
+    (fv: { field: string }) => fv.field === fieldId
+  );
+
+  if (existingValue) {
+    await acFetch(config, `/api/3/fieldValues/${existingValue.id}`, {
+      method: "PUT",
+      body: JSON.stringify({ fieldValue: { contact: contactId, field: fieldId, value } }),
+    });
+  } else {
+    await acFetch(config, "/api/3/fieldValues", {
+      method: "POST",
+      body: JSON.stringify({ fieldValue: { contact: contactId, field: fieldId, value } }),
+    });
+  }
+}
+
+/**
+ * Pushes the signed PDF download URL into the "Pattern Spotter Reading URL"
+ * custom field on the contact. An ActiveCampaign automation (set up in the
+ * AC dashboard, triggered on this field changing) is what actually sends the
+ * email — this function only supplies the data for that automation to use.
+ * Never throws: a failure here should never block the on-screen reading.
+ */
+export async function sendReadingPdfLink(email: string, pdfUrl: string): Promise<void> {
+  const config = getConfig();
+  if (!config) {
+    console.error("ActiveCampaign PDF link sync skipped: missing env vars");
+    return;
+  }
+
+  try {
+    const contactId = await syncContact(config, email);
+    const fieldId = await getFieldId(config, READING_URL_FIELD_TITLE);
+
+    if (!fieldId) {
+      console.error(
+        `ActiveCampaign field "${READING_URL_FIELD_TITLE}" not found. Create it in ActiveCampaign first.`
+      );
+      return;
+    }
+
+    await setContactFieldValue(config, contactId, fieldId, pdfUrl);
+  } catch (err) {
+    console.error("ActiveCampaign PDF link sync failed", err);
+  }
 }
 
 /**
