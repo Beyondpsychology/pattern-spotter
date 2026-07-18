@@ -175,7 +175,6 @@ export async function buildReadingHtml(data: PdfReadingData): Promise<string> {
   .founder-bio { font-size: 9pt; line-height: 1.55; color: #3a352c; margin-bottom: 2.5mm; }
   .founder-bio:last-child { margin-bottom: 0; }
 
-  .doc-footer { position: fixed; bottom: 10mm; left: 24mm; right: 24mm; font-size: 8pt; color: #9a9284; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
@@ -225,11 +224,6 @@ export async function buildReadingHtml(data: PdfReadingData): Promise<string> {
         <p class="founder-bio">She built the Pattern Spotter so that same way of seeing could travel further than the room she is in. Reading this is the same as sitting across from her.</p>
       </div>
     </div>
-  </div>
-
-  <div class="doc-footer">
-    <span>Beyond Psychology</span>
-    <span>The Pattern Spotter</span>
   </div>
 
 </body>
