@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Abril_Fatface, Cormorant_Garamond, Open_Sans } from "next/font/google";
-import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
 const abril = Abril_Fatface({
@@ -52,7 +51,6 @@ export default function RootLayout({
       <body
         className={`${abril.variable} ${cormorant.variable} ${openSans.variable} font-body bg-cream text-dark`}
       >
-        <SiteHeader />
         {children}
       </body>
     </html>
