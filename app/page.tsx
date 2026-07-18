@@ -7,6 +7,9 @@ import {
   ArrowRight, Check, Plus, Minus,
 } from "lucide-react";
 
+const MYRTHE_PHOTO_URL =
+  "https://beyondpsychology.eu/wp-content/uploads/2025/07/Myrthe-team-photo-3.png";
+
 const painCards = [
   { icon: Frown, title: "Something keeps not working, and you've tried everything", body: "A business that almost grows and then stalls. A relationship pattern you keep rebuilding under a new name." },
   { icon: AlertTriangle, title: "A fear showed up that doesn't match the moment", body: "Suddenly scared of flying, of driving, of losing someone, and you can't quite explain why now." },
@@ -336,7 +339,7 @@ export default function PatternSpotterSalespageV2() {
           <h2 className="ps2-h2 ps2-h">A note from Myrthe</h2>
           <div className="ps2-founder-wrap" style={{ marginTop: 32 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="ps2-founder-photo" src="/myrthe-photo.png" alt="Myrthe Glasbergen" />
+            <img className="ps2-founder-photo" src={MYRTHE_PHOTO_URL} alt="Myrthe Glasbergen" />
             <div>
               <p className="ps2-p" style={{ fontWeight: 700, color: "var(--dark)" }}>Hey, I&apos;m Myrthe.</p>
               <p className="ps2-p">I&apos;m a psychologist and the founder of Beyond Psychology. My work is about helping people break free from the systems that kept them small, patriarchy, capitalism, gender conditioning, by unshaming what was never actually wrong with them. I built the Pattern Spotter because most people already know the word for what they do: people-pleasing, fawning, performing. What they don&apos;t have is someone looking at their specific situation and saying clearly, here is your pattern, here is where it came from, and here is the place you&apos;re less stuck than you think.</p>
