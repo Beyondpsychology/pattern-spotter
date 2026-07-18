@@ -92,36 +92,46 @@ export default function ToolPage() {
     }
   }
 
+  if (stage === "reading" && reading) {
+    return (
+      <main className="px-6 py-10 md:px-16 md:py-16">
+        <div className="max-w-[680px] mx-auto">
+          <ReadingResult reading={reading} />
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen px-6 py-10 md:px-16 md:py-16">
+    <main className="px-6 py-10 md:px-16 md:py-16">
       <div className="max-w-[680px] mx-auto">
-        {stage === "email" && <EmailGate onSubmit={handleEmailSubmit} />}
+        <div className="bg-white rounded-card shadow-card p-8 md:p-14">
+          {stage === "email" && <EmailGate onSubmit={handleEmailSubmit} />}
 
-        {stage === "already-used" && <AlreadyUsed />}
+          {stage === "already-used" && <AlreadyUsed />}
 
-        {stage === "questions" && (
-          <>
-            {questionsError && (
-              <p className="text-terracotta text-sm mb-4 text-center">{questionsError}</p>
-            )}
-            <QuestionForm initialAnswers={answers ?? undefined} onSubmit={handleQuestionsSubmit} />
-          </>
-        )}
+          {stage === "questions" && (
+            <>
+              {questionsError && (
+                <p className="text-terracotta text-sm mb-4 text-center">{questionsError}</p>
+              )}
+              <QuestionForm initialAnswers={answers ?? undefined} onSubmit={handleQuestionsSubmit} />
+            </>
+          )}
 
-        {stage === "loading-hypotheses" && <SkeletonHypotheses />}
+          {stage === "loading-hypotheses" && <SkeletonHypotheses />}
 
-        {stage === "hypotheses" && (
-          <>
-            {hypothesesError && (
-              <p className="text-terracotta text-sm mb-4 text-center">{hypothesesError}</p>
-            )}
-            <HypothesisSelection hypotheses={hypotheses} onSelect={handleHypothesisSelect} />
-          </>
-        )}
+          {stage === "hypotheses" && (
+            <>
+              {hypothesesError && (
+                <p className="text-terracotta text-sm mb-4 text-center">{hypothesesError}</p>
+              )}
+              <HypothesisSelection hypotheses={hypotheses} onSelect={handleHypothesisSelect} />
+            </>
+          )}
 
-        {stage === "loading-reading" && <SpinnerWritingReading />}
-
-        {stage === "reading" && reading && <ReadingResult reading={reading} />}
+          {stage === "loading-reading" && <SpinnerWritingReading />}
+        </div>
       </div>
     </main>
   );

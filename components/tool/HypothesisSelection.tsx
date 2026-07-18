@@ -25,7 +25,9 @@ export default function HypothesisSelection({
 
   return (
     <div>
+      <p className="eyebrow text-base mb-3 text-center">Choose one</p>
       <h2 className="text-3xl mb-3 text-center">Which of these feels most true?</h2>
+      <div className="divider" />
       <p className="text-dark/70 text-center mb-10">
         These are not facts, they are possibilities. Pick the one that lands,
         even if it stings a little.
