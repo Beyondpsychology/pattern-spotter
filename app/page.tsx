@@ -123,7 +123,7 @@ const PS2_STYLES = `
         .ps2-section.dark .ps2-cta-subtext, .ps2-section.sage .ps2-cta-subtext { color: rgba(255,255,255,0.75); }
         .ps2-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
         .ps2-stat-card { background: #fff; border-radius: 16px; padding: 28px 12px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
-        .ps2-stat-num { font-family: 'Abril Fatface', serif; font-size: 30px; color: var(--mint); margin-bottom: 4px; }
+        .ps2-stat-num { font-family: 'Abril Fatface', serif; font-size: 30px; color: var(--terracotta); margin-bottom: 4px; }
         .ps2-stat-label { font-size: 13px; color: #4a453c; }
 
         .ps2-grid2 { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
