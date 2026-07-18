@@ -11,6 +11,7 @@ import { SkeletonHypotheses, SpinnerWritingReading } from "@/components/tool/Loa
 
 export default function ToolPage() {
   const [stage, setStage] = useState<Stage>("email");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [answers, setAnswers] = useState<Answers | null>(null);
   const [hypotheses, setHypotheses] = useState<string[]>([]);
@@ -18,11 +19,11 @@ export default function ToolPage() {
   const [questionsError, setQuestionsError] = useState<string | null>(null);
   const [hypothesesError, setHypothesesError] = useState<string | null>(null);
 
-  async function handleEmailSubmit(submittedEmail: string) {
+  async function handleEmailSubmit(submittedName: string, submittedEmail: string) {
     const res = await fetch("/api/email-capture", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: submittedEmail }),
+      body: JSON.stringify({ name: submittedName, email: submittedEmail }),
     });
 
     if (!res.ok) {
@@ -30,6 +31,7 @@ export default function ToolPage() {
     }
 
     const data = await res.json();
+    setName(submittedName);
     setEmail(submittedEmail);
 
     if (data.status === "already_completed") {

@@ -31,10 +31,16 @@ async function acFetch(
   return data;
 }
 
-async function syncContact(config: { apiUrl: string; apiKey: string }, email: string) {
+async function syncContact(
+  config: { apiUrl: string; apiKey: string },
+  email: string,
+  firstName?: string
+) {
   const data = await acFetch(config, "/api/3/contact/sync", {
     method: "POST",
-    body: JSON.stringify({ contact: { email } }),
+    body: JSON.stringify({
+      contact: { email, ...(firstName ? { firstName } : {}) },
+    }),
   });
   return data.contact.id as string;
 }
@@ -157,7 +163,7 @@ export async function sendReadingPdfLink(email: string, pdfUrl: string): Promise
  * Never throws: this is a best-effort side effect of the email gate, a
  * failure here should never block someone from using the tool.
  */
-export async function syncToActiveCampaign(email: string): Promise<void> {
+export async function syncToActiveCampaign(email: string, firstName?: string): Promise<void> {
   const config = getConfig();
   if (!config) {
     console.error("ActiveCampaign sync skipped: missing env vars");
@@ -165,7 +171,7 @@ export async function syncToActiveCampaign(email: string): Promise<void> {
   }
 
   try {
-    const contactId = await syncContact(config, email);
+    const contactId = await syncContact(config, email, firstName);
     const tagId = await getOrCreateTagId(config, TAG_NAME);
     await addContactTag(config, contactId, tagId);
 

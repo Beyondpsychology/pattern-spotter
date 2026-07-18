@@ -8,6 +8,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => null);
     const email = typeof body?.email === "string" ? body.email : "";
+    const name = typeof body?.name === "string" ? body.name.trim() : "";
 
     if (!EMAIL_RE.test(email)) {
       return NextResponse.json({ error: "invalid_email" }, { status: 400 });
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
     // this can't fail the request even if ActiveCampaign is unreachable.
     const [{ data: existing, error: selectError }] = await Promise.all([
       supabase.from("email_captures").select("has_completed").eq("email", normalized).maybeSingle(),
-      syncToActiveCampaign(normalized),
+      syncToActiveCampaign(normalized, name),
     ]);
 
     if (selectError) {

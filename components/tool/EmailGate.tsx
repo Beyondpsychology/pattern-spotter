@@ -5,8 +5,9 @@ import { useState } from "react";
 export default function EmailGate({
   onSubmit,
 }: {
-  onSubmit: (email: string) => Promise<void>;
+  onSubmit: (name: string, email: string) => Promise<void>;
 }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +17,7 @@ export default function EmailGate({
     setError(null);
     setLoading(true);
     try {
-      await onSubmit(email);
+      await onSubmit(name, email);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -36,6 +37,19 @@ export default function EmailGate({
       </p>
 
       <form onSubmit={handleSubmit} className="max-w-md mx-auto text-left">
+        <label className="field-label" htmlFor="name">
+          Your name
+        </label>
+        <input
+          id="name"
+          type="text"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Jamie"
+          className="field-textarea mb-4"
+        />
+
         <label className="field-label" htmlFor="email">
           Your email
         </label>
