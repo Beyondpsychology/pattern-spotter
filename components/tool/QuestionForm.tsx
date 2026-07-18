@@ -13,14 +13,14 @@ const FIELDS: {
     key: "situation",
     label: "The situation you keep finding yourself in",
     placeholder:
-      "Describe a recurring situation where you feel yourself hold back, shrink, perform, or act against what you actually want. Be as specific as you can: what happens, who is there, what you do, and what you feel but do not say.",
+      "Describe a recurring situation where you notice the pattern kick in, whatever shape it takes for you: holding back, shrinking, performing, procrastinating, overworking, shutting down, numbing out, or something else entirely. Be as specific as you can: what happens, who is there, what you do, and what you feel but do not say.",
     rows: 4,
   },
   {
     key: "story",
     label: "What you tell yourself about why you do it",
     placeholder:
-      "What is the story you have told yourself about why you act this way? For example: I do it to keep the peace. I do not want to seem difficult. I am just not a confrontational person. Write whatever comes up, even if it feels obvious.",
+      "What is the story you have told yourself about why you act this way? For example: I do it to keep the peace. I work better under pressure anyway. I am just not good at finishing things. I am not a confrontational person. Write whatever comes up, even if it feels obvious.",
     rows: 3,
   },
   {
@@ -34,7 +34,7 @@ const FIELDS: {
     key: "want",
     label: "What you actually want in that moment",
     placeholder:
-      "What do you wish you could say, do, or feel instead? What does the version of you who is not managing everyone else actually want in that situation?",
+      "What do you wish you could say, do, or feel instead? What does the version of you who is not running this pattern actually want in that situation?",
     rows: 3,
   },
 ];
