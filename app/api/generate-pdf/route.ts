@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildReadingHtml } from "@/lib/pdf-template";
-import { renderHtmlToPdf } from "@/lib/renderPdf";
+import { generateReadingPdf } from "@/lib/pdf";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,8 +10,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "missing_fields" }, { status: 400 });
     }
 
-    const html = await buildReadingHtml({ sections, sessions, toolkitFit });
-    const pdfBuffer = await renderHtmlToPdf(html);
+    const pdfBuffer = await generateReadingPdf({ sections, sessions, toolkitFit });
 
     return new NextResponse(new Blob([pdfBuffer as unknown as BlobPart], { type: "application/pdf" }), {
       status: 200,

@@ -83,30 +83,30 @@ hammering the tool.
 
 ## PDF downloads and email delivery
 
-Both PDF paths share the same design (`lib/pdf-template.ts`: title page,
-styled sections + CTA block, about-Beyond-Psychology page), rendered through
-headless Chrome (`puppeteer-core` + `@sparticuz/chromium`, see
-`lib/renderPdf.ts`):
+Both PDF paths share the same generator (`lib/pdf.ts`: title page, styled
+sections, a dark CTA page, an about-Beyond-Psychology page), built with
+`pdfkit` — pure JavaScript, no headless browser involved:
 
 - **"Download as PDF" button** (on the on-screen reading): calls
-  `/api/generate-pdf`, which renders the template and streams the file
-  straight to the browser. Nothing is stored for this path.
-- **Emailed PDF**: `/api/generate` renders the same template, uploads the
-  result to a private Supabase Storage bucket, and pushes a 30-day signed
-  URL into an ActiveCampaign custom field for an automation to email out.
+  `/api/generate-pdf`, which builds the PDF and streams it straight to the
+  browser. Nothing is stored for this path.
+- **Emailed PDF**: `/api/generate` builds the same PDF, uploads the result
+  to a private Supabase Storage bucket, and pushes a 30-day signed URL into
+  an ActiveCampaign custom field for an automation to email out.
 
-If either route fails or times out **only in production** (works locally),
-the most likely fix is bumping the function's memory in `vercel.json` —
-headless Chrome is close to Vercel's default serverless function memory
-limit. Both routes are already set to 2048 MB there; try raising it further,
-or increasing `maxDuration`, if it still fails. `/api/generate` in
-particular now does an Anthropic call *and* a full Chrome render in the same
-request, so it's the more likely of the two to need extra headroom.
+An earlier version of this rendered the PDF via `puppeteer-core` +
+`@sparticuz/chromium` (real HTML/CSS, closer to the on-screen design) but
+that combination hit two separate Vercel-specific failures in production
+(file tracing dropping the bundled Chromium binary, then a missing system
+library even after fixing that) and was replaced with this `pdfkit` version,
+which has no native/binary dependency and can't hit that class of bug.
 
-`lib/pdf-template.ts` loads the founder photo from
-`public/pdf-assets/myrthe-photo.png` if present, otherwise fetches it from
-`beyondpsychology.eu` at render time. If neither is available, that spot
-renders as a plain colored circle instead of failing.
+`lib/pdf.ts` loads the founder photo from `public/pdf-assets/myrthe-photo.png`
+if present, otherwise fetches it from `beyondpsychology.eu` at render time.
+If neither is available, that spot renders as a plain colored circle instead
+of failing. Brand fonts (Abril Fatface, Cormorant Garamond italic, Open
+Sans) are loaded from `public/pdf-assets/fonts/` and registered directly
+with pdfkit.
 
 ## Project structure
 
