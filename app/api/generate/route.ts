@@ -13,6 +13,7 @@ CREATE INDEX IF NOT EXISTS email_captures_email_idx ON email_captures (lower(ema
 */
 
 import { NextRequest, NextResponse } from "next/server";
+import { waitUntil } from "@vercel/functions";
 import Anthropic from "@anthropic-ai/sdk";
 import { SYSTEM_PROMPT, formatAnswers } from "@/lib/prompts";
 import { parseGenerateResponse } from "@/lib/parseReading";
@@ -22,6 +23,11 @@ import { checkIpRateLimit, getClientIp } from "@/lib/rateLimit";
 import { generateReadingPdf } from "@/lib/pdf";
 import { uploadReadingPdf } from "@/lib/pdfStorage";
 import { sendReadingPdfLink } from "@/lib/activeCampaign";
+
+// Give the background PDF/email work (kicked off via waitUntil below) enough
+// runway to finish after the response is sent. Vercel caps this at whatever
+// the plan allows, so this is a ceiling, not a guarantee.
+export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   try {
@@ -107,33 +113,39 @@ export async function POST(req: NextRequest) {
 
     const readingData = { sections, sessions, toolkitFit };
 
-    // Upsert rather than update: the email-capture step should already have
-    // inserted this row, but upsert covers the case where it didn't. Runs
-    // alongside the PDF generation/upload/email-link steps below, none of
-    // which can fail the response — they're best-effort side effects.
-    const [{ error: updateError }] = await Promise.all([
-      supabase.from("email_captures").upsert(
-        {
-          email: normalizedEmail,
-          has_completed: true,
-          reading: readingData,
-          completed_at: new Date().toISOString(),
-        },
-        { onConflict: "email" }
-      ),
-      generateReadingPdf(readingData)
-        .then((pdfBuffer) => uploadReadingPdf(supabase, normalizedEmail, pdfBuffer))
-        .then((pdfUrl) => {
-          if (pdfUrl) return sendReadingPdfLink(normalizedEmail, pdfUrl);
-        })
-        .catch((err) => console.error("PDF generation/email pipeline failed", err)),
-    ]);
+    // Everything below (marking has_completed, generating the PDF, uploading
+    // it, and pushing the link to ActiveCampaign) runs in the background via
+    // waitUntil rather than being awaited here. Anthropic's own reading call
+    // above already eats several seconds of the request; if the response also
+    // waited on PDF rendering + a Supabase Storage upload + an ActiveCampaign
+    // API call, the combined time can exceed Vercel's function duration limit
+    // and the whole request would fail with the reading never reaching the
+    // browser. The user sees their reading immediately; the PDF/email side
+    // effects land a few seconds later.
+    waitUntil(
+      (async () => {
+        // Upsert rather than update: the email-capture step should already
+        // have inserted this row, but upsert covers the case where it didn't.
+        const { error: updateError } = await supabase.from("email_captures").upsert(
+          {
+            email: normalizedEmail,
+            has_completed: true,
+            reading: readingData,
+            completed_at: new Date().toISOString(),
+          },
+          { onConflict: "email" }
+        );
+        if (updateError) console.error("Failed to persist reading", updateError);
 
-    if (updateError) {
-      console.error("Failed to persist reading", updateError);
-      // The user already has their reading generated — don't fail the
-      // response over a persistence error, but this should be monitored.
-    }
+        try {
+          const pdfBuffer = await generateReadingPdf(readingData);
+          const pdfUrl = await uploadReadingPdf(supabase, normalizedEmail, pdfBuffer);
+          if (pdfUrl) await sendReadingPdfLink(normalizedEmail, pdfUrl);
+        } catch (err) {
+          console.error("PDF generation/email pipeline failed", err);
+        }
+      })()
+    );
 
     return NextResponse.json({ sections, sessions, toolkitFit });
   } catch (err) {

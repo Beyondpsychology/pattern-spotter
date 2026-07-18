@@ -31,7 +31,7 @@ async function loadPhotoBuffer(): Promise<Buffer | null> {
   }
 
   try {
-    const res = await fetch(MYRTHE_PHOTO_URL);
+    const res = await fetch(MYRTHE_PHOTO_URL, { signal: AbortSignal.timeout(5000) });
     if (!res.ok) return null;
     return Buffer.from(await res.arrayBuffer());
   } catch (err) {
