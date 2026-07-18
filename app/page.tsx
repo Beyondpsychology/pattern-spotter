@@ -7,9 +7,6 @@ import {
   ArrowRight, Check, Plus, Minus,
 } from "lucide-react";
 
-const MYRTHE_PHOTO_URL =
-  "https://beyondpsychology.eu/wp-content/uploads/2025/07/Myrthe-team-photo-3.png";
-
 const painCards = [
   { icon: Frown, title: "Something keeps not working, and you've tried everything", body: "A business that almost grows and then stalls. A relationship pattern you keep rebuilding under a new name." },
   { icon: AlertTriangle, title: "A fear showed up that doesn't match the moment", body: "Suddenly scared of flying, of driving, of losing someone, and you can't quite explain why now." },
@@ -41,8 +38,6 @@ const objections = [
 
 const faqs = [
   { q: "How does the Pattern Spotter actually work?", a: "You answer four questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button." },
-  { q: "I've already tried therapy and journaling. Why would this be different?", a: "Everything you've tried asked more of you. This doesn't ask you to fix yourself, it names what's been happening from the outside." },
-  { q: "What if I've been performing for so long I can't tell what's real?", a: "That's exactly who this was built for. You don't need the answer before you start." },
   { q: "Is this private? Who sees what I type in?", a: "We ask for your email to give you your reading, that's it. What you write is used only to generate it." },
   { q: "Can I run it more than once?", a: "Each purchase includes 5 readings. Run it again any time you want to go deeper, different situations, different layers, the same pattern seen from a new angle." },
 ];
@@ -341,7 +336,7 @@ export default function PatternSpotterSalespageV2() {
           <h2 className="ps2-h2 ps2-h">A note from Myrthe</h2>
           <div className="ps2-founder-wrap" style={{ marginTop: 32 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="ps2-founder-photo" src={MYRTHE_PHOTO_URL} alt="Myrthe Glasbergen" />
+            <img className="ps2-founder-photo" src="/myrthe-photo.png" alt="Myrthe Glasbergen" />
             <div>
               <p className="ps2-p" style={{ fontWeight: 700, color: "var(--dark)" }}>Hey, I&apos;m Myrthe.</p>
               <p className="ps2-p">I&apos;m a psychologist and the founder of Beyond Psychology. My work is about helping people break free from the systems that kept them small, patriarchy, capitalism, gender conditioning, by unshaming what was never actually wrong with them. I built the Pattern Spotter because most people already know the word for what they do: people-pleasing, fawning, performing. What they don&apos;t have is someone looking at their specific situation and saying clearly, here is your pattern, here is where it came from, and here is the place you&apos;re less stuck than you think.</p>
