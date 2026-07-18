@@ -83,27 +83,30 @@ hammering the tool.
 
 ## PDF downloads and email delivery
 
-Two separate PDF paths exist:
+Both PDF paths share the same design (`lib/pdf-template.ts`: title page,
+styled sections + CTA block, about-Beyond-Psychology page), rendered through
+headless Chrome (`puppeteer-core` + `@sparticuz/chromium`, see
+`lib/renderPdf.ts`):
 
 - **"Download as PDF" button** (on the on-screen reading): calls
-  `/api/generate-pdf`, which renders `lib/pdf-template.ts` (full HTML/CSS,
-  title page + sections + about page) through headless Chrome
-  (`puppeteer-core` + `@sparticuz/chromium`) and streams the file straight to
-  the browser. Nothing is stored for this path.
-- **Emailed PDF**: `/api/generate` builds a simpler PDF with `pdfkit` (see
-  `lib/pdf.ts`), uploads it to a private Supabase Storage bucket, and pushes
-  a 30-day signed URL into an ActiveCampaign custom field for an automation
-  to email out.
+  `/api/generate-pdf`, which renders the template and streams the file
+  straight to the browser. Nothing is stored for this path.
+- **Emailed PDF**: `/api/generate` renders the same template, uploads the
+  result to a private Supabase Storage bucket, and pushes a 30-day signed
+  URL into an ActiveCampaign custom field for an automation to email out.
 
-If `/api/generate-pdf` fails or times out **only in production** (works
-locally), the most likely fix is bumping the function's memory in
-`vercel.json` — headless Chrome is close to Vercel's default serverless
-function memory limit. It's already set to 2048 MB there; try raising it
-further, or increasing `maxDuration`, if it still fails.
+If either route fails or times out **only in production** (works locally),
+the most likely fix is bumping the function's memory in `vercel.json` —
+headless Chrome is close to Vercel's default serverless function memory
+limit. Both routes are already set to 2048 MB there; try raising it further,
+or increasing `maxDuration`, if it still fails. `/api/generate` in
+particular now does an Anthropic call *and* a full Chrome render in the same
+request, so it's the more likely of the two to need extra headroom.
 
-`lib/pdf-template.ts` expects a photo at `public/pdf-assets/myrthe-photo.png`
-for the about page. If it's missing, that spot renders as a plain colored
-circle instead of failing.
+`lib/pdf-template.ts` loads the founder photo from
+`public/pdf-assets/myrthe-photo.png` if present, otherwise fetches it from
+`beyondpsychology.eu` at render time. If neither is available, that spot
+renders as a plain colored circle instead of failing.
 
 ## Project structure
 

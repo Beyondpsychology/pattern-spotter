@@ -19,7 +19,8 @@ import { parseGenerateResponse } from "@/lib/parseReading";
 import { matchProduct } from "@/lib/products";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
 import { checkIpRateLimit, getClientIp } from "@/lib/rateLimit";
-import { generateReadingPdf } from "@/lib/pdf";
+import { buildReadingHtml } from "@/lib/pdf-template";
+import { renderHtmlToPdf } from "@/lib/renderPdf";
 import { uploadReadingPdf } from "@/lib/pdfStorage";
 import { sendReadingPdfLink } from "@/lib/activeCampaign";
 
@@ -121,7 +122,8 @@ export async function POST(req: NextRequest) {
         },
         { onConflict: "email" }
       ),
-      generateReadingPdf(readingData)
+      buildReadingHtml(readingData)
+        .then((html) => renderHtmlToPdf(html))
         .then((pdfBuffer) => uploadReadingPdf(supabase, normalizedEmail, pdfBuffer))
         .then((pdfUrl) => {
           if (pdfUrl) return sendReadingPdfLink(normalizedEmail, pdfUrl);

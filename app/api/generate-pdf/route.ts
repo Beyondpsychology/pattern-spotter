@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import chromium from "@sparticuz/chromium";
-import puppeteer from "puppeteer-core";
 import { buildReadingHtml } from "@/lib/pdf-template";
+import { renderHtmlToPdf } from "@/lib/renderPdf";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,25 +11,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "missing_fields" }, { status: 400 });
     }
 
-    const html = buildReadingHtml({ sections, sessions, toolkitFit });
-
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath:
-        process.env.CHROME_EXECUTABLE_PATH || (await chromium.executablePath()),
-      headless: true,
-    });
-
-    let pdfBuffer: Buffer;
-    try {
-      const page = await browser.newPage();
-      await page.setContent(html, { waitUntil: "networkidle0" });
-      pdfBuffer = Buffer.from(
-        await page.pdf({ format: "A4", printBackground: true })
-      );
-    } finally {
-      await browser.close();
-    }
+    const html = await buildReadingHtml({ sections, sessions, toolkitFit });
+    const pdfBuffer = await renderHtmlToPdf(html);
 
     return new NextResponse(new Blob([pdfBuffer as unknown as BlobPart], { type: "application/pdf" }), {
       status: 200,

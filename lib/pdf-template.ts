@@ -35,6 +35,9 @@ function bodyToParagraphs(body: string): string {
     .join("\n");
 }
 
+const MYRTHE_PHOTO_URL =
+  "https://beyondpsychology.eu/wp-content/uploads/2025/07/Myrthe-team-photo-3.png";
+
 function fileToDataUri(filePath: string, mimeType: string): string | null {
   try {
     const buffer = fs.readFileSync(filePath);
@@ -48,7 +51,28 @@ function assetPath(...segments: string[]): string {
   return path.join(process.cwd(), "public", "pdf-assets", ...segments);
 }
 
-export function buildReadingHtml(data: PdfReadingData): string {
+/**
+ * Prefers a local file (public/pdf-assets/myrthe-photo.png) if one is ever
+ * committed, otherwise fetches it from the live site at render time. Never
+ * throws — a missing/unreachable photo falls back to a plain placeholder
+ * circle in the template rather than breaking PDF generation.
+ */
+async function loadPhotoDataUri(): Promise<string | null> {
+  const local = fileToDataUri(assetPath("myrthe-photo.png"), "image/png");
+  if (local) return local;
+
+  try {
+    const res = await fetch(MYRTHE_PHOTO_URL);
+    if (!res.ok) return null;
+    const buffer = Buffer.from(await res.arrayBuffer());
+    return `data:image/png;base64,${buffer.toString("base64")}`;
+  } catch (err) {
+    console.error("Failed to fetch Myrthe photo for PDF", err);
+    return null;
+  }
+}
+
+export async function buildReadingHtml(data: PdfReadingData): Promise<string> {
   const { sections, sessions, toolkitFit } = data;
 
   const abrilFont = fileToDataUri(assetPath("fonts", "AbrilFatface-Regular.ttf"), "font/ttf");
@@ -58,7 +82,7 @@ export function buildReadingHtml(data: PdfReadingData): string {
   );
   const openSansLight = fileToDataUri(assetPath("fonts", "OpenSans-Light.ttf"), "font/ttf");
   const openSansBold = fileToDataUri(assetPath("fonts", "OpenSans-Bold.ttf"), "font/ttf");
-  const photo = fileToDataUri(assetPath("myrthe-photo.png"), "image/png");
+  const photo = await loadPhotoDataUri();
 
   const sectionsHtml = sections
     .map(
