@@ -2,6 +2,7 @@ import PDFDocument from "pdfkit";
 import fs from "fs";
 import path from "path";
 import type { ReadingResultData } from "@/lib/toolTypes";
+import { ONE_ON_ONE_URL } from "@/lib/products";
 
 const DARK = "#2C3535";
 const CREAM = "#F5F0E8";
@@ -153,7 +154,7 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
     });
 
     // ---------- CTA PAGE ----------
-    if (reading.sessions.length > 0 || reading.toolkitFit) {
+    {
       doc.addPage({ size: "A4", margin: 0 });
       doc.rect(0, 0, pageWidth, pageHeight).fill(DARK);
 
@@ -196,7 +197,19 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
             link: "https://beyondpsychology.eu/overcome-people-pleasing/",
             underline: true,
           });
+        y = doc.y + 14;
       }
+
+      y += 14;
+      doc
+        .fillColor(MINT)
+        .font("CormorantItalic")
+        .fontSize(13)
+        .text("Or, go deeper — live: 1-on-1 Guidance with Myrthe", MARGIN, y, {
+          width: contentWidth,
+          link: ONE_ON_ONE_URL,
+          underline: true,
+        });
     }
 
     // ---------- ABOUT PAGE ----------

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ReadingResultData } from "@/lib/toolTypes";
+import { ONE_ON_ONE_URL } from "@/lib/products";
 import CopyButton from "./CopyButton";
 
 export default function ReadingResult({ reading }: { reading: ReadingResultData }) {
@@ -99,6 +100,17 @@ export default function ReadingResult({ reading }: { reading: ReadingResultData 
             </a>
           </>
         )}
+
+        {(sessions.length > 0 || toolkitFit) && <div className="border-t border-cream/15 my-6" />}
+        <p className="eyebrow eyebrow-on-dark text-base mb-4">Or, go deeper — live</p>
+        <a
+          href={ONE_ON_ONE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-center btn-primary bg-terracotta"
+        >
+          1-on-1 Guidance with Myrthe
+        </a>
       </div>
 
       <div className="mt-8 text-center">

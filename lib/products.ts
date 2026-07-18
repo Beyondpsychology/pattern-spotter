@@ -110,6 +110,8 @@ export const PRODUCTS: Record<string, { slug: string; title: string; url?: strin
   },
 };
 
+export const ONE_ON_ONE_URL = "https://beyondpsychology.eu/1-on-1/";
+
 export function buildProductUrl(slug: string) {
   return `https://beyondpsychology.eu/product/${slug}`;
 }
