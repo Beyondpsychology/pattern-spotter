@@ -1,8 +1,41 @@
+"use client";
+
+import { useState } from "react";
 import type { ReadingResultData } from "@/lib/toolTypes";
 import CopyButton from "./CopyButton";
 
 export default function ReadingResult({ reading }: { reading: ReadingResultData }) {
   const { sections, sessions, toolkitFit } = reading;
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+
+  async function handleDownload() {
+    setDownloadError(null);
+    setDownloading(true);
+    try {
+      const res = await fetch("/api/generate-pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sections, sessions, toolkitFit }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "pattern-spotter-reading.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch {
+      setDownloadError("Something went wrong generating the PDF. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   return (
     <div>
@@ -66,6 +99,17 @@ export default function ReadingResult({ reading }: { reading: ReadingResultData 
             </a>
           </>
         )}
+      </div>
+
+      <div className="mt-8 text-center">
+        {downloadError && <p className="text-terracotta text-sm mb-4">{downloadError}</p>}
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="btn-primary bg-brown inline-block w-auto px-8"
+        >
+          {downloading ? "Preparing your PDF..." : "Download as PDF"}
+        </button>
       </div>
     </div>
   );

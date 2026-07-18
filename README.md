@@ -81,6 +81,30 @@ without calling Anthropic at all. There's also a simple 20-requests-per-hour
 per-IP limit on `/api/generate` as a backstop against a single source
 hammering the tool.
 
+## PDF downloads and email delivery
+
+Two separate PDF paths exist:
+
+- **"Download as PDF" button** (on the on-screen reading): calls
+  `/api/generate-pdf`, which renders `lib/pdf-template.ts` (full HTML/CSS,
+  title page + sections + about page) through headless Chrome
+  (`puppeteer-core` + `@sparticuz/chromium`) and streams the file straight to
+  the browser. Nothing is stored for this path.
+- **Emailed PDF**: `/api/generate` builds a simpler PDF with `pdfkit` (see
+  `lib/pdf.ts`), uploads it to a private Supabase Storage bucket, and pushes
+  a 30-day signed URL into an ActiveCampaign custom field for an automation
+  to email out.
+
+If `/api/generate-pdf` fails or times out **only in production** (works
+locally), the most likely fix is bumping the function's memory in
+`vercel.json` — headless Chrome is close to Vercel's default serverless
+function memory limit. It's already set to 2048 MB there; try raising it
+further, or increasing `maxDuration`, if it still fails.
+
+`lib/pdf-template.ts` expects a photo at `public/pdf-assets/myrthe-photo.png`
+for the about page. If it's missing, that spot renders as a plain colored
+circle instead of failing.
+
 ## Project structure
 
 ```
@@ -91,9 +115,11 @@ app/
     email-capture/route.ts  stage 1: check/insert email, no AI call
     hypotheses/route.ts     stage 2→3: 2-3 hypotheses from Anthropic
     generate/route.ts       stage 3→4: full reading, has_completed check + update
+    generate-pdf/route.ts   on-demand PDF download (Puppeteer, not stored)
 components/tool/            UI pieces for each stage
 components/SiteHeader.tsx   logo header, shown on every page via layout.tsx
-lib/                        prompts, product catalog, supabase/rate-limit/AC helpers
+lib/                        prompts, product catalog, supabase/rate-limit/AC/PDF helpers
+public/pdf-assets/          fonts + photo used only by the PDF template
 ```
 
 ## What to open first
