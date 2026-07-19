@@ -19,6 +19,7 @@ export default function VoiceInputButton({
   const recognitionRef = useRef<any>(null);
   const baseTextRef = useRef("");
   const valueRef = useRef(value);
+  const shouldRestartRef = useRef(false);
 
   useEffect(() => {
     valueRef.current = value;
@@ -27,22 +28,26 @@ export default function VoiceInputButton({
   useEffect(() => {
     setSupported(isSpeechRecognitionSupported());
     return () => {
+      shouldRestartRef.current = false;
       recognitionRef.current?.stop();
     };
   }, []);
 
-  function startListening() {
+  function createRecognition() {
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
+    if (!SpeechRecognition) return null;
 
     const recognition = new SpeechRecognition();
     recognition.lang = navigator.language || "en-US";
-    recognition.continuous = true;
+    // Chrome's continuous mode periodically restarts recognition internally
+    // and can re-fire stale results when it does, which shows up as the
+    // transcript repeating the first few words over and over. Running
+    // non-continuous chunks and restarting them ourselves in onend avoids
+    // that: each chunk's results are self-contained, and baseTextRef (a ref,
+    // not state) keeps accumulating cleanly across restarts.
+    recognition.continuous = false;
     recognition.interimResults = true;
-
-    const existing = valueRef.current.trim();
-    baseTextRef.current = existing ? existing + " " : "";
 
     recognition.onresult = (event: any) => {
       let interim = "";
@@ -61,13 +66,29 @@ export default function VoiceInputButton({
       onChange(baseTextRef.current + interim);
     };
 
-    recognition.onerror = () => {
-      setListening(false);
+    recognition.onerror = (event: any) => {
+      if (event.error === "no-speech" || event.error === "aborted") return;
+      shouldRestartRef.current = false;
     };
 
     recognition.onend = () => {
-      setListening(false);
+      if (shouldRestartRef.current) {
+        recognition.start();
+      } else {
+        setListening(false);
+      }
     };
+
+    return recognition;
+  }
+
+  function startListening() {
+    const recognition = createRecognition();
+    if (!recognition) return;
+
+    const existing = valueRef.current.trim();
+    baseTextRef.current = existing ? existing + " " : "";
+    shouldRestartRef.current = true;
 
     recognitionRef.current = recognition;
     recognition.start();
@@ -75,6 +96,7 @@ export default function VoiceInputButton({
   }
 
   function stopListening() {
+    shouldRestartRef.current = false;
     recognitionRef.current?.stop();
     setListening(false);
   }
