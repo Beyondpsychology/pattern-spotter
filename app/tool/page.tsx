@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { Answers, ReadingResultData, Stage } from "@/lib/toolTypes";
 import EmailGate from "@/components/tool/EmailGate";
 import AlreadyUsed from "@/components/tool/AlreadyUsed";
-import QuestionForm from "@/components/tool/QuestionForm";
+import QuestionForm, { clearDraftAnswers } from "@/components/tool/QuestionForm";
 import HypothesisSelection from "@/components/tool/HypothesisSelection";
 import ReadingResult from "@/components/tool/ReadingResult";
 import { SkeletonHypotheses, SpinnerWritingReading } from "@/components/tool/Loading";
@@ -36,6 +36,7 @@ export default function ToolPage() {
 
     if (data.status === "already_completed") {
       if (data.reading) {
+        clearDraftAnswers();
         setReading(data.reading);
         setStage("reading");
       } else {
@@ -84,6 +85,7 @@ export default function ToolPage() {
       if (res.status === 403) {
         const data = await res.json().catch(() => null);
         if (data?.reading) {
+          clearDraftAnswers();
           setReading(data.reading);
           setStage("reading");
         } else {
@@ -95,6 +97,7 @@ export default function ToolPage() {
       if (!res.ok) throw new Error();
 
       const data = await res.json();
+      clearDraftAnswers();
       setReading(data);
       setStage("reading");
     } catch {

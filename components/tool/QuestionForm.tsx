@@ -4,6 +4,27 @@ import { useEffect, useState } from "react";
 import type { Answers } from "@/lib/toolTypes";
 import VoiceInputButton, { isSpeechRecognitionSupported } from "./VoiceInputButton";
 
+const DRAFT_KEY = "pattern-spotter:draft-answers";
+
+function loadDraft(): Answers | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(DRAFT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearDraftAnswers() {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // ignore storage errors (private browsing, quota, etc.)
+  }
+}
+
 const FIELDS: {
   key: keyof Answers;
   label: string;
@@ -48,7 +69,9 @@ export default function QuestionForm({
   onSubmit: (answers: Answers) => Promise<void>;
 }) {
   const [answers, setAnswers] = useState<Answers>(
-    initialAnswers ?? { situation: "", story: "", origin: "", want: "" }
+    () =>
+      initialAnswers ??
+      loadDraft() ?? { situation: "", story: "", origin: "", want: "" }
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,6 +80,18 @@ export default function QuestionForm({
   useEffect(() => {
     setVoiceSupported(isSpeechRecognitionSupported());
   }, []);
+
+  // Persist as a draft so a reload or an error further down the flow
+  // (e.g. a failed /api/generate call) never wipes out someone's answers,
+  // voice-dictated ones especially since those take real effort to redo.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(DRAFT_KEY, JSON.stringify(answers));
+    } catch {
+      // ignore storage errors (private browsing, quota, etc.)
+    }
+  }, [answers]);
 
   const answeredCount = Object.values(answers).filter((v) => v.trim()).length;
 
