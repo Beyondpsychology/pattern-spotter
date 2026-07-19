@@ -35,7 +35,12 @@ export default function ToolPage() {
     setEmail(submittedEmail);
 
     if (data.status === "already_completed") {
-      setStage("already-used");
+      if (data.reading) {
+        setReading(data.reading);
+        setStage("reading");
+      } else {
+        setStage("already-used");
+      }
     } else {
       setStage("questions");
     }
@@ -77,7 +82,13 @@ export default function ToolPage() {
       });
 
       if (res.status === 403) {
-        setStage("already-used");
+        const data = await res.json().catch(() => null);
+        if (data?.reading) {
+          setReading(data.reading);
+          setStage("reading");
+        } else {
+          setStage("already-used");
+        }
         return;
       }
 

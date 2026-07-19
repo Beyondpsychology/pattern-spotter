@@ -20,7 +20,11 @@ export async function POST(req: NextRequest) {
     // Runs alongside the DB lookup; syncToActiveCampaign never throws, so
     // this can't fail the request even if ActiveCampaign is unreachable.
     const [{ data: existing, error: selectError }] = await Promise.all([
-      supabase.from("email_captures").select("has_completed").eq("email", normalized).maybeSingle(),
+      supabase
+        .from("email_captures")
+        .select("has_completed, reading")
+        .eq("email", normalized)
+        .maybeSingle(),
       syncToActiveCampaign(normalized, name),
     ]);
 
@@ -32,6 +36,7 @@ export async function POST(req: NextRequest) {
     if (existing) {
       return NextResponse.json({
         status: existing.has_completed ? "already_completed" : "ok",
+        reading: existing.has_completed ? existing.reading ?? null : null,
       });
     }
 

@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
     const { data: existing, error: selectError } = await supabase
       .from("email_captures")
-      .select("has_completed")
+      .select("has_completed, reading")
       .eq("email", normalizedEmail)
       .maybeSingle();
 
@@ -71,7 +71,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (existing?.has_completed) {
-      return NextResponse.json({ error: "already_used" }, { status: 403 });
+      return NextResponse.json(
+        { error: "already_used", reading: existing.reading ?? null },
+        { status: 403 }
+      );
     }
 
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
