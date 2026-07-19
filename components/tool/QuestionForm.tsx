@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Answers } from "@/lib/toolTypes";
+import VoiceInputButton, { isSpeechRecognitionSupported } from "./VoiceInputButton";
 
 const FIELDS: {
   key: keyof Answers;
@@ -51,6 +52,11 @@ export default function QuestionForm({
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [voiceSupported, setVoiceSupported] = useState(false);
+
+  useEffect(() => {
+    setVoiceSupported(isSpeechRecognitionSupported());
+  }, []);
 
   const answeredCount = Object.values(answers).filter((v) => v.trim()).length;
 
@@ -72,16 +78,31 @@ export default function QuestionForm({
       <div className="text-center mb-3">
         <span className="eyebrow-chip">{answeredCount} / 4 answered</span>
       </div>
-      <p className="eyebrow text-base mb-8 text-center">
+      <p className="eyebrow text-base mb-2 text-center">
         What you write here is private. It is used only to generate your reading, never stored, and never seen by us.
       </p>
+      {voiceSupported && (
+        <p className="text-xs text-dark/45 text-center mb-8 max-w-md mx-auto">
+          Prefer to talk? Voice input is transcribed by your browser&apos;s
+          speech recognition (e.g. Google), which briefly processes your
+          speech to turn it into text.
+        </p>
+      )}
 
       <form onSubmit={handleSubmit}>
         {FIELDS.map((field) => (
           <div key={field.key} className="mb-8">
-            <label className="field-label" htmlFor={field.key}>
-              {field.label}
-            </label>
+            <div className="flex items-center justify-between gap-3 mb-2">
+              <label className="field-label mb-0" htmlFor={field.key}>
+                {field.label}
+              </label>
+              <VoiceInputButton
+                value={answers[field.key]}
+                onChange={(next) =>
+                  setAnswers((prev) => ({ ...prev, [field.key]: next }))
+                }
+              />
+            </div>
             <textarea
               id={field.key}
               required
