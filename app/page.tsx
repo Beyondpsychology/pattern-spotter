@@ -6,6 +6,7 @@ import {
   Sparkles, Heart, Sunrise, CheckCircle2,
   ArrowRight, Check, Plus, Minus,
 } from "lucide-react";
+import { CRISIS_TEXT, DISCLAIMER_TEXT } from "@/lib/legal";
 
 const MYRTHE_PHOTO_URL =
   "https://beyondpsychology.eu/wp-content/uploads/2025/07/Myrthe-team-photo-3.png";
@@ -412,7 +413,11 @@ export default function PatternSpotterSalespageV2() {
         </div>
       </section>
 
-      <div className="ps2-footer-note">Beyond Psychology · The Pattern Spotter</div>
+      <div className="ps2-footer-note">
+        <p>Beyond Psychology · The Pattern Spotter</p>
+        <p style={{ maxWidth: 560, margin: "12px auto 0" }}>{CRISIS_TEXT}</p>
+        <p style={{ maxWidth: 560, margin: "8px auto 0" }}>{DISCLAIMER_TEXT}</p>
+      </div>
     </div>
   );
 }

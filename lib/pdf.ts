@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import type { ReadingResultData } from "@/lib/toolTypes";
 import { ONE_ON_ONE_URL } from "@/lib/products";
+import { CRISIS_TEXT, DISCLAIMER_TEXT } from "@/lib/legal";
 
 const DARK = "#2C3535";
 const CREAM = "#F5F0E8";
@@ -299,6 +300,18 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
         doc.y + 6,
         { width: textWidth, lineGap: 2 }
       );
+
+    const legalY = Math.max(doc.y, ay + photoSize) + 22;
+    doc
+      .fillColor("#6a6357")
+      .font("OpenSans")
+      .fontSize(7)
+      .text(CRISIS_TEXT, MARGIN, legalY, { width: contentWidth, lineGap: 2, align: "center" });
+    doc
+      .fillColor("#6a6357")
+      .font("OpenSans")
+      .fontSize(7)
+      .text(DISCLAIMER_TEXT, MARGIN, doc.y + 5, { width: contentWidth, lineGap: 2, align: "center" });
 
     doc.end();
   });
