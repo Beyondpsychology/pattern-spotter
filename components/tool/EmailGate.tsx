@@ -68,6 +68,10 @@ export default function EmailGate({
         <button type="submit" disabled={loading} className="btn-primary">
           {loading ? "Checking..." : "Start"}
         </button>
+        <p className="text-xs text-dark/45 text-center mt-4">
+          We use your email to send you a copy of your reading, and to add
+          you to our newsletter. Unsubscribe anytime.
+        </p>
       </form>
     </div>
   );
