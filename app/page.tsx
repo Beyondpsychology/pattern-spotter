@@ -205,7 +205,7 @@ export default function PatternSpotterSalespageV2() {
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
-            <p className="ps2-cta-subtext">Instant access for €27. No account needed. Answer four questions, get five sections back. Written by a psychologist, not a chatbot.</p>
+            <p className="ps2-cta-subtext">5 readings for €27. Instant access, no account needed. Each reading: four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
           <div className="ps2-stat-grid">
             <div className="ps2-stat-card"><div className="ps2-stat-num">4</div><div className="ps2-stat-label">Questions</div></div>
@@ -314,6 +314,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
+            <p className="ps2-cta-subtext">5 readings for €27. Instant access, no account needed. Each reading: four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
         </div>
       </section>
@@ -325,9 +326,10 @@ export default function PatternSpotterSalespageV2() {
           <h2 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>Get the Pattern Spotter now</h2>
           <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.9)", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>A psychologist-led session that covers pattern identification, origin tracing, and blind spot mapping costs upward of €150 per hour, and rarely covers all five in one sitting. The Pattern Spotter delivers all five sections for €27, instantly, the moment you answer your questions.</p>
           <div className="ps2-price-box">
+            <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)", marginBottom: 0 }}>5 readings for</p>
             <div className="ps2-price-big">€27</div>
             <a href="/tool" className="ps2-btn outline">I am ready</a>
-            <p className="ps2-cta-subtext" style={{ color: "rgba(255,255,255,0.85)" }}>Instant access for €27. No account needed. Answer four questions, get five sections back. Written by a psychologist, not a chatbot.</p>
+            <p className="ps2-cta-subtext" style={{ color: "rgba(255,255,255,0.85)" }}>5 readings for €27. Instant access, no account needed. Each reading: four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
         </div>
       </section>
@@ -392,7 +394,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn outline">Yes, I want to see my pattern</a>
-            <p className="ps2-cta-subtext">Instant access for €27. No account needed. Answer four questions, get five sections back. Written by a psychologist, not a chatbot.</p>
+            <p className="ps2-cta-subtext">5 readings for €27. Instant access, no account needed. Each reading: four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
         </div>
       </section>
@@ -406,7 +408,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn">Yes, I want to see my pattern</a>
-            <p className="ps2-cta-subtext">Instant access for €27. No account needed. Answer four questions, get five sections back. Written by a psychologist, not a chatbot.</p>
+            <p className="ps2-cta-subtext">5 readings for €27. Instant access, no account needed. Each reading: four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
         </div>
       </section>
