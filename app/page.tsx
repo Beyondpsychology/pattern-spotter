@@ -29,7 +29,7 @@ const steps = [
   { title: "Describe the situation you keep finding yourself in", body: "A recurring moment where you hold back, shrink, perform, or act against what you actually want." },
   { title: "Name what you tell yourself about why you do it", body: "The story you've been carrying, so the tool can show you what's underneath it." },
   { title: "Name where you first learned this was the safest way to be", body: "A memory, a person, a period, whatever comes to mind first." },
-  { title: "Choose what feels most true, then receive your reading", body: "Pick the explanation that lands, even if it stings, then get five sections back." },
+  { title: "Choose what feels most true, then receive your reading", body: "Pick the explanation that lands, even if it stings, then get five sections back, sent to your inbox as a PDF too." },
   { title: "Use the practice to try, then run it again with new information", body: "Each pass goes deeper. Different situations, different layers, the same pattern seen from a new angle." },
 ];
 
@@ -41,7 +41,7 @@ const objections = [
 ];
 
 const faqs = [
-  { q: "How does the Pattern Spotter actually work?", a: "You answer four questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button." },
+  { q: "How does the Pattern Spotter actually work?", a: "You answer four questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button, and you also get the whole thing as a PDF, downloadable on the spot and emailed to you." },
   { q: "Is this private? Who sees what I type in?", a: "We ask for your email to give you your reading, that's it. What you write is used only to generate it." },
   { q: "Can I run it more than once?", a: "Each purchase includes 5 readings. Run it again any time you want to go deeper, different situations, different layers, the same pattern seen from a new angle." },
 ];
@@ -201,7 +201,7 @@ export default function PatternSpotterSalespageV2() {
           <h1 className="ps2-h1 ps2-h">The Pattern Spotter</h1>
           <div className="ps2-divider" />
           <p className="ps2-sub">
-            Answer four questions and find out exactly which pattern is still running your life, where it started, and the one place you have more power than you think.
+            Answer four questions and find out exactly which pattern is still running your life, where it started, and the one place you have more power than you think. Yours to keep, too — sent to your inbox as a PDF.
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
@@ -385,6 +385,7 @@ export default function PatternSpotterSalespageV2() {
               "Blind spot mapping: exactly where it's still running in your life today",
               "A real lever: the specific place the pattern loses its grip",
               "A practice to try: one concrete thing to do with what you just saw",
+              "Delivered straight to your inbox as a PDF too, yours to keep",
             ].map((t, i) => (
               <div className="ps2-check-item" key={i} style={{ color: "#fff" }}>
                 <Check size={18} style={{ color: "var(--peach)", flexShrink: 0, marginTop: 2 }} />
