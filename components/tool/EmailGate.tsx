@@ -70,6 +70,30 @@ export default function EmailGate({
           placeholder="you@example.com"
           className="field-textarea mb-4"
         />
+
+        {!showCode ? (
+          <div className="text-center mb-6">
+            <button type="button" onClick={() => setShowCode(true)} className="eyebrow-chip">
+              Have a code? Click here
+            </button>
+          </div>
+        ) : (
+          <div className="mb-6">
+            <label className="field-label" htmlFor="code">
+              Code
+            </label>
+            <input
+              id="code"
+              type="text"
+              autoFocus
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="Enter your code"
+              className="field-textarea"
+            />
+          </div>
+        )}
+
         {error && <p className="text-terracotta text-sm mb-4">{error}</p>}
         <button type="submit" disabled={loading} className="btn-primary">
           {loading ? "Checking..." : "Start"}
@@ -78,30 +102,6 @@ export default function EmailGate({
           We use your email to send you a copy of your reading, and to add
           you to our newsletter. Unsubscribe anytime.
         </p>
-
-        {!showCode ? (
-          <button
-            type="button"
-            onClick={() => setShowCode(true)}
-            className="mt-4 text-brown underline text-xs block mx-auto"
-          >
-            Have a code?
-          </button>
-        ) : (
-          <div className="mt-4">
-            <label className="field-label" htmlFor="code">
-              Code
-            </label>
-            <input
-              id="code"
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="Optional"
-              className="field-textarea"
-            />
-          </div>
-        )}
       </form>
     </div>
   );
