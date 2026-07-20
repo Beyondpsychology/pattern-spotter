@@ -122,7 +122,8 @@ const PS2_STYLES = `
         .ps2-cta-wrap { text-align: center; margin-top: 32px; }
         .ps2-cta-subtext { font-size: 13px; color: #6a6357; margin-top: 14px; max-width: 480px; margin-left: auto; margin-right: auto; }
         .ps2-section.dark .ps2-cta-subtext, .ps2-section.sage .ps2-cta-subtext { color: rgba(255,255,255,0.75); }
-        .ps2-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+        .ps2-stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
+        @media (min-width: 560px) { .ps2-stat-grid { grid-template-columns: repeat(4, 1fr); } }
         .ps2-stat-card { background: #fff; border-radius: 16px; padding: 28px 12px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
         .ps2-stat-num { font-family: 'Abril Fatface', serif; font-size: 30px; color: var(--terracotta); margin-bottom: 4px; }
         .ps2-stat-label { font-size: 13px; color: #4a453c; }
@@ -208,6 +209,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-stat-grid">
             <div className="ps2-stat-card"><div className="ps2-stat-num">4</div><div className="ps2-stat-label">Questions</div></div>
+            <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Readings</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">€27</div><div className="ps2-stat-label">Price</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">Instant</div><div className="ps2-stat-label">Access</div></div>
           </div>
