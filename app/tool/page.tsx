@@ -31,6 +31,13 @@ function ToolPageInner() {
   const [paymentsEnabled, setPaymentsEnabled] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
 
+  // Lets a link like /tool?email=%EMAIL% (e.g. from the reading-delivery
+  // email, so someone with credits left doesn't have to retype their
+  // email) prefill the gate. Not used for checkout=success/cancelled
+  // returns - those are handled entirely by the effect below.
+  const prefillEmail = searchParams.get("checkout") ? "" : searchParams.get("email") ?? "";
+  const prefillName = searchParams.get("checkout") ? "" : searchParams.get("name") ?? "";
+
   // A trip to Stripe's hosted checkout is a full page navigation away and
   // back, which wipes all React state — so the return trip has to be
   // reconstructed entirely from the URL (see success_url/cancel_url in
@@ -231,7 +238,13 @@ function ToolPageInner() {
     <main className="px-6 py-10 md:px-16 md:py-16">
       <div className="max-w-[680px] mx-auto">
         <div className="bg-white rounded-card shadow-card p-8 md:p-14">
-          {stage === "email" && <EmailGate onSubmit={handleEmailSubmit} />}
+          {stage === "email" && (
+            <EmailGate
+              onSubmit={handleEmailSubmit}
+              initialName={prefillName}
+              initialEmail={prefillEmail}
+            />
+          )}
 
           {stage === "already-used" && <AlreadyUsed />}
 

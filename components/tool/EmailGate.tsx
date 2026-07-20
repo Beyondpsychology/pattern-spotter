@@ -4,11 +4,15 @@ import { useState } from "react";
 
 export default function EmailGate({
   onSubmit,
+  initialName,
+  initialEmail,
 }: {
   onSubmit: (name: string, email: string, code: string) => Promise<void>;
+  initialName?: string;
+  initialEmail?: string;
 }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(initialName ?? "");
+  const [email, setEmail] = useState(initialEmail ?? "");
   const [showCode, setShowCode] = useState(false);
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
