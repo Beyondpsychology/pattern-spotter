@@ -92,6 +92,27 @@ function ToolPageInner() {
     }
   }
 
+  // Skips the separate "buy" screen/click entirely when someone has no
+  // credits right after submitting the email gate — straight to Stripe.
+  // BuyAccess itself is kept as a fallback for the cases where an automatic
+  // redirect isn't appropriate: they just cancelled and came back, checkout
+  // session creation failed, or the post-purchase credit check timed out.
+  async function redirectToCheckout(targetName: string, targetEmail: string) {
+    try {
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: targetName, email: targetEmail }),
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      if (!data.url) throw new Error();
+      window.location.href = data.url;
+    } catch {
+      setStage("buy-access");
+    }
+  }
+
   async function handleEmailSubmit(submittedName: string, submittedEmail: string, code: string) {
     const res = await fetch("/api/email-capture", {
       method: "POST",
@@ -111,7 +132,11 @@ function ToolPageInner() {
       setPaymentsEnabled(true);
       const creditsNow = data.credits ?? 0;
       setCredits(creditsNow);
-      setStage(creditsNow > 0 ? "questions" : "buy-access");
+      if (creditsNow > 0) {
+        setStage("questions");
+      } else {
+        await redirectToCheckout(submittedName, submittedEmail);
+      }
       return;
     }
 
