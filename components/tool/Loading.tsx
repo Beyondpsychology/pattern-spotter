@@ -23,3 +23,12 @@ export function SpinnerWritingReading() {
     </div>
   );
 }
+
+export function SpinnerVerifyingPurchase() {
+  return (
+    <div className="flex flex-col items-center justify-center py-24">
+      <div className="w-10 h-10 border-4 border-dark/10 border-t-terracotta rounded-full animate-spin mb-6" />
+      <p className="eyebrow text-lg">Confirming your payment...</p>
+    </div>
+  );
+}

@@ -10,6 +10,10 @@ CREATE TABLE IF NOT EXISTS email_captures (
   completed_at timestamptz
 );
 CREATE INDEX IF NOT EXISTS email_captures_email_idx ON email_captures (lower(email));
+
+-- Adds paid-credits support (see app/api/email-capture/route.ts for the
+-- same statement — safe to run once, harmless to run twice):
+ALTER TABLE email_captures ADD COLUMN IF NOT EXISTS credits_remaining integer not null default 0;
 */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -23,6 +27,7 @@ import { checkIpRateLimit, getClientIp } from "@/lib/rateLimit";
 import { generateReadingPdf } from "@/lib/pdf";
 import { uploadReadingPdf } from "@/lib/pdfStorage";
 import { sendReadingPdfLink } from "@/lib/activeCampaign";
+import { PAYMENTS_ENABLED } from "@/lib/payments";
 
 // Give the background PDF/email work (kicked off via waitUntil below) enough
 // runway to finish after the response is sent. Vercel caps this at whatever
@@ -61,7 +66,7 @@ export async function POST(req: NextRequest) {
 
     const { data: existing, error: selectError } = await supabase
       .from("email_captures")
-      .select("has_completed, reading")
+      .select("has_completed, reading, credits_remaining")
       .eq("email", normalizedEmail)
       .maybeSingle();
 
@@ -70,7 +75,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "database_error" }, { status: 500 });
     }
 
-    if (existing?.has_completed) {
+    const creditsBeforeThisRequest = existing?.credits_remaining ?? 0;
+
+    if (PAYMENTS_ENABLED) {
+      if (creditsBeforeThisRequest <= 0) {
+        return NextResponse.json(
+          {
+            error: "no_credits",
+            reading: existing?.reading ?? null,
+            creditsRemaining: creditsBeforeThisRequest,
+          },
+          { status: 402 }
+        );
+      }
+    } else if (existing?.has_completed) {
       return NextResponse.json(
         { error: "already_used", reading: existing.reading ?? null },
         { status: 403 }
@@ -125,6 +143,8 @@ export async function POST(req: NextRequest) {
     // and the whole request would fail with the reading never reaching the
     // browser. The user sees their reading immediately; the PDF/email side
     // effects land a few seconds later.
+    const creditsAfterThisRequest = creditsBeforeThisRequest - 1;
+
     waitUntil(
       (async () => {
         // Upsert rather than update: the email-capture step should already
@@ -135,6 +155,7 @@ export async function POST(req: NextRequest) {
             has_completed: true,
             reading: readingData,
             completed_at: new Date().toISOString(),
+            ...(PAYMENTS_ENABLED ? { credits_remaining: creditsAfterThisRequest } : {}),
           },
           { onConflict: "email" }
         );
@@ -150,7 +171,12 @@ export async function POST(req: NextRequest) {
       })()
     );
 
-    return NextResponse.json({ sections, sessions, toolkitFit });
+    return NextResponse.json({
+      sections,
+      sessions,
+      toolkitFit,
+      ...(PAYMENTS_ENABLED ? { creditsRemaining: creditsAfterThisRequest } : {}),
+    });
   } catch (err) {
     console.error("generate unhandled error", err);
     return NextResponse.json({ error: "unexpected_error" }, { status: 500 });

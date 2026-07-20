@@ -24,6 +24,8 @@ export interface ReadingResultData {
 export type Stage =
   | "email"
   | "already-used"
+  | "buy-access"
+  | "verifying-purchase"
   | "questions"
   | "loading-hypotheses"
   | "hypotheses"

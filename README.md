@@ -108,6 +108,55 @@ of failing. Brand fonts (Abril Fatface, Cormorant Garamond italic, Open
 Sans) are loaded from `public/pdf-assets/fonts/` and registered directly
 with pdfkit.
 
+## Paid credits (Stripe)
+
+The tool ships with a full paid-credits system, off by default: while it's
+off, the tool behaves exactly like the original free, one-reading-per-email
+version. Nothing changes until you deliberately turn it on.
+
+**How it works once turned on:** every reading requires a credit. New emails
+start at 0 credits — no free reading — matching the salespage copy, which
+already advertises "€27 for 5 readings" everywhere. Buying grants 5 credits
+for €27; each reading spends one. The "X readings left" count shows on the
+question form and the reading itself once you have any credits.
+
+### Turning it on
+
+1. Run this migration once in Supabase's SQL Editor (safe to run anytime,
+   even before turning payments on):
+   ```sql
+   ALTER TABLE email_captures ADD COLUMN IF NOT EXISTS credits_remaining integer not null default 0;
+   ```
+2. Add these to Vercel's environment variables:
+
+   | Variable | Where it comes from |
+   |---|---|
+   | `STRIPE_SECRET_KEY` | Stripe Dashboard → **Developers → API keys → Standard keys** → "Secret key" (`sk_live_...` for real payments, `sk_test_...` while testing). Not the "Restricted key" section. |
+   | `STRIPE_WEBHOOK_SECRET` | Stripe Dashboard → **Developers → Webhooks → Add endpoint**. URL: `https://<your-domain>/api/stripe-webhook`. Event to send: `checkout.session.completed`. After creating it, Stripe shows a "Signing secret" (`whsec_...`) — that's this value. |
+   | `TESTER_COUPON_CODE` | Any secret word you pick, e.g. `BETATESTER2026`. Anyone who enters it in the "Have a code?" field on the email gate gets 5 free credits, as if they'd just paid — use it to keep letting testers through without charging them. |
+   | `PAYMENTS_ENABLED` | Leave unset (or `false`) until you're ready to go live. Set to `true` and redeploy (Vercel's "Redeploy" button is enough — no code change needed) to flip the whole tool over to paid credits. |
+
+3. Redeploy. `PAYMENTS_ENABLED=true` is the actual on/off switch; everything
+   else can be configured ahead of time without affecting live visitors.
+
+### How the pieces fit together
+
+- `lib/payments.ts` — the `PAYMENTS_ENABLED` flag and the coupon-code check.
+  Every route branches on this flag: unset/false keeps the original
+  `has_completed` logic untouched; `true` switches to `credits_remaining`.
+- `components/tool/BuyAccess.tsx` — shown instead of the question form when
+  someone has 0 credits. "Buy now" calls `/api/create-checkout-session`,
+  which creates a Stripe Checkout Session and redirects to Stripe's hosted
+  payment page.
+- `/api/stripe-webhook` — Stripe calls this after a successful payment
+  (`checkout.session.completed`) and it adds 5 credits to that email.
+- Since a trip to Stripe's checkout page is a full browser navigation away
+  and back, all React state is lost — `app/tool/page.tsx` reconstructs
+  everything from the `?checkout=success&email=...&name=...` (or
+  `cancelled`) query string on the redirect back, then polls
+  `/api/email-capture` briefly (the webhook can take a second or two to
+  land) before continuing.
+
 ## Project structure
 
 ```
@@ -118,7 +167,9 @@ app/
     email-capture/route.ts  stage 1: check/insert email, no AI call
     hypotheses/route.ts     stage 2→3: 2-3 hypotheses from Anthropic
     generate/route.ts       stage 3→4: full reading, has_completed check + update
-    generate-pdf/route.ts   on-demand PDF download (Puppeteer, not stored)
+    generate-pdf/route.ts   on-demand PDF download (pdfkit, not stored)
+    create-checkout-session/route.ts  Stripe Checkout session (paid mode only)
+    stripe-webhook/route.ts           grants credits on successful payment
 components/tool/            UI pieces for each stage
 components/SiteHeader.tsx   logo header, shown on every page via layout.tsx
 lib/                        prompts, product catalog, supabase/rate-limit/AC/PDF helpers

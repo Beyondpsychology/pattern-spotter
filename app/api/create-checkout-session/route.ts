@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       metadata: { email: normalizedEmail, name },
-      success_url: `${origin}/tool?checkout=success&email=${encodeURIComponent(normalizedEmail)}`,
-      cancel_url: `${origin}/tool?checkout=cancelled`,
+      success_url: `${origin}/tool?checkout=success&email=${encodeURIComponent(normalizedEmail)}&name=${encodeURIComponent(name)}`,
+      cancel_url: `${origin}/tool?checkout=cancelled&email=${encodeURIComponent(normalizedEmail)}&name=${encodeURIComponent(name)}`,
     });
 
     if (!session.url) {

@@ -5,7 +5,13 @@ import type { ReadingResultData } from "@/lib/toolTypes";
 import { ONE_ON_ONE_URL } from "@/lib/products";
 import CopyButton from "./CopyButton";
 
-export default function ReadingResult({ reading }: { reading: ReadingResultData }) {
+export default function ReadingResult({
+  reading,
+  creditsRemaining,
+}: {
+  reading: ReadingResultData;
+  creditsRemaining?: number | null;
+}) {
   const { sections, sessions, toolkitFit } = reading;
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
@@ -40,6 +46,13 @@ export default function ReadingResult({ reading }: { reading: ReadingResultData 
 
   return (
     <div>
+      {typeof creditsRemaining === "number" && (
+        <div className="text-center mb-6">
+          <span className="eyebrow-chip">
+            {creditsRemaining} reading{creditsRemaining === 1 ? "" : "s"} left
+          </span>
+        </div>
+      )}
       <div className="flex flex-col gap-6">
         {sections.map((section, i) => (
           <div key={i} className="card relative pl-7">

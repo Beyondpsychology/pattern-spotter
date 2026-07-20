@@ -5,10 +5,12 @@ import { useState } from "react";
 export default function EmailGate({
   onSubmit,
 }: {
-  onSubmit: (name: string, email: string) => Promise<void>;
+  onSubmit: (name: string, email: string, code: string) => Promise<void>;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [showCode, setShowCode] = useState(false);
+  const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +19,7 @@ export default function EmailGate({
     setError(null);
     setLoading(true);
     try {
-      await onSubmit(name, email);
+      await onSubmit(name, email, code);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -72,6 +74,30 @@ export default function EmailGate({
           We use your email to send you a copy of your reading, and to add
           you to our newsletter. Unsubscribe anytime.
         </p>
+
+        {!showCode ? (
+          <button
+            type="button"
+            onClick={() => setShowCode(true)}
+            className="mt-4 text-brown underline text-xs block mx-auto"
+          >
+            Have a code?
+          </button>
+        ) : (
+          <div className="mt-4">
+            <label className="field-label" htmlFor="code">
+              Code
+            </label>
+            <input
+              id="code"
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="Optional"
+              className="field-textarea"
+            />
+          </div>
+        )}
       </form>
     </div>
   );

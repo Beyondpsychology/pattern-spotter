@@ -64,9 +64,11 @@ const FIELDS: {
 export default function QuestionForm({
   initialAnswers,
   onSubmit,
+  creditsRemaining,
 }: {
   initialAnswers?: Answers;
   onSubmit: (answers: Answers) => Promise<void>;
+  creditsRemaining?: number | null;
 }) {
   const [answers, setAnswers] = useState<Answers>(
     () =>
@@ -110,8 +112,13 @@ export default function QuestionForm({
 
   return (
     <div>
-      <div className="text-center mb-3">
+      <div className="text-center mb-3 flex items-center justify-center gap-2 flex-wrap">
         <span className="eyebrow-chip">{answeredCount} / 4 answered</span>
+        {typeof creditsRemaining === "number" && (
+          <span className="eyebrow-chip">
+            {creditsRemaining} reading{creditsRemaining === 1 ? "" : "s"} left
+          </span>
+        )}
       </div>
       <p className="eyebrow text-base mb-2 text-center">
         What you write here is private. It is used only to generate your reading, never stored, and never seen by us.
