@@ -294,25 +294,21 @@ export default function PatternSpotterSalespageV2() {
         </div>
       </section>
 
-      {/* TESTIMONIALS placeholder */}
+      {/* TESTIMONIALS */}
       <section className="ps2-section mint">
         <div className="ps2-container">
           <h2 className="ps2-h2 ps2-h center">What people are saying</h2>
           <div className="ps2-testimonial">
-            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 12 }}>&quot;I&apos;ve done years of therapy and this named something in three minutes that I&apos;d never been able to articulate. I actually cried reading Section 3.&quot;</p>
-            <p style={{ fontSize: 13, color: "#6a6357", fontWeight: 700 }}>— Sophie R., Writer</p>
+            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;The story I might be telling myself really resonated. A beautiful insight came out of it.&quot;</p>
           </div>
           <div className="ps2-testimonial">
-            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 12 }}>&quot;It didn&apos;t tell me I needed to fix myself. It showed me exactly where the pattern was still active and why that made sense. That felt completely different.&quot;</p>
-            <p style={{ fontSize: 13, color: "#6a6357", fontWeight: 700 }}>— Lena V., Teacher</p>
+            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;I was hesitant to trust an AI tool. What I liked is that you get multiple possible answers, two didn&apos;t land, the third did. It&apos;s clearly reasoned, so you can choose the one that actually fits you. I came out of it more self-aware.&quot;</p>
           </div>
           <div className="ps2-testimonial">
-            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 12 }}>&quot;The blind spot section hit me so hard I had to put my phone down. I&apos;d never connected those two things before. Now I can&apos;t unsee it.&quot;</p>
-            <p style={{ fontSize: 13, color: "#6a6357", fontWeight: 700 }}>— Anna K., Entrepreneur</p>
+            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;I really love the thorough explanation, and the way it lovingly acknowledges why the pattern developed in the first place.&quot;</p>
           </div>
           <div className="ps2-testimonial">
-            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 12 }}>&quot;Myrthe really helped me with what I brought to her. She&apos;s especially good at connecting topics I hadn&apos;t realized were connected.&quot;</p>
-            <p style={{ fontSize: 13, color: "#6a6357", fontWeight: 700 }}>— Anonymous</p>
+            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;You don&apos;t get the feeling you did something wrong, but you do get complete honesty.&quot;</p>
           </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
