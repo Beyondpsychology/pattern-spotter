@@ -312,6 +312,12 @@ export default function PatternSpotterSalespageV2() {
           <div className="ps2-testimonial">
             <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;You don&apos;t get the feeling you did something wrong, but you do get complete honesty.&quot;</p>
           </div>
+          <div className="ps2-testimonial">
+            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;Thank you for this! The results put tears in my eyes. It felt very personal and safe. Easy to use, and I liked the feature where you choose what fits best.&quot;</p>
+          </div>
+          <div className="ps2-testimonial">
+            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;This isn&apos;t something you rush through. I really had to slow down and tune in to feel where it actually came from, especially since the options were so close to each other. There&apos;s so much nuance in how it spots the pattern and what&apos;s underneath it, it&apos;s brilliant. Your voice is woven through the whole thing. And the way it lands softly at the end, with something real to do next, felt really good.&quot;</p>
+          </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
             <p className="ps2-cta-subtext">5 readings for €27. Instant access, no account needed. Each reading: four questions, five sections back. Written by a psychologist, not a chatbot.</p>
