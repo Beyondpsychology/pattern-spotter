@@ -14,6 +14,7 @@ import {
   SpinnerVerifyingPurchase,
   SpinnerWritingReading,
 } from "@/components/tool/Loading";
+import { trackInitiateCheckout, trackPurchase } from "@/lib/metaPixel";
 
 const VERIFY_PURCHASE_MAX_ATTEMPTS = 5;
 const VERIFY_PURCHASE_DELAY_MS = 2000;
@@ -46,12 +47,13 @@ function ToolPageInner() {
     const checkout = searchParams.get("checkout");
     const qpEmail = searchParams.get("email");
     const qpName = searchParams.get("name") ?? "";
+    const qpSessionId = searchParams.get("session_id") ?? "";
 
     if (checkout === "success" && qpEmail) {
       setEmail(qpEmail);
       setName(qpName);
       setStage("verifying-purchase");
-      verifyPurchase(qpEmail, qpName, 0);
+      verifyPurchase(qpEmail, qpName, qpSessionId, 0);
     } else if (checkout === "cancelled" && qpEmail) {
       setEmail(qpEmail);
       setName(qpName);
@@ -64,7 +66,12 @@ function ToolPageInner() {
   // The Stripe webhook usually lands within a second or two of the redirect
   // back, but isn't guaranteed to have run yet, so poll briefly rather than
   // assuming it's instant.
-  async function verifyPurchase(targetEmail: string, targetName: string, attempt: number) {
+  async function verifyPurchase(
+    targetEmail: string,
+    targetName: string,
+    sessionId: string,
+    attempt: number
+  ) {
     try {
       const res = await fetch("/api/email-capture", {
         method: "POST",
@@ -78,6 +85,7 @@ function ToolPageInner() {
         const creditsNow = data.credits ?? 0;
         if (creditsNow > 0) {
           setCredits(creditsNow);
+          if (sessionId) trackPurchase(sessionId);
           setStage("questions");
           return;
         }
@@ -88,7 +96,7 @@ function ToolPageInner() {
 
     if (attempt < VERIFY_PURCHASE_MAX_ATTEMPTS) {
       setTimeout(
-        () => verifyPurchase(targetEmail, targetName, attempt + 1),
+        () => verifyPurchase(targetEmail, targetName, sessionId, attempt + 1),
         VERIFY_PURCHASE_DELAY_MS
       );
     } else {
@@ -114,6 +122,7 @@ function ToolPageInner() {
       if (!res.ok) throw new Error();
       const data = await res.json();
       if (!data.url) throw new Error();
+      trackInitiateCheckout();
       window.location.href = data.url;
     } catch {
       setStage("buy-access");

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Frown, AlertTriangle, HelpCircle, CloudRain,
   Sparkles, Heart, Sunrise, CheckCircle2,
   ArrowRight, Check, Plus, Minus,
 } from "lucide-react";
 import { CRISIS_TEXT, DISCLAIMER_TEXT } from "@/lib/legal";
+import { trackViewContent } from "@/lib/metaPixel";
 
 const MYRTHE_PHOTO_URL =
   "https://beyondpsychology.eu/wp-content/uploads/2025/07/Myrthe-team-photo-3.png";
@@ -186,6 +187,10 @@ const PS2_STYLES = `
 `;
 
 export default function PatternSpotterSalespageV2() {
+  useEffect(() => {
+    trackViewContent();
+  }, []);
+
   return (
     <div className="ps2-root">
       <style dangerouslySetInnerHTML={{ __html: PS2_STYLES }} />

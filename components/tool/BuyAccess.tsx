@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { READING_PACK_CREDITS } from "@/lib/stripe";
+import { trackInitiateCheckout } from "@/lib/metaPixel";
 
 export default function BuyAccess({
   name,
@@ -28,6 +29,7 @@ export default function BuyAccess({
       const data = await res.json();
       if (!data.url) throw new Error();
 
+      trackInitiateCheckout();
       window.location.href = data.url;
     } catch {
       setError("Something went wrong. Please try again.");

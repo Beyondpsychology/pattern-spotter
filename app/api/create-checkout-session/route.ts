@@ -33,7 +33,11 @@ export async function POST(req: NextRequest) {
         },
       ],
       metadata: { email: normalizedEmail, name },
-      success_url: `${origin}/tool?checkout=success&email=${encodeURIComponent(normalizedEmail)}&name=${encodeURIComponent(name)}`,
+      // session_id lets the client-side Meta Pixel Purchase event share an
+      // eventID with a future server-side Conversions API Purchase event
+      // (fired from this same checkout in the webhook), so Meta dedupes
+      // them instead of double-counting one sale.
+      success_url: `${origin}/tool?checkout=success&email=${encodeURIComponent(normalizedEmail)}&name=${encodeURIComponent(name)}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/tool?checkout=cancelled&email=${encodeURIComponent(normalizedEmail)}&name=${encodeURIComponent(name)}`,
     });
 

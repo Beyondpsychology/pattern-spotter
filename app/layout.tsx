@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Abril_Fatface, Cormorant_Garamond, Open_Sans } from "next/font/google";
+import MetaPixel from "@/components/MetaPixel";
 import "./globals.css";
 
 const abril = Abril_Fatface({
@@ -52,6 +53,7 @@ export default function RootLayout({
         className={`${abril.variable} ${cormorant.variable} ${openSans.variable} font-body bg-cream text-dark`}
       >
         {children}
+        <MetaPixel />
       </body>
     </html>
   );
