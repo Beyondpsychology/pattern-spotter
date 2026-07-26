@@ -1,6 +1,7 @@
 const TAG_NAME = "patternspotter";
 const LIST_NAME = "Pattern Spotter";
 const READING_URL_FIELD_TITLE = "Pattern Spotter Reading URL";
+const SALE_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Sale";
 
 function getConfig() {
   const apiUrl = process.env.ACTIVECAMPAIGN_API_URL;
@@ -151,6 +152,42 @@ export async function sendReadingPdfLink(email: string, pdfUrl: string): Promise
     await setContactFieldValue(config, contactId, fieldId, pdfUrl);
   } catch (err) {
     console.error("ActiveCampaign PDF link sync failed", err);
+  }
+}
+
+/**
+ * Pushes a "buyer bought N readings" string into the "Pattern Spotter New
+ * Sale" custom field on the owner's own ActiveCampaign contact (identified
+ * by SALE_NOTIFICATION_EMAIL). An ActiveCampaign automation (set up in the
+ * AC dashboard, triggered on this field changing) is what actually emails
+ * the owner — this function only supplies the data. The value includes a
+ * timestamp so it's always different, since AC's "field changed" trigger
+ * doesn't fire when a field is set to the same value it already had.
+ * Never throws: a failure here should never block the purchase flow.
+ */
+export async function notifyNewSale(buyerEmail: string, credits: number): Promise<void> {
+  const config = getConfig();
+  const ownerEmail = process.env.SALE_NOTIFICATION_EMAIL;
+  if (!config || !ownerEmail) {
+    console.error("New sale notification skipped: missing env vars");
+    return;
+  }
+
+  try {
+    const contactId = await syncContact(config, ownerEmail);
+    const fieldId = await getFieldId(config, SALE_NOTIFICATION_FIELD_TITLE);
+
+    if (!fieldId) {
+      console.error(
+        `ActiveCampaign field "${SALE_NOTIFICATION_FIELD_TITLE}" not found. Create it in ActiveCampaign first.`
+      );
+      return;
+    }
+
+    const value = `${buyerEmail} bought ${credits} readings (€27) at ${new Date().toISOString()}`;
+    await setContactFieldValue(config, contactId, fieldId, value);
+  } catch (err) {
+    console.error("New sale notification failed", err);
   }
 }
 

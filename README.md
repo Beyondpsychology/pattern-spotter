@@ -135,6 +135,7 @@ question form and the reading itself once you have any credits.
    | `STRIPE_WEBHOOK_SECRET` | Stripe Dashboard → **Developers → Webhooks → Add endpoint**. URL: `https://<your-domain>/api/stripe-webhook`. Event to send: `checkout.session.completed`. After creating it, Stripe shows a "Signing secret" (`whsec_...`) — that's this value. |
    | `TESTER_COUPON_CODE` | Any secret word you pick, e.g. `BETATESTER2026`. Anyone who enters it in the "Have a code?" field on the email gate gets 5 free credits, as if they'd just paid — use it to keep letting testers through without charging them. |
    | `PAYMENTS_ENABLED` | Leave unset (or `false`) until you're ready to go live. Set to `true` and redeploy (Vercel's "Redeploy" button is enough — no code change needed) to flip the whole tool over to paid credits. |
+   | `SALE_NOTIFICATION_EMAIL` | Optional. Your own inbox — set this to get a "new sale" email each time someone pays. Requires a matching ActiveCampaign field + automation, see below. |
 
 3. Redeploy. `PAYMENTS_ENABLED=true` is the actual on/off switch; everything
    else can be configured ahead of time without affecting live visitors.
@@ -149,7 +150,14 @@ question form and the reading itself once you have any credits.
   which creates a Stripe Checkout Session and redirects to Stripe's hosted
   payment page.
 - `/api/stripe-webhook` — Stripe calls this after a successful payment
-  (`checkout.session.completed`) and it adds 5 credits to that email.
+  (`checkout.session.completed`) and it adds 5 credits to that email, fires
+  the Meta Conversions API Purchase event, and (if `SALE_NOTIFICATION_EMAIL`
+  is set) pushes a "new sale" notification through ActiveCampaign the same
+  way the reading PDF gets emailed: create a custom field called
+  **"Pattern Spotter New Sale"** in ActiveCampaign, make sure
+  `SALE_NOTIFICATION_EMAIL` has a contact there (or let it get created
+  automatically on the first sale), then build an automation triggered on
+  that field changing, which emails you the field's value.
 - Since a trip to Stripe's checkout page is a full browser navigation away
   and back, all React state is lost — `app/tool/page.tsx` reconstructs
   everything from the `?checkout=success&email=...&name=...` (or

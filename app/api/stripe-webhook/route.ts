@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { getStripe, READING_PACK_CREDITS } from "@/lib/stripe";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
 import { trackPurchaseServer } from "@/lib/metaCapi";
+import { notifyNewSale } from "@/lib/activeCampaign";
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
@@ -65,6 +66,7 @@ export async function POST(req: NextRequest) {
       // trackPurchase() call on the success redirect, so Meta dedupes the
       // two instead of double-counting the sale.
       await trackPurchaseServer(email, session.id);
+      await notifyNewSale(email, READING_PACK_CREDITS);
     }
 
     return NextResponse.json({ received: true });
