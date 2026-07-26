@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getStripe, READING_PACK_CREDITS } from "@/lib/stripe";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
+import { trackPurchaseServer } from "@/lib/metaCapi";
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
@@ -59,6 +60,11 @@ export async function POST(req: NextRequest) {
         console.error("stripe-webhook: upsert error", upsertError);
         return NextResponse.json({ error: "database_error" }, { status: 500 });
       }
+
+      // event_id = the checkout session id, shared with the client-side
+      // trackPurchase() call on the success redirect, so Meta dedupes the
+      // two instead of double-counting the sale.
+      await trackPurchaseServer(email, session.id);
     }
 
     return NextResponse.json({ received: true });
