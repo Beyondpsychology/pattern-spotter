@@ -2,6 +2,7 @@ const TAG_NAME = "patternspotter";
 const LIST_NAME = "Pattern Spotter";
 const READING_URL_FIELD_TITLE = "Pattern Spotter Reading URL";
 const SALE_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Sale";
+const REVIEW_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Review";
 
 function getConfig() {
   const apiUrl = process.env.ACTIVECAMPAIGN_API_URL;
@@ -188,6 +189,48 @@ export async function notifyNewSale(buyerEmail: string, credits: number): Promis
     await setContactFieldValue(config, contactId, fieldId, value);
   } catch (err) {
     console.error("New sale notification failed", err);
+  }
+}
+
+/**
+ * Pushes a "name/email left a N-star review: ..." string into the "Pattern
+ * Spotter New Review" custom field on the owner's own ActiveCampaign contact
+ * (identified by SALE_NOTIFICATION_EMAIL, reused here as "the owner's own
+ * notification inbox" rather than something sale-specific). Same
+ * field-changed-triggers-an-automation pattern as notifyNewSale — the
+ * timestamp keeps every value unique so the automation fires every time.
+ * Never throws: a failure here should never block someone's review from
+ * being saved.
+ */
+export async function notifyNewReview(
+  reviewerName: string,
+  reviewerEmail: string,
+  rating: number,
+  reviewText: string
+): Promise<void> {
+  const config = getConfig();
+  const ownerEmail = process.env.SALE_NOTIFICATION_EMAIL;
+  if (!config || !ownerEmail) {
+    console.error("New review notification skipped: missing env vars");
+    return;
+  }
+
+  try {
+    const contactId = await syncContact(config, ownerEmail);
+    const fieldId = await getFieldId(config, REVIEW_NOTIFICATION_FIELD_TITLE);
+
+    if (!fieldId) {
+      console.error(
+        `ActiveCampaign field "${REVIEW_NOTIFICATION_FIELD_TITLE}" not found. Create it in ActiveCampaign first.`
+      );
+      return;
+    }
+
+    const who = reviewerName ? `${reviewerName} (${reviewerEmail})` : reviewerEmail;
+    const value = `${who} left a ${rating}-star review at ${new Date().toISOString()}: "${reviewText}"`;
+    await setContactFieldValue(config, contactId, fieldId, value);
+  } catch (err) {
+    console.error("New review notification failed", err);
   }
 }
 

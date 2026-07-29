@@ -189,6 +189,12 @@ you already hand-pick testimonials for the salespage.
    Editor** — no separate admin page in the app. Tick `used_on_salespage`
    for any you've copied onto the salespage, so you can tell at a glance
    which ones are still unused.
+3. Optional: get a "new review" email each time someone submits, the same
+   way as the sale notification — create a custom field called
+   **"Pattern Spotter New Review"** in ActiveCampaign, and an automation
+   triggered on that field changing (every time, not just the first time)
+   that emails `SALE_NOTIFICATION_EMAIL`. It's reused here as "the owner's
+   own notification inbox" rather than something sale-specific.
 
 ## Project structure
 

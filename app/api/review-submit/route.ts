@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
+import { notifyNewReview } from "@/lib/activeCampaign";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -24,6 +25,8 @@ export async function POST(req: NextRequest) {
     console.error("review-submit: insert error", error);
     return NextResponse.json({ error: "database_error" }, { status: 500 });
   }
+
+  await notifyNewReview(name, normalizeEmail(email), rating, reviewText);
 
   return NextResponse.json({ status: "ok" });
 }
