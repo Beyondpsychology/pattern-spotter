@@ -8,9 +8,11 @@ import CopyButton from "./CopyButton";
 export default function ReadingResult({
   reading,
   creditsRemaining,
+  email,
 }: {
   reading: ReadingResultData;
   creditsRemaining?: number | null;
+  email?: string;
 }) {
   const { sections, sessions, toolkitFit } = reading;
   const [downloading, setDownloading] = useState(false);
@@ -135,6 +137,14 @@ export default function ReadingResult({
         >
           {downloading ? "Preparing your PDF..." : "Download as PDF"}
         </button>
+        <p className="mt-6 text-sm text-dark/60">
+          <a
+            href={`/review${email ? `?email=${encodeURIComponent(email)}` : ""}`}
+            className="underline hover:text-dark"
+          >
+            Enjoyed your reading? Leave a review
+          </a>
+        </p>
       </div>
     </div>
   );

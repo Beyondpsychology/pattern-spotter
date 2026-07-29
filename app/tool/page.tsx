@@ -237,7 +237,11 @@ function ToolPageInner() {
     return (
       <main className="px-6 py-10 md:px-16 md:py-16">
         <div className="max-w-[680px] mx-auto">
-          <ReadingResult reading={reading} creditsRemaining={paymentsEnabled ? credits : null} />
+          <ReadingResult
+            reading={reading}
+            creditsRemaining={paymentsEnabled ? credits : null}
+            email={email}
+          />
         </div>
       </main>
     );

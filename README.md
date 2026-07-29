@@ -165,6 +165,31 @@ question form and the reading itself once you have any credits.
   `/api/email-capture` briefly (the webhook can take a second or two to
   land) before continuing.
 
+## Reviews
+
+`/review` is a standalone page (linked from the bottom of the on-screen
+reading, prefilled with the reader's email) where people can leave a star
+rating + written review. There's no public review wall — submissions go
+straight into a `reviews` table for you to read and curate, the same way
+you already hand-pick testimonials for the salespage.
+
+1. Run this migration once in Supabase's SQL Editor:
+   ```sql
+   create table if not exists reviews (
+     id uuid primary key default gen_random_uuid(),
+     name text,
+     email text not null,
+     rating smallint not null check (rating between 1 and 5),
+     review_text text not null,
+     used_on_salespage boolean not null default false,
+     created_at timestamptz not null default now()
+   );
+   ```
+2. To read submissions, open the `reviews` table in Supabase's **Table
+   Editor** — no separate admin page in the app. Tick `used_on_salespage`
+   for any you've copied onto the salespage, so you can tell at a glance
+   which ones are still unused.
+
 ## Project structure
 
 ```
