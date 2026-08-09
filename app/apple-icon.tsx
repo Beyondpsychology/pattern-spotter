@@ -1,13 +1,9 @@
 import { ImageResponse } from "next/og";
-import fs from "fs";
-import path from "path";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-function loadFont(file: string) {
-  return fs.readFileSync(path.join(process.cwd(), "public", "pdf-assets", "fonts", file));
-}
+const LOGO_URL = "https://beyondpsychology.eu/wp-content/uploads/2026/08/Logo-bp-black.png";
 
 export default function AppleIcon() {
   return new ImageResponse(
@@ -16,20 +12,16 @@ export default function AppleIcon() {
         style={{
           width: "100%",
           height: "100%",
-          background: "#4a7c6f",
+          background: "#F5F0E8",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <div style={{ fontFamily: "Abril", fontSize: 118, color: "#F5F0E8", marginTop: -10 }}>P</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={LOGO_URL} width={130} height={130} style={{ objectFit: "contain" }} alt="" />
       </div>
     ),
-    {
-      ...size,
-      fonts: [
-        { name: "Abril", data: loadFont("AbrilFatface-Regular.ttf"), style: "normal", weight: 400 },
-      ],
-    }
+    { ...size }
   );
 }
