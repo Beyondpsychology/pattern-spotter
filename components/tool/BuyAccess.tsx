@@ -71,8 +71,8 @@ export default function BuyAccess({
               }`}
             >
               {isBestValue && <p className="eyebrow-chip mb-3">Best value</p>}
-              <p className="text-xl mb-1">{pack.label}</p>
-              <p className="text-3xl mb-4">{formatEuros(pack.priceCents)}</p>
+              <p className="eyebrow text-lg mb-1">{pack.label}</p>
+              <p className="font-display text-4xl mb-4 text-dark">{formatEuros(pack.priceCents)}</p>
               <p className="text-sm font-semibold text-brown">
                 {loadingId === pack.id ? "Redirecting..." : "Get this pack"}
               </p>
