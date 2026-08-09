@@ -214,9 +214,9 @@ export default function PatternSpotterSalespageV2() {
             <p className="ps2-cta-subtext">Free to start — you only choose a price once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
           <div className="ps2-stat-grid">
-            <div className="ps2-stat-card"><div className="ps2-stat-num">4</div><div className="ps2-stat-label">Questions</div></div>
-            <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Readings</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">Free</div><div className="ps2-stat-label">To start</div></div>
+            <div className="ps2-stat-card"><div className="ps2-stat-num">4</div><div className="ps2-stat-label">Questions</div></div>
+            <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Sections</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">Instant</div><div className="ps2-stat-label">Access</div></div>
           </div>
         </div>
