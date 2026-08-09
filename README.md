@@ -214,6 +214,20 @@ you already hand-pick testimonials for the salespage.
    that emails `SALE_NOTIFICATION_EMAIL`. It's reused here as "the owner's
    own notification inbox" rather than something sale-specific.
 
+## Keeping Supabase awake (free tier only)
+
+Supabase's free tier auto-pauses a project after 7 days with no API/database
+activity — visitors get a 500 error until someone notices and manually
+restores it in the Supabase dashboard. `vercel.json` runs a daily Vercel
+Cron job that hits `/api/keep-alive` (a trivial one-row read), which counts
+as activity and resets that 7-day clock, so a quiet week never takes the
+tool down silently.
+
+This is a stopgap. Once real payments are flowing, upgrade the Supabase
+project to a paid plan instead — those never auto-pause, and at that point
+an unexpected pause is a lot more costly than $25/month. When that happens,
+`/api/keep-alive` and the cron entry in `vercel.json` can be deleted.
+
 ## Project structure
 
 ```
