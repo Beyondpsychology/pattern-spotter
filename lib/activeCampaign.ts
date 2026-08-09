@@ -166,7 +166,11 @@ export async function sendReadingPdfLink(email: string, pdfUrl: string): Promise
  * doesn't fire when a field is set to the same value it already had.
  * Never throws: a failure here should never block the purchase flow.
  */
-export async function notifyNewSale(buyerEmail: string, credits: number): Promise<void> {
+export async function notifyNewSale(
+  buyerEmail: string,
+  credits: number,
+  priceEuros: number
+): Promise<void> {
   const config = getConfig();
   const ownerEmail = process.env.SALE_NOTIFICATION_EMAIL;
   if (!config || !ownerEmail) {
@@ -185,7 +189,7 @@ export async function notifyNewSale(buyerEmail: string, credits: number): Promis
       return;
     }
 
-    const value = `${buyerEmail} bought ${credits} readings (€27) at ${new Date().toISOString()}`;
+    const value = `${buyerEmail} bought ${credits} reading${credits === 1 ? "" : "s"} (€${priceEuros.toFixed(2)}) at ${new Date().toISOString()}`;
     await setContactFieldValue(config, contactId, fieldId, value);
   } catch (err) {
     console.error("New sale notification failed", err);

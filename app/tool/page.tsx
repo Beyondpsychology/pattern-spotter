@@ -14,10 +14,50 @@ import {
   SpinnerVerifyingPurchase,
   SpinnerWritingReading,
 } from "@/components/tool/Loading";
-import { trackInitiateCheckout, trackPurchase } from "@/lib/metaPixel";
+import { trackPurchase } from "@/lib/metaPixel";
 
 const VERIFY_PURCHASE_MAX_ATTEMPTS = 5;
 const VERIFY_PURCHASE_DELAY_MS = 2000;
+
+// Holds the answers + chosen hypothesis right before a /api/generate call
+// that turned out to need payment, so that after a round trip through
+// Stripe's hosted checkout (a full page navigation that wipes all React
+// state) the reading can be generated straight away instead of sending
+// someone all the way back to the 4 questions.
+const PENDING_GENERATION_KEY = "pattern-spotter:pending-generation";
+
+type PendingGeneration = { email: string; answers: Answers; belief: string };
+
+function savePendingGeneration(email: string, answers: Answers, belief: string) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(
+      PENDING_GENERATION_KEY,
+      JSON.stringify({ email, answers, belief })
+    );
+  } catch {
+    // ignore storage errors (private browsing, quota, etc.)
+  }
+}
+
+function loadPendingGeneration(): PendingGeneration | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(PENDING_GENERATION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearPendingGeneration() {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(PENDING_GENERATION_KEY);
+  } catch {
+    // ignore storage errors (private browsing, quota, etc.)
+  }
+}
 
 function ToolPageInner() {
   const searchParams = useSearchParams();
@@ -48,12 +88,14 @@ function ToolPageInner() {
     const qpEmail = searchParams.get("email");
     const qpName = searchParams.get("name") ?? "";
     const qpSessionId = searchParams.get("session_id") ?? "";
+    const qpCredits = Number(searchParams.get("credits"));
+    const qpAmount = Number(searchParams.get("amount"));
 
     if (checkout === "success" && qpEmail) {
       setEmail(qpEmail);
       setName(qpName);
       setStage("verifying-purchase");
-      verifyPurchase(qpEmail, qpName, qpSessionId, 0);
+      verifyPurchase(qpEmail, qpName, qpSessionId, qpCredits || 0, qpAmount || 0, 0);
     } else if (checkout === "cancelled" && qpEmail) {
       setEmail(qpEmail);
       setName(qpName);
@@ -70,6 +112,8 @@ function ToolPageInner() {
     targetEmail: string,
     targetName: string,
     sessionId: string,
+    packCredits: number,
+    packAmountCents: number,
     attempt: number
   ) {
     try {
@@ -85,8 +129,21 @@ function ToolPageInner() {
         const creditsNow = data.credits ?? 0;
         if (creditsNow > 0) {
           setCredits(creditsNow);
-          if (sessionId) trackPurchase(sessionId);
-          setStage("questions");
+          if (sessionId && packCredits > 0) {
+            trackPurchase(sessionId, { credits: packCredits, priceCents: packAmountCents });
+          }
+
+          // If they'd already answered the questions and picked a
+          // hypothesis before hitting the paywall, finish generating the
+          // reading right away instead of sending them all the way back.
+          const pending = loadPendingGeneration();
+          if (pending && pending.email === targetEmail) {
+            setName(targetName);
+            setAnswers(pending.answers);
+            await generateReading(pending.answers, pending.belief, targetEmail, "questions");
+          } else {
+            setStage("questions");
+          }
           return;
         }
       }
@@ -96,35 +153,14 @@ function ToolPageInner() {
 
     if (attempt < VERIFY_PURCHASE_MAX_ATTEMPTS) {
       setTimeout(
-        () => verifyPurchase(targetEmail, targetName, sessionId, attempt + 1),
+        () =>
+          verifyPurchase(targetEmail, targetName, sessionId, packCredits, packAmountCents, attempt + 1),
         VERIFY_PURCHASE_DELAY_MS
       );
     } else {
       // Payment likely went through but the webhook hasn't caught up yet -
       // send them to the buy screen rather than stall forever; credits will
       // be there the next time they re-enter their email regardless.
-      setStage("buy-access");
-    }
-  }
-
-  // Skips the separate "buy" screen/click entirely when someone has no
-  // credits right after submitting the email gate — straight to Stripe.
-  // BuyAccess itself is kept as a fallback for the cases where an automatic
-  // redirect isn't appropriate: they just cancelled and came back, checkout
-  // session creation failed, or the post-purchase credit check timed out.
-  async function redirectToCheckout(targetName: string, targetEmail: string) {
-    try {
-      const res = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: targetName, email: targetEmail }),
-      });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      if (!data.url) throw new Error();
-      trackInitiateCheckout();
-      window.location.href = data.url;
-    } catch {
       setStage("buy-access");
     }
   }
@@ -146,13 +182,11 @@ function ToolPageInner() {
 
     if (data.paymentsEnabled) {
       setPaymentsEnabled(true);
-      const creditsNow = data.credits ?? 0;
-      setCredits(creditsNow);
-      if (creditsNow > 0) {
-        setStage("questions");
-      } else {
-        await redirectToCheckout(submittedName, submittedEmail);
-      }
+      setCredits(data.credits ?? 0);
+      // No paywall here even at 0 credits - questions and hypothesis
+      // selection are free; payment is only asked for right before the
+      // reading itself is generated (see generateReading below).
+      setStage("questions");
       return;
     }
 
@@ -193,22 +227,37 @@ function ToolPageInner() {
     }
   }
 
-  async function handleHypothesisSelect(belief: string) {
-    if (!answers) return;
+  // Shared by the normal hypothesis-select flow and by the post-payment
+  // resume in verifyPurchase. onErrorStage controls where a failed attempt
+  // lands: "hypotheses" (the list is already in state, normal flow) or
+  // "questions" (post-payment resume, where the hypotheses list was lost to
+  // the Stripe round trip and starting over is the only recoverable path).
+  async function generateReading(
+    targetAnswers: Answers,
+    belief: string,
+    targetEmail: string,
+    onErrorStage: "hypotheses" | "questions" = "hypotheses"
+  ) {
     setHypothesesError(null);
+    setQuestionsError(null);
     setStage("loading-reading");
+
+    if (paymentsEnabled) {
+      savePendingGeneration(targetEmail, targetAnswers, belief);
+    }
 
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...answers, email, belief }),
+        body: JSON.stringify({ ...targetAnswers, email: targetEmail, belief }),
       });
 
       if (res.status === 403 || res.status === 402) {
         const data = await res.json().catch(() => null);
         if (data?.reading) {
           clearDraftAnswers();
+          clearPendingGeneration();
           if (typeof data.creditsRemaining === "number") setCredits(data.creditsRemaining);
           setReading(data.reading);
           setStage("reading");
@@ -224,13 +273,25 @@ function ToolPageInner() {
 
       const data = await res.json();
       clearDraftAnswers();
+      clearPendingGeneration();
       if (typeof data.creditsRemaining === "number") setCredits(data.creditsRemaining);
       setReading(data);
       setStage("reading");
     } catch {
-      setHypothesesError("Something went wrong. Please try again.");
-      setStage("hypotheses");
+      if (onErrorStage === "questions") {
+        setAnswers(targetAnswers);
+        setQuestionsError("Something went wrong finishing your reading. Please try again.");
+        setStage("questions");
+      } else {
+        setHypothesesError("Something went wrong. Please try again.");
+        setStage("hypotheses");
+      }
     }
+  }
+
+  async function handleHypothesisSelect(belief: string) {
+    if (!answers) return;
+    await generateReading(answers, belief, email);
   }
 
   if (stage === "reading" && reading) {

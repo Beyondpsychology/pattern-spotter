@@ -5,6 +5,11 @@
 // needed to go live.
 export const PAYMENTS_ENABLED = process.env.PAYMENTS_ENABLED === "true";
 
+// Credits granted by a valid tester coupon. Deliberately independent of the
+// CREDIT_PACKS pricing tiers in lib/stripe.ts, so changing pack sizes later
+// never silently changes what testers get.
+export const TESTER_COUPON_CREDITS = 5;
+
 export function checkTesterCoupon(code: string | undefined | null): boolean {
   const secret = process.env.TESTER_COUPON_CODE;
   if (!secret || !code) return false;

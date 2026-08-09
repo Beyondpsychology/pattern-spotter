@@ -8,8 +8,7 @@ ALTER TABLE email_captures ADD COLUMN IF NOT EXISTS credits_remaining integer no
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
 import { syncToActiveCampaign } from "@/lib/activeCampaign";
-import { PAYMENTS_ENABLED, checkTesterCoupon } from "@/lib/payments";
-import { READING_PACK_CREDITS } from "@/lib/stripe";
+import { PAYMENTS_ENABLED, checkTesterCoupon, TESTER_COUPON_CREDITS } from "@/lib/payments";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -72,7 +71,7 @@ export async function POST(req: NextRequest) {
     let credits = existing?.credits_remaining ?? 0;
 
     if (grantingCoupon) {
-      credits += READING_PACK_CREDITS;
+      credits += TESTER_COUPON_CREDITS;
       const { error: upsertError } = await supabase
         .from("email_captures")
         .upsert({ email: normalized, credits_remaining: credits }, { onConflict: "email" });

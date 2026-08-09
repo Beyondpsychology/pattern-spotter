@@ -1,10 +1,7 @@
 import crypto from "crypto";
 import { META_PIXEL_ID } from "@/lib/metaPixel";
 
-const READING_PACK_VALUE = 27;
 const CURRENCY = "EUR";
-const CONTENT_ID = "pattern-spotter-5-pack";
-const CONTENT_NAME = "The Pattern Spotter — 5 Readings";
 
 function hashSha256(value: string): string {
   return crypto.createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
@@ -12,8 +9,15 @@ function hashSha256(value: string): string {
 
 // eventId must match the client-side trackPurchase() eventID (the Stripe
 // checkout session id) so Meta dedupes this server-side event against the
-// browser one instead of double-counting the sale.
-export async function trackPurchaseServer(email: string, eventId: string) {
+// browser one instead of double-counting the sale. valueEuros/credits
+// reflect whichever pack was actually bought (prices are set dynamically at
+// checkout, not fixed).
+export async function trackPurchaseServer(
+  email: string,
+  eventId: string,
+  valueEuros: number,
+  credits: number
+) {
   const accessToken = process.env.META_CAPI_ACCESS_TOKEN;
   if (!accessToken) {
     console.error("trackPurchaseServer: META_CAPI_ACCESS_TOKEN not set, skipping");
@@ -31,10 +35,10 @@ export async function trackPurchaseServer(email: string, eventId: string) {
           em: [hashSha256(email)],
         },
         custom_data: {
-          value: READING_PACK_VALUE,
+          value: valueEuros,
           currency: CURRENCY,
-          content_ids: [CONTENT_ID],
-          content_name: CONTENT_NAME,
+          content_ids: [`pattern-spotter-${credits}-pack`],
+          content_name: `The Pattern Spotter — ${credits} Reading${credits === 1 ? "" : "s"}`,
         },
       },
     ],

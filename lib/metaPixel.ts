@@ -12,32 +12,28 @@ function fbq(...args: any[]) {
   }
 }
 
+type PackInfo = { credits: number; priceCents: number };
+
+function contentDataFor(pack: PackInfo) {
+  return {
+    value: pack.priceCents / 100,
+    currency: "EUR",
+    content_ids: [`pattern-spotter-${pack.credits}-pack`],
+    content_name: `The Pattern Spotter — ${pack.credits} Reading${pack.credits === 1 ? "" : "s"}`,
+  };
+}
+
 export function trackViewContent() {
   fbq("track", "ViewContent");
 }
 
-export function trackInitiateCheckout() {
-  fbq("track", "InitiateCheckout", {
-    value: 27,
-    currency: "EUR",
-    content_ids: ["pattern-spotter-5-pack"],
-    content_name: "The Pattern Spotter — 5 Readings",
-  });
+export function trackInitiateCheckout(pack: PackInfo) {
+  fbq("track", "InitiateCheckout", contentDataFor(pack));
 }
 
-// eventId should match the Stripe checkout session id so a later
-// Conversions API Purchase event (fired server-side from the webhook,
-// once that's wired in) can be deduplicated against this client-side one.
-export function trackPurchase(eventId: string) {
-  fbq(
-    "track",
-    "Purchase",
-    {
-      value: 27,
-      currency: "EUR",
-      content_ids: ["pattern-spotter-5-pack"],
-      content_name: "The Pattern Spotter — 5 Readings",
-    },
-    { eventID: eventId }
-  );
+// eventId should match the Stripe checkout session id so the server-side
+// Conversions API Purchase event (fired from the webhook) can be
+// deduplicated against this client-side one.
+export function trackPurchase(eventId: string, pack: PackInfo) {
+  fbq("track", "Purchase", contentDataFor(pack), { eventID: eventId });
 }

@@ -115,10 +115,25 @@ off, the tool behaves exactly like the original free, one-reading-per-email
 version. Nothing changes until you deliberately turn it on.
 
 **How it works once turned on:** every reading requires a credit. New emails
-start at 0 credits — no free reading — matching the salespage copy, which
-already advertises "€27 for 5 readings" everywhere. Buying grants 5 credits
-for €27; each reading spends one. The "X readings left" count shows on the
-question form and the reading itself once you have any credits.
+start at 0 credits — no free reading. The 4 questions and hypothesis
+selection are always free to fill in regardless of credits; the paywall only
+appears right before the reading itself would be generated (the actual
+Anthropic call), when someone has 0 credits at that moment. This is
+deliberate — asking for payment after someone has already invested a few
+minutes answering the questions converts better than asking upfront. The
+paywall (`components/tool/BuyAccess.tsx`) offers 3 packs, configured in
+`lib/stripe.ts` (`CREDIT_PACKS`): 1 reading for €7.99, 3 for €19, or 5 for
+€27. The "X readings left" count shows on the question form and the reading
+itself once you have any credits.
+
+If someone already answered the questions and picked a hypothesis before
+hitting the paywall, their answers + chosen belief are stashed in
+`localStorage` (`pattern-spotter:pending-generation`, see `app/tool/page.tsx`)
+right before the payment-required attempt. After a successful payment, the
+reading is generated immediately from that instead of sending them all the
+way back to the first question — the round trip through Stripe's hosted
+checkout is a full page navigation, which wipes React state, so this has to
+survive in `localStorage` rather than component state.
 
 ### Turning it on
 
@@ -133,7 +148,7 @@ question form and the reading itself once you have any credits.
    |---|---|
    | `STRIPE_SECRET_KEY` | Stripe Dashboard → **Developers → API keys → Standard keys** → "Secret key" (`sk_live_...` for real payments, `sk_test_...` while testing). Not the "Restricted key" section. |
    | `STRIPE_WEBHOOK_SECRET` | Stripe Dashboard → **Developers → Webhooks → Add endpoint**. URL: `https://<your-domain>/api/stripe-webhook`. Event to send: `checkout.session.completed`. After creating it, Stripe shows a "Signing secret" (`whsec_...`) — that's this value. |
-   | `TESTER_COUPON_CODE` | Any secret word you pick, e.g. `BETATESTER2026`. Anyone who enters it in the "Have a code?" field on the email gate gets 5 free credits, as if they'd just paid — use it to keep letting testers through without charging them. |
+   | `TESTER_COUPON_CODE` | Any secret word you pick, e.g. `BETATESTER2026`. Anyone who enters it in the "Have a code?" field on the email gate gets `TESTER_COUPON_CREDITS` (5, set in `lib/payments.ts`) free credits, as if they'd bought the 5-pack — use it to keep letting testers through without charging them. |
    | `PAYMENTS_ENABLED` | Leave unset (or `false`) until you're ready to go live. Set to `true` and redeploy (Vercel's "Redeploy" button is enough — no code change needed) to flip the whole tool over to paid credits. |
    | `SALE_NOTIFICATION_EMAIL` | Optional. Your own inbox — set this to get a "new sale" email each time someone pays. Requires a matching ActiveCampaign field + automation, see below. |
 
@@ -145,13 +160,16 @@ question form and the reading itself once you have any credits.
 - `lib/payments.ts` — the `PAYMENTS_ENABLED` flag and the coupon-code check.
   Every route branches on this flag: unset/false keeps the original
   `has_completed` logic untouched; `true` switches to `credits_remaining`.
-- `components/tool/BuyAccess.tsx` — shown instead of the question form when
-  someone has 0 credits. "Buy now" calls `/api/create-checkout-session`,
-  which creates a Stripe Checkout Session and redirects to Stripe's hosted
-  payment page.
+- `components/tool/BuyAccess.tsx` — shown right before generating the reading
+  when someone has 0 credits, offering the 3 packs from `CREDIT_PACKS`.
+  Picking one calls `/api/create-checkout-session` with that pack's `id`,
+  which creates a Stripe Checkout Session (storing the pack's credit count in
+  the session's own metadata, not re-derived from price later) and redirects
+  to Stripe's hosted payment page.
 - `/api/stripe-webhook` — Stripe calls this after a successful payment
-  (`checkout.session.completed`) and it adds 5 credits to that email, fires
-  the Meta Conversions API Purchase event, and (if `SALE_NOTIFICATION_EMAIL`
+  (`checkout.session.completed`) and it adds that pack's credits to that
+  email (read from the session metadata), fires the Meta Conversions API
+  Purchase event with the actual amount paid, and (if `SALE_NOTIFICATION_EMAIL`
   is set) pushes a "new sale" notification through ActiveCampaign the same
   way the reading PDF gets emailed: create a custom field called
   **"Pattern Spotter New Sale"** in ActiveCampaign, make sure
