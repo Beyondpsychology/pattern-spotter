@@ -29,6 +29,7 @@ const DESCRIPTION =
   "There's a pattern running your life you haven't named yet. Answer four questions and find out what it is, where it started, and where it's still running today.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://patternspotter.beyondpsychology.eu"),
   title: "The Pattern Spotter",
   description: DESCRIPTION,
   openGraph: {
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "The Pattern Spotter",
     description: DESCRIPTION,
   },
