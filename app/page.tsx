@@ -211,11 +211,11 @@ export default function PatternSpotterSalespageV2() {
           </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://beyondpsychology.eu/wp-content/uploads/2026/08/pattern-spotter-mock-up.png"
+            src="https://beyondpsychology.eu/wp-content/uploads/2026/08/pattern-spotter-mock-up-1.png"
             alt="The Pattern Spotter reading shown on a monitor, laptop, tablet, and phone"
-            style={{ width: "100%", maxWidth: 640, display: "block", margin: "36px auto 0" }}
+            style={{ width: "100%", maxWidth: 640, display: "block", margin: "12px auto 0" }}
           />
-          <div className="ps2-cta-wrap">
+          <div className="ps2-cta-wrap" style={{ marginTop: 12 }}>
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
             <p className="ps2-cta-subtext">Free to start — you only choose a price once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
