@@ -209,7 +209,13 @@ export default function PatternSpotterSalespageV2() {
           <p className="ps2-sub" style={{ color: "rgba(255,255,255,0.9)" }}>
             Answer four questions and find out exactly which pattern is still running your life, where it started, and the one place you have more power than you think. Yours to keep, too — sent to your inbox as a PDF.
           </p>
-          <div className="ps2-cta-wrap">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://beyondpsychology.eu/wp-content/uploads/2026/08/Pattern-Spotter-mock-up-salespage-scaled.png"
+            alt="The Pattern Spotter reading shown on a monitor, laptop, tablet, and phone"
+            style={{ width: "100%", maxWidth: 640, display: "block", margin: "12px auto 0" }}
+          />
+          <div className="ps2-cta-wrap" style={{ marginTop: 12 }}>
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
             <p className="ps2-cta-subtext">Free to start — you only choose a price once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot.</p>
           </div>
