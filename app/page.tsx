@@ -197,21 +197,21 @@ export default function PatternSpotterSalespageV2() {
       <style dangerouslySetInnerHTML={{ __html: PS2_STYLES }} />
 
       <div className="ps2-urgency">
-        Want to stop guessing why you're stuck, so you can finally see the pattern, without another round of therapy that talks around it?
+        Want someone to finally see the pattern that keeps you stuck, instead of piecing it together yourself from years of therapy, books, and journaling that only ever showed you part of it?
       </div>
 
       {/* HERO */}
       <section className="ps2-section sage">
         <div className="ps2-container">
-          <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)" }}>Introducing</p>
-          <h1 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>The Pattern Spotter</h1>
+          <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)" }}>The Pattern Spotter</p>
+          <h1 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>Discover the pattern that&apos;s subconsciously running your life.</h1>
           <div className="ps2-divider" style={{ background: "rgba(255,255,255,0.3)" }} />
           <p className="ps2-sub" style={{ color: "rgba(255,255,255,0.9)" }}>
-            Answer four questions and find out exactly which pattern is still running your life, where it started, and the one place you have more power than you think. Yours to keep, too — sent to your inbox as a PDF.
+            The Pattern Spotter uses the same way of reading I use in my own sessions and personal reads, the same eye for patterns, origins, and blind spots I&apos;ve built over a lifetime of doing this work. You just answer four questions, and choose the explanation that actually lands.
           </p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://beyondpsychology.eu/wp-content/uploads/2026/08/Pattern-Spotter-mock-up-salespage-scaled.png"
+            src="https://beyondpsychology.eu/wp-content/uploads/2026/08/Pattern-Spotter-mock-up-salespage-1-scaled.png"
             alt="The Pattern Spotter reading shown on a monitor, laptop, tablet, and phone"
             style={{ width: "100%", maxWidth: 640, display: "block", margin: "12px auto 0" }}
           />
