@@ -86,8 +86,9 @@ const PS2_STYLES = `
 
         .ps2-urgency {
           background: var(--terracotta); color: #fff; text-align: center;
-          font-weight: 700; font-size: 15px; padding: 16px 20px; line-height: 1.5;
+          font-weight: 700; font-size: 17px; padding: 22px 20px; line-height: 1.5;
         }
+        @media (min-width: 768px) { .ps2-urgency { font-size: 20px; padding: 26px 32px; } }
 
         .ps2-section { padding: 64px 0; }
         @media (min-width: 768px) { .ps2-section { padding: 88px 0; } }
