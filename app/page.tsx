@@ -204,7 +204,7 @@ export default function PatternSpotterSalespageV2() {
       {/* HERO */}
       <section className="ps2-section sage">
         <div className="ps2-container">
-          <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)" }}>The Pattern Spotter</p>
+          <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)" }}>Introducing</p>
           <h1 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>Discover the pattern that&apos;s subconsciously running your life.</h1>
           <div className="ps2-divider" style={{ background: "rgba(255,255,255,0.3)" }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
