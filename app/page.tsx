@@ -213,10 +213,10 @@ export default function PatternSpotterSalespageV2() {
             alt="The Pattern Spotter reading shown on a monitor, laptop, tablet, and phone"
             style={{ width: "100%", maxWidth: 640, display: "block", margin: "0 auto" }}
           />
-          <p className="ps2-sub" style={{ color: "rgba(255,255,255,0.9)", marginTop: 12 }}>
+          <p className="ps2-sub" style={{ color: "rgba(255,255,255,0.9)", marginTop: 32 }}>
             <strong>The Pattern Spotter</strong> uses the same way of reading I use in my own sessions and personal reads, the same eye for patterns, origins, and blind spots I&apos;ve built over a lifetime of doing this work. You just answer four questions, and choose the explanation that actually lands.
           </p>
-          <div className="ps2-cta-wrap" style={{ marginTop: 12 }}>
+          <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
             <p className="ps2-cta-subtext">Free to start — you only choose a price once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
