@@ -84,11 +84,6 @@ const PS2_STYLES = `
         .ps2-h { font-family: 'Abril Fatface', serif; }
         .ps2-container { max-width: 760px; margin: 0 auto; padding: 0 24px; }
 
-        .ps2-urgency {
-          background: var(--terracotta); color: #fff; text-align: center;
-          font-weight: 700; font-size: 17px; padding: 22px 20px; line-height: 1.5;
-        }
-        @media (min-width: 768px) { .ps2-urgency { font-size: 20px; padding: 26px 32px; } }
 
         .ps2-section { padding: 64px 0; }
         @media (min-width: 768px) { .ps2-section { padding: 88px 0; } }
@@ -196,10 +191,6 @@ export default function PatternSpotterSalespageV2() {
   return (
     <div className="ps2-root">
       <style dangerouslySetInnerHTML={{ __html: PS2_STYLES }} />
-
-      <div className="ps2-urgency">
-        Want someone to finally see the pattern that keeps you stuck, instead of piecing it together yourself from years of therapy, books, and journaling that only ever showed you part of it?
-      </div>
 
       {/* HERO */}
       <section className="ps2-section sage">
