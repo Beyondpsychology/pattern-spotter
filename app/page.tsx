@@ -205,7 +205,7 @@ export default function PatternSpotterSalespageV2() {
       <section className="ps2-section sage">
         <div className="ps2-container">
           <h1 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>Discover the pattern that&apos;s subconsciously running your life.</h1>
-          <div className="ps2-divider" style={{ background: "rgba(255,255,255,0.3)" }} />
+          <div className="ps2-divider" style={{ background: "var(--mint-btn)", width: 140 }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://beyondpsychology.eu/wp-content/uploads/2026/08/The-Pattern-Spotter-Header-Mock-Up-scaled.png"
