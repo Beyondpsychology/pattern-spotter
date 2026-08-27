@@ -248,7 +248,7 @@ export default function PatternSpotterSalespageV2() {
             Want someone to finally see the pattern that keeps you stuck, instead of piecing it together yourself from years of therapy, books, and journaling that only ever showed you part of it? That&apos;s exactly what this is.
           </p>
           <div className="ps2-cta-wrap">
-            <a href="/tool" className="ps2-btn outline">See my pattern</a>
+            <a href="/tool" className="ps2-btn on-mint">See my pattern</a>
           </div>
         </div>
       </section>
@@ -274,6 +274,9 @@ export default function PatternSpotterSalespageV2() {
 
           <p className="ps2-p" style={{ textAlign: "center", fontStyle: "italic", marginTop: 40, color: "var(--dark)" }}>&quot;You&apos;re not broken. You&apos;re just still inside a pattern you haven&apos;t been able to see.&quot;</p>
           <p className="ps2-p" style={{ textAlign: "center" }}>That&apos;s exactly what the Pattern Spotter gives you: the name of the pattern, where it came from, and where it&apos;s still running.</p>
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn on-mint">Find my pattern</a>
+          </div>
         </div>
       </section>
 
@@ -289,6 +292,9 @@ export default function PatternSpotterSalespageV2() {
                 <p className="ps2-card-body">{c.body}</p>
               </div>
             ))}
+          </div>
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn on-mint">Spot my pattern now</a>
           </div>
         </div>
       </section>
@@ -308,6 +314,9 @@ export default function PatternSpotterSalespageV2() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn on-mint">Start spotting from €7.99</a>
           </div>
         </div>
       </section>
@@ -329,6 +338,9 @@ export default function PatternSpotterSalespageV2() {
                 <span>{t}</span>
               </div>
             ))}
+          </div>
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn on-mint">Unlock the Pattern Spotter</a>
           </div>
         </div>
       </section>
@@ -356,7 +368,7 @@ export default function PatternSpotterSalespageV2() {
             <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;You don&apos;t get the feeling you did something wrong, but you do get complete honesty.&quot;</p>
           </div>
           <div className="ps2-cta-wrap">
-            <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
+            <a href="/tool" className="ps2-btn on-mint">Show me my pattern</a>
             <p className="ps2-cta-subtext">Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
@@ -371,7 +383,7 @@ export default function PatternSpotterSalespageV2() {
           <div className="ps2-price-box">
             <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)", marginBottom: 0 }}>Free to</p>
             <div className="ps2-price-big">Begin now</div>
-            <a href="/tool" className="ps2-btn outline">I am ready</a>
+            <a href="/tool" className="ps2-btn on-mint">I am ready</a>
             <p className="ps2-cta-subtext" style={{ color: "rgba(255,255,255,0.85)" }}>Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
@@ -389,6 +401,9 @@ export default function PatternSpotterSalespageV2() {
               <p className="ps2-p">I&apos;m a psychologist and the founder of Beyond Psychology. My work is about helping you break free from the systems that kept you small: the family system you grew up in, the attachment patterns and coping strategies you built as a child that made sense then and don&apos;t now, and the wider forces, patriarchy, capitalism, gender conditioning, that reinforced all of it, by unshaming what was never actually wrong with you. I built the Pattern Spotter because you already know the word for what you do: people-pleasing, fawning, performing. What you don&apos;t have is someone looking at your specific situation and saying clearly, here is your pattern, here is where it came from, and here is the place you&apos;re less stuck than you think.</p>
               <p className="ps2-p">That&apos;s what the Pattern Spotter gives you. Not soft coaching. Precise, accurate, and without judgment.</p>
               <p className="ps2-signature">Myrthe</p>
+              <div className="ps2-cta-wrap" style={{ textAlign: "left", marginTop: 24 }}>
+                <a href="/tool" className="ps2-btn on-mint" style={{ width: "auto" }}>I&apos;m ready to see it</a>
+              </div>
             </div>
           </div>
         </div>
@@ -401,6 +416,9 @@ export default function PatternSpotterSalespageV2() {
           <p className="ps2-p" style={{ textAlign: "center", color: "rgba(245,240,232,0.8)" }}>
             Three months from now, without naming this, you are still editing yourself mid-sentence. The pattern doesn&apos;t dissolve on its own. Naming it doesn&apos;t take months. It takes four questions.
           </p>
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn on-mint">Name my pattern</a>
+          </div>
         </div>
       </section>
 
@@ -414,6 +432,9 @@ export default function PatternSpotterSalespageV2() {
               <div className="ps2-obj-a">{o.a}</div>
             </div>
           ))}
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn on-mint">Get my reading</a>
+          </div>
         </div>
       </section>
 
@@ -437,7 +458,7 @@ export default function PatternSpotterSalespageV2() {
             ))}
           </div>
           <div className="ps2-cta-wrap">
-            <a href="/tool" className="ps2-btn outline">Yes, I want to see my pattern</a>
+            <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
             <p className="ps2-cta-subtext">Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
@@ -451,7 +472,7 @@ export default function PatternSpotterSalespageV2() {
             {faqs.map((f, i) => <FaqItem key={i} item={f} />)}
           </div>
           <div className="ps2-cta-wrap">
-            <a href="/tool" className="ps2-btn">Yes, I want to see my pattern</a>
+            <a href="/tool" className="ps2-btn on-mint">Start my reading</a>
             <p className="ps2-cta-subtext">Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Four questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
