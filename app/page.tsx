@@ -208,7 +208,7 @@ export default function PatternSpotterSalespageV2() {
           <div className="ps2-divider" style={{ background: "rgba(255,255,255,0.3)" }} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://beyondpsychology.eu/wp-content/uploads/2026/08/The-Pattern-Spotter-Header-Mock-Up-scaled.png"
+            src="https://beyondpsychology.eu/wp-content/uploads/2026/08/The-Pattern-Spotter-Header-Mock-Up-1-scaled.png"
             alt="The Pattern Spotter reading shown on a monitor, laptop, tablet, and phone"
             style={{ width: "100%", maxWidth: 640, display: "block", margin: "0 auto" }}
           />
