@@ -229,9 +229,9 @@ export default function PatternSpotterSalespageV2() {
       </section>
 
       {/* WHY THIS EXISTS */}
-      <section className="ps2-section" style={{ background: "var(--terracotta-bright)", color: "#fff" }}>
+      <section className="ps2-section dark">
         <div className="ps2-container">
-          <p className="ps2-quote" style={{ color: "#fff" }}>
+          <p className="ps2-quote" style={{ color: "var(--cream)" }}>
             Because I can see the whole architecture of a pattern within minutes, sitting across from someone, I built a way to give you that same reading,{" "}
             <span className="ps2-quote-highlight">without needing me in the room</span>.
           </p>
