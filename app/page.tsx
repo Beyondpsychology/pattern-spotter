@@ -215,7 +215,7 @@ export default function PatternSpotterSalespageV2() {
           <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)", marginTop: 32 }}>Introducing</p>
           <h2 className="ps2-h2 ps2-h" style={{ color: "#fff", textAlign: "center" }}>The Pattern Spotter</h2>
           <p className="ps2-sub" style={{ color: "rgba(255,255,255,0.9)", marginTop: 20 }}>
-            It uses the same way of reading I use in my own sessions and personal reads, the same eye for patterns, origins, and blind spots I&apos;ve built over a lifetime of doing this work. You just answer four questions, and choose the explanation that actually lands.
+            <strong>The Pattern Spotter</strong> uses the same way of reading I use in my own sessions and personal reads, the same eye for patterns, origins, and blind spots I&apos;ve built over a lifetime of doing this work. You just answer four questions, and choose the explanation that actually lands.
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
