@@ -12,7 +12,7 @@ const abril = Abril_Fatface({
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   style: ["italic", "normal"],
   variable: "--font-cormorant",
   display: "swap",

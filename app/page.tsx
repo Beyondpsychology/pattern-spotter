@@ -105,6 +105,13 @@ const PS2_STYLES = `
         .ps2-divider { width: 100px; height: 1px; background: rgba(44,53,53,0.25); margin: 24px auto; }
         .ps2-sub { font-size: 17px; line-height: 1.65; text-align: center; color: #4a453c; max-width: 560px; margin: 0 auto; }
         .ps2-p { font-size: 16px; line-height: 1.7; color: #4a453c; margin: 0 0 16px; }
+        .ps2-quote {
+          font-family: var(--font-cormorant); font-weight: 700; font-style: normal;
+          font-size: 26px; line-height: 1.35; text-align: center; max-width: 680px;
+          margin: 0 auto;
+        }
+        @media (min-width: 768px) { .ps2-quote { font-size: 36px; } }
+        .ps2-quote-highlight { font-style: italic; color: var(--peach); }
 
         .ps2-btn {
           display: inline-flex; align-items: center; gap: 8px; justify-content: center;
@@ -217,6 +224,25 @@ export default function PatternSpotterSalespageV2() {
             <div className="ps2-stat-card"><div className="ps2-stat-num">4</div><div className="ps2-stat-label">Questions</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Sections</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">Instant</div><div className="ps2-stat-label">Access</div></div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY THIS EXISTS */}
+      <section className="ps2-section" style={{ background: "var(--terracotta-bright)", color: "#fff" }}>
+        <div className="ps2-container">
+          <p className="ps2-quote" style={{ color: "#fff" }}>
+            Because I can see the whole architecture of a pattern within minutes, sitting across from someone, I built a way to give you that same reading,{" "}
+            <span className="ps2-quote-highlight">without needing me in the room</span>.
+          </p>
+          <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 28 }}>
+            For the first time, I put everything I do in a session, the origin tracing, the blind spot mapping, the precise naming, into four questions.
+          </p>
+          <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 16 }}>
+            Want someone to finally see the pattern that keeps you stuck, instead of piecing it together yourself from years of therapy, books, and journaling that only ever showed you part of it? That&apos;s exactly what this is.
+          </p>
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn outline">See my pattern</a>
           </div>
         </div>
       </section>
