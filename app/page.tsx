@@ -87,6 +87,8 @@ const PS2_STYLES = `
 
         .ps2-section { padding: 64px 0; }
         @media (min-width: 768px) { .ps2-section { padding: 88px 0; } }
+        .ps2-section.hero-pad { padding-top: 108px; }
+        @media (min-width: 768px) { .ps2-section.hero-pad { padding-top: 88px; } }
         .ps2-section.mint { background: var(--mint); }
         .ps2-section.white { background: #fff; }
         .ps2-section.cream { background: var(--cream); }
@@ -200,7 +202,7 @@ export default function PatternSpotterSalespageV2() {
       <style dangerouslySetInnerHTML={{ __html: PS2_STYLES }} />
 
       {/* HERO */}
-      <section className="ps2-section sage" style={{ position: "relative" }}>
+      <section className="ps2-section sage hero-pad" style={{ position: "relative" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="https://beyondpsychology.eu/wp-content/uploads/2026/08/New-black-white-logo-BP-1-scaled.png"
