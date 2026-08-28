@@ -89,6 +89,8 @@ const PS2_STYLES = `
         @media (min-width: 768px) { .ps2-section { padding: 88px 0; } }
         .ps2-section.hero-pad { padding-top: 108px; }
         @media (min-width: 768px) { .ps2-section.hero-pad { padding-top: 88px; } }
+        .ps2-hero-logo { position: absolute; top: 20px; left: 20px; height: 24px; width: auto; }
+        @media (min-width: 768px) { .ps2-hero-logo { top: 24px; left: 24px; height: 36px; } }
         .ps2-section.mint { background: var(--mint); }
         .ps2-section.white { background: #fff; }
         .ps2-section.cream { background: var(--cream); }
@@ -207,7 +209,7 @@ export default function PatternSpotterSalespageV2() {
         <img
           src="https://beyondpsychology.eu/wp-content/uploads/2026/08/New-black-white-logo-BP-1-scaled.png"
           alt="Beyond Psychology"
-          style={{ position: "absolute", top: 24, left: 24, height: 36, width: "auto" }}
+          className="ps2-hero-logo"
         />
         <div className="ps2-container">
           <h1 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>Discover the pattern that&apos;s subconsciously running your life.</h1>
