@@ -2,6 +2,8 @@ const TAG_NAME = "patternspotter";
 const LIST_NAME = "Pattern Spotter";
 const READING_URL_FIELD_TITLE = "Pattern Spotter Reading URL";
 const SALE_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Sale";
+const RECOMMENDED_PRODUCTS_FIELD_TITLE = "Pattern Spotter Recommended Products";
+const PATTERN_TAG_PREFIX = "pattern-";
 const REVIEW_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Review";
 
 function getConfig() {
@@ -153,6 +155,61 @@ export async function sendReadingPdfLink(email: string, pdfUrl: string): Promise
     await setContactFieldValue(config, contactId, fieldId, pdfUrl);
   } catch (err) {
     console.error("ActiveCampaign PDF link sync failed", err);
+  }
+}
+
+function slugifyPattern(label: string): string {
+  return (
+    PATTERN_TAG_PREFIX +
+    label
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+  );
+}
+
+/**
+ * Tags the contact with the pattern named in their reading (e.g.
+ * "pattern-perfectionism-and-overachievement"), so the ActiveCampaign list
+ * can later be segmented by pattern, and pushes the recommended product
+ * names into the "Pattern Spotter Recommended Products" custom field. Tags
+ * are created automatically on first use; the field must already exist in
+ * ActiveCampaign. Never throws: a failure here should never block the
+ * on-screen reading.
+ */
+export async function logReadingTopic(
+  email: string,
+  patternLabel: string,
+  sessionNames: string[]
+): Promise<void> {
+  const config = getConfig();
+  if (!config) {
+    console.error("Reading topic sync skipped: missing env vars");
+    return;
+  }
+  if (!patternLabel && sessionNames.length === 0) return;
+
+  try {
+    const contactId = await syncContact(config, email);
+
+    if (patternLabel) {
+      const tagId = await getOrCreateTagId(config, slugifyPattern(patternLabel));
+      await addContactTag(config, contactId, tagId);
+    }
+
+    if (sessionNames.length > 0) {
+      const fieldId = await getFieldId(config, RECOMMENDED_PRODUCTS_FIELD_TITLE);
+      if (!fieldId) {
+        console.error(
+          `ActiveCampaign field "${RECOMMENDED_PRODUCTS_FIELD_TITLE}" not found. Create it in ActiveCampaign first.`
+        );
+      } else {
+        await setContactFieldValue(config, contactId, fieldId, sessionNames.join(", "));
+      }
+    }
+  } catch (err) {
+    console.error("Reading topic sync failed", err);
   }
 }
 

@@ -26,7 +26,7 @@ import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
 import { checkIpRateLimit, getClientIp } from "@/lib/rateLimit";
 import { generateReadingPdf } from "@/lib/pdf";
 import { uploadReadingPdf } from "@/lib/pdfStorage";
-import { sendReadingPdfLink } from "@/lib/activeCampaign";
+import { sendReadingPdfLink, logReadingTopic } from "@/lib/activeCampaign";
 import { PAYMENTS_ENABLED } from "@/lib/payments";
 
 // Give the background PDF/email work (kicked off via waitUntil below) enough
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
       .map((block) => block.text)
       .join("\n");
 
-    const { sections, sessionNames, toolkitFit } = parseGenerateResponse(raw);
+    const { sections, sessionNames, toolkitFit, patternLabel } = parseGenerateResponse(raw);
 
     const sessions = sessionNames
       .map((name) => matchProduct(name))
@@ -168,6 +168,11 @@ export async function POST(req: NextRequest) {
         } catch (err) {
           console.error("PDF generation/email pipeline failed", err);
         }
+
+        // sessions (not sessionNames) - only the recommendations that
+        // actually matched a real catalog product and were shown to the
+        // user, not whatever raw name the model happened to output.
+        await logReadingTopic(normalizedEmail, patternLabel, sessions.map((s) => s.name));
       })()
     );
 

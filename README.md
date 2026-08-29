@@ -108,6 +108,28 @@ of failing. Brand fonts (Abril Fatface, Cormorant Garamond italic, Open
 Sans) are loaded from `public/pdf-assets/fonts/` and registered directly
 with pdfkit.
 
+## Pattern & product tracking (ActiveCampaign)
+
+Every completed reading pushes two things to the contact's ActiveCampaign
+record, via `logReadingTopic` in `lib/activeCampaign.ts`:
+
+- **A tag naming the pattern**, e.g. `pattern-perfectionism-and-overachievement`
+  or `pattern-self-sabotage-+-procrastination` for a blend. Tags are created
+  automatically the first time they're used — nothing to set up in AC ahead
+  of time. Use these to segment your list by pattern for future campaigns.
+- **The recommended product names**, comma-separated, into a custom field
+  called **"Pattern Spotter Recommended Products"** — create this field once
+  in ActiveCampaign (Settings → Manage Fields), same as the other custom
+  fields this project uses. Unlike the sale/review notification fields, this
+  one isn't meant to trigger an automation — it's just overwritten with the
+  latest reading's recommendations each time, for you to check per contact.
+
+The pattern name itself comes from a new `PATTERN_LABEL: ` line the model
+now outputs (see `OUTPUT FORMAT` in `lib/prompts.ts`), parsed in
+`lib/parseReading.ts`. It's drawn from the same fixed taxonomy already used
+to name the pattern in Section 1 of the reading, so tags stay a small,
+consistent set rather than one-off free text.
+
 ## Paid credits (Stripe)
 
 The tool ships with a full paid-credits system, off by default: while it's

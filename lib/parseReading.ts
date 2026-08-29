@@ -7,6 +7,7 @@ export interface ParsedReading {
   sections: ReadingSection[];
   sessionNames: string[];
   toolkitFit: boolean;
+  patternLabel: string;
 }
 
 /**
@@ -43,6 +44,13 @@ export function parseGenerateResponse(raw: string): ParsedReading {
     text = text.replace(toolkitMatch[0], "");
   }
 
+  let patternLabel = "";
+  const patternMatch = text.match(/^\s*PATTERN_LABEL:\s*(.+)$/m);
+  if (patternMatch) {
+    patternLabel = patternMatch[1].trim();
+    text = text.replace(patternMatch[0], "");
+  }
+
   const sectionParts = text
     .split(/^##\s+/m)
     .map((s) => s.trim())
@@ -59,5 +67,5 @@ export function parseGenerateResponse(raw: string): ParsedReading {
     };
   });
 
-  return { sections, sessionNames, toolkitFit };
+  return { sections, sessionNames, toolkitFit, patternLabel };
 }
