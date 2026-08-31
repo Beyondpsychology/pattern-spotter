@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CREDIT_PACKS, type CreditPack } from "@/lib/stripe";
 import { trackInitiateCheckout } from "@/lib/metaPixel";
+import { loadTrafficSource } from "@/lib/trafficSource";
 
 const BEST_VALUE_ID = "pack-5";
 
@@ -28,7 +29,7 @@ export default function BuyAccess({
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, packId: pack.id }),
+        body: JSON.stringify({ name, email, packId: pack.id, trafficSource: loadTrafficSource() }),
       });
 
       if (!res.ok) throw new Error();

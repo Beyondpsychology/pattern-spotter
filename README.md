@@ -214,6 +214,14 @@ survive in `localStorage` rather than component state.
   `cancelled`) query string on the redirect back, then polls
   `/api/email-capture` briefly (the webhook can take a second or two to
   land) before continuing.
+- `lib/trafficSource.ts` captures UTM params, `document.referrer`, and the
+  landing URL into `sessionStorage` on `/tool`'s first load (once per
+  session, never overwritten by later in-site navigation), and
+  `BuyAccess.tsx` sends it along when creating the checkout session. Nothing
+  is stored server-side — it only ever lands as metadata on the Stripe
+  Checkout Session and the resulting PaymentIntent, visible directly on
+  each payment in the Stripe dashboard. Only applies going forward; it
+  can't retroactively add source data to past payments.
 
 ## Reviews
 

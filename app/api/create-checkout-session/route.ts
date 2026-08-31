@@ -2,6 +2,30 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStripe, getCreditPack } from "@/lib/stripe";
 import { normalizeEmail } from "@/lib/supabaseAdmin";
 
+const TRAFFIC_METADATA_FIELDS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "referrer",
+  "landing_url",
+];
+const STRIPE_METADATA_VALUE_LIMIT = 500;
+
+function buildTrafficMetadata(trafficSource: unknown): Record<string, string> {
+  if (!trafficSource || typeof trafficSource !== "object") return {};
+  const source = trafficSource as Record<string, unknown>;
+  const metadata: Record<string, string> = {};
+  for (const field of TRAFFIC_METADATA_FIELDS) {
+    const value = source[field];
+    if (typeof value === "string" && value.trim()) {
+      metadata[field] = value.slice(0, STRIPE_METADATA_VALUE_LIMIT);
+    }
+  }
+  return metadata;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => null);
@@ -21,6 +45,8 @@ export async function POST(req: NextRequest) {
     const normalizedEmail = normalizeEmail(email);
     const origin = req.nextUrl.origin;
     const stripe = getStripe();
+    const trafficMetadata = buildTrafficMetadata(body?.trafficSource);
+    const hasTrafficMetadata = Object.keys(trafficMetadata).length > 0;
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -46,7 +72,12 @@ export async function POST(req: NextRequest) {
       // credits in metadata is what the webhook trusts to grant credits -
       // it never re-derives the pack from price, so pricing can change later
       // without breaking already-created sessions.
-      metadata: { email: normalizedEmail, name, credits: String(pack.credits) },
+      metadata: { email: normalizedEmail, name, credits: String(pack.credits), ...trafficMetadata },
+      // Checkout Session metadata doesn't automatically carry over to the
+      // resulting Payment/Charge - payment_intent_data.metadata does, and
+      // that's what's visible directly on the payment in the Stripe
+      // dashboard without extra clicks, so traffic source goes there too.
+      ...(hasTrafficMetadata ? { payment_intent_data: { metadata: trafficMetadata } } : {}),
       // credits/amount on the success redirect let the client-side Meta
       // Pixel Purchase event report the actual pack bought; session_id lets
       // it share an eventID with the server-side Conversions API Purchase

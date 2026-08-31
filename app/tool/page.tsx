@@ -15,6 +15,7 @@ import {
   SpinnerWritingReading,
 } from "@/components/tool/Loading";
 import { trackPurchase } from "@/lib/metaPixel";
+import { captureTrafficSource } from "@/lib/trafficSource";
 
 const VERIFY_PURCHASE_MAX_ATTEMPTS = 5;
 const VERIFY_PURCHASE_DELAY_MS = 2000;
@@ -78,6 +79,12 @@ function ToolPageInner() {
   // returns - those are handled entirely by the effect below.
   const prefillEmail = searchParams.get("checkout") ? "" : searchParams.get("email") ?? "";
   const prefillName = searchParams.get("checkout") ? "" : searchParams.get("name") ?? "";
+
+  // As early as possible, so it's captured before any navigation within
+  // the tool - see lib/trafficSource.ts.
+  useEffect(() => {
+    captureTrafficSource();
+  }, []);
 
   // A trip to Stripe's hosted checkout is a full page navigation away and
   // back, which wipes all React state — so the return trip has to be
