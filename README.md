@@ -173,6 +173,8 @@ survive in `localStorage` rather than component state.
    | `TESTER_COUPON_CODE` | Any secret word you pick, e.g. `BETATESTER2026`. Anyone who enters it in the "Have a code?" field on the email gate gets `TESTER_COUPON_CREDITS` (5, set in `lib/payments.ts`) free credits, as if they'd bought the 5-pack — use it to keep letting testers through without charging them. |
    | `PAYMENTS_ENABLED` | Leave unset (or `false`) until you're ready to go live. Set to `true` and redeploy (Vercel's "Redeploy" button is enough — no code change needed) to flip the whole tool over to paid credits. |
    | `SALE_NOTIFICATION_EMAIL` | Optional. Your own inbox — set this to get a "new sale" email each time someone pays. Requires a matching ActiveCampaign field + automation, see below. |
+   | `WOOCOMMERCE_API_URL` | Optional. `https://beyondpsychology.eu` — set this (with the two keys below) to also log each sale as a completed order in WooCommerce, see below. |
+   | `WOOCOMMERCE_CONSUMER_KEY` / `WOOCOMMERCE_CONSUMER_SECRET` | WooCommerce → **Settings → Advanced → REST API** → Add key (Permissions: Read/Write). |
 
 3. Redeploy. `PAYMENTS_ENABLED=true` is the actual on/off switch; everything
    else can be configured ahead of time without affecting live visitors.
@@ -197,7 +199,15 @@ survive in `localStorage` rather than component state.
   **"Pattern Spotter New Sale"** in ActiveCampaign, make sure
   `SALE_NOTIFICATION_EMAIL` has a contact there (or let it get created
   automatically on the first sale), then build an automation triggered on
-  that field changing, which emails you the field's value.
+  that field changing, which emails you the field's value. It also (if
+  `WOOCOMMERCE_API_URL`/`WOOCOMMERCE_CONSUMER_KEY`/`WOOCOMMERCE_CONSUMER_SECRET`
+  are set) creates a paid, completed order in WooCommerce via
+  `lib/woocommerce.ts`, purely so the sale shows up in the WordPress
+  dashboard alongside her other orders — no payment actually runs through
+  WooCommerce, it's a record-only order for the real Stripe charge that
+  already happened. Get the consumer key/secret from WooCommerce →
+  Settings → Advanced → REST API on beyondpsychology.eu; `WOOCOMMERCE_API_URL`
+  is just the site's base URL (`https://beyondpsychology.eu`).
 - Since a trip to Stripe's checkout page is a full browser navigation away
   and back, all React state is lost — `app/tool/page.tsx` reconstructs
   everything from the `?checkout=success&email=...&name=...` (or

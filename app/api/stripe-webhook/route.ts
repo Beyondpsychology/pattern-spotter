@@ -4,6 +4,7 @@ import { getStripe } from "@/lib/stripe";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
 import { trackPurchaseServer } from "@/lib/metaCapi";
 import { notifyNewSale } from "@/lib/activeCampaign";
+import { createWooCommerceOrder } from "@/lib/woocommerce";
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
@@ -50,6 +51,7 @@ export async function POST(req: NextRequest) {
       }
 
       const email = normalizeEmail(emailRaw);
+      const name = session.metadata?.name ?? "";
       const supabase = getSupabaseAdmin();
 
       const { data: existing, error: selectError } = await supabase
@@ -82,6 +84,7 @@ export async function POST(req: NextRequest) {
       // two instead of double-counting the sale.
       await trackPurchaseServer(email, session.id, amountEuros, packCredits);
       await notifyNewSale(email, packCredits, amountEuros);
+      await createWooCommerceOrder(email, name, packCredits, amountEuros);
     }
 
     return NextResponse.json({ received: true });
