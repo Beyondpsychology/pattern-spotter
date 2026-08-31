@@ -25,6 +25,11 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer_email: normalizedEmail,
+      // Stripe defaults payment-mode sessions to "if_required" (no Customer
+      // object unless something else needs one), so buyers wouldn't show up
+      // in the Customers list otherwise - "always" makes every purchase
+      // create/reuse a proper Customer record.
+      customer_creation: "always",
       line_items: [
         {
           price_data: {
