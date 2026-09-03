@@ -12,6 +12,7 @@ const config: Config = {
         cream: "#F5F0E8",
         terracotta: "#D9735C",
         mint: "#d4e4e0",
+        sage: "#4a7c6f",
         brown: "#7a6248",
       },
       fontFamily: {
