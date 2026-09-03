@@ -9,7 +9,7 @@ export default function SiteHeader() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://beyondpsychology.eu/wp-content/uploads/2025/06/LOGO-BP-WEBSITE.png"
+          src="https://beyondpsychology.eu/wp-content/uploads/2026/08/New-black-white-logo-BP-1-scaled.png"
           alt="Beyond Psychology"
           className="h-8 w-auto md:h-10"
         />
