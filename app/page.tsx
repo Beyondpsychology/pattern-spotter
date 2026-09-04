@@ -6,7 +6,7 @@ import {
   Sparkles, Heart, Sunrise, CheckCircle2,
   ArrowRight, Check, Plus, Minus,
 } from "lucide-react";
-import { CRISIS_TEXT, DISCLAIMER_TEXT } from "@/lib/legal";
+import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 import { trackViewContent } from "@/lib/metaPixel";
 
 const MYRTHE_PHOTO_URL =
@@ -43,6 +43,7 @@ const objections = [
 
 const faqs = [
   { q: "How does the Pattern Spotter actually work?", a: "You answer four questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button, and you also get the whole thing as a PDF, downloadable on the spot and emailed to you." },
+  { q: "Is this AI?", a: "Yes — the Pattern Spotter is powered by AI, built on Myrthe's own clinical framework and the exact methodology she uses in real sessions, not a general-purpose chatbot. It's not a back-and-forth conversation: you answer four questions and get one structured reading built from them, and it's not a replacement for therapy." },
   { q: "Is this private? Who sees what I type in?", a: "We ask for your email to give you your reading, that's it. What you write is used only to generate it." },
   { q: "What does it cost?", a: "Answering the four questions and seeing your possible patterns is free. You only choose a price once your reading is ready to reveal: from €7.99 for one reading, up to €27 for a 5-pack." },
   { q: "Can I run it more than once?", a: "Yes — buy one reading at a time, or a pack of 3 or 5 to come back to later, any time you want to go deeper: different situations, different layers, the same pattern seen from a new angle." },
@@ -486,6 +487,7 @@ export default function PatternSpotterSalespageV2() {
         <p>Beyond Psychology · The Pattern Spotter</p>
         <p style={{ maxWidth: 560, margin: "12px auto 0" }}>{CRISIS_TEXT}</p>
         <p style={{ maxWidth: 560, margin: "8px auto 0" }}>{DISCLAIMER_TEXT}</p>
+        <p style={{ maxWidth: 560, margin: "8px auto 0" }}>{AI_DISCLOSURE_TEXT}</p>
       </div>
     </div>
   );

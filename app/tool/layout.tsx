@@ -1,5 +1,5 @@
 import SiteHeader from "@/components/SiteHeader";
-import { CRISIS_TEXT, DISCLAIMER_TEXT } from "@/lib/legal";
+import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 
 export default function ToolLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,6 +10,7 @@ export default function ToolLayout({ children }: { children: React.ReactNode }) 
         <div className="max-w-[680px] mx-auto text-center text-xs text-white/70 leading-relaxed space-y-2">
           <p>{CRISIS_TEXT}</p>
           <p>{DISCLAIMER_TEXT}</p>
+          <p>{AI_DISCLOSURE_TEXT}</p>
         </div>
       </footer>
     </div>

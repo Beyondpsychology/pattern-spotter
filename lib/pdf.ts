@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import type { ReadingResultData } from "@/lib/toolTypes";
 import { ONE_ON_ONE_URL } from "@/lib/products";
-import { CRISIS_TEXT, DISCLAIMER_TEXT } from "@/lib/legal";
+import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 
 const DARK = "#2C3535";
 const CREAM = "#F5F0E8";
@@ -312,6 +312,11 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
       .font("OpenSans")
       .fontSize(7)
       .text(DISCLAIMER_TEXT, MARGIN, doc.y + 5, { width: contentWidth, lineGap: 2, align: "center" });
+    doc
+      .fillColor("#6a6357")
+      .font("OpenSans")
+      .fontSize(7)
+      .text(AI_DISCLOSURE_TEXT, MARGIN, doc.y + 5, { width: contentWidth, lineGap: 2, align: "center" });
 
     doc.end();
   });
