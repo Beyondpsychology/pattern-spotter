@@ -40,7 +40,7 @@ export default function EmailGate({
         You were never too much. You were just never safe enough to be
         yourself. Whatever it looks like for you, performing, pleasing,
         shrinking, carrying someone else's story as your own, there is a
-        pattern underneath it. Answer four questions and find out what it is,
+        pattern underneath it. Answer five questions and find out what it is,
         where it started, and where it is still running today.
       </p>
 

@@ -1,11 +1,11 @@
 # The Pattern Spotter
 
-A free, email-gated AI reading tool. Visitors answer four questions, pick the
+A free, email-gated AI reading tool. Visitors answer five questions, pick the
 hypothesis that lands, and get back a 5-section reading plus product
 recommendations — one full reading per email address.
 
 - `/` — placeholder salespage (to be replaced later)
-- `/tool` — the entire product: email gate → 4 questions → hypothesis
+- `/tool` — the entire product: email gate → 5 questions → hypothesis
   selection → full reading. No login, no accounts.
 
 This guide assumes you've never done this before. Follow it in order.
@@ -137,7 +137,7 @@ off, the tool behaves exactly like the original free, one-reading-per-email
 version. Nothing changes until you deliberately turn it on.
 
 **How it works once turned on:** every reading requires a credit. New emails
-start at 0 credits — no free reading. The 4 questions and hypothesis
+start at 0 credits — no free reading. The 5 questions and hypothesis
 selection are always free to fill in regardless of credits; the paywall only
 appears right before the reading itself would be generated (the actual
 Anthropic call), when someone has 0 credits at that moment. This is

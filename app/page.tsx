@@ -42,10 +42,10 @@ const objections = [
 ];
 
 const faqs = [
-  { q: "How does the Pattern Spotter actually work?", a: "You answer four questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button, and you also get the whole thing as a PDF, downloadable on the spot and emailed to you." },
-  { q: "Is this AI?", a: "Yes — the Pattern Spotter is powered by AI, built on Myrthe's own clinical framework and the exact methodology she uses in real sessions, not a general-purpose chatbot. It's not a back-and-forth conversation: you answer four questions and get one structured reading built from them, and it's not a replacement for therapy." },
+  { q: "How does the Pattern Spotter actually work?", a: "You answer five questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button, and you also get the whole thing as a PDF, downloadable on the spot and emailed to you." },
+  { q: "Is this AI?", a: "Yes — the Pattern Spotter is powered by AI, built on Myrthe's own clinical framework and the exact methodology she uses in real sessions, not a general-purpose chatbot. It's not a back-and-forth conversation: you answer five questions and get one structured reading built from them, and it's not a replacement for therapy." },
   { q: "Is this private? Who sees what I type in?", a: "We ask for your email to give you your reading, that's it. What you write is used only to generate it." },
-  { q: "What does it cost?", a: "Answering the four questions and seeing your possible patterns is free. You only choose a price once your reading is ready to reveal: from €7.99 for one reading, up to €27 for a 5-pack." },
+  { q: "What does it cost?", a: "Answering the five questions and seeing your possible patterns is free. You only choose a price once your reading is ready to reveal: from €7.99 for one reading, up to €27 for a 5-pack." },
   { q: "Can I run it more than once?", a: "Yes — buy one reading at a time, or a pack of 3 or 5 to come back to later, any time you want to go deeper: different situations, different layers, the same pattern seen from a new angle." },
 ];
 
@@ -224,7 +224,7 @@ export default function PatternSpotterSalespageV2() {
           <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)", marginTop: 32 }}>Introducing</p>
           <h2 className="ps2-h2 ps2-h" style={{ color: "#fff", textAlign: "center" }}>The Pattern Spotter</h2>
           <p className="ps2-sub" style={{ color: "rgba(255,255,255,0.9)", marginTop: 20 }}>
-            <strong>The Pattern Spotter</strong> uses the same way of reading I use in my own sessions and personal reads, the same eye for patterns, origins, and blind spots I&apos;ve built over a lifetime of doing this work. You just answer four questions, and choose the explanation that actually lands.
+            <strong>The Pattern Spotter</strong> uses the same way of reading I use in my own sessions and personal reads, the same eye for patterns, origins, and blind spots I&apos;ve built over a lifetime of doing this work. You just answer five questions, and choose the explanation that actually lands.
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
@@ -247,7 +247,7 @@ export default function PatternSpotterSalespageV2() {
             <span className="ps2-quote-highlight">without needing me in the room</span>.
           </p>
           <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 28 }}>
-            For the first time, I put everything I do in a session, the origin tracing, the blind spot mapping, the precise naming, into four questions.
+            For the first time, I put everything I do in a session, the origin tracing, the blind spot mapping, the precise naming, into five questions.
           </p>
           <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 16 }}>
             Want someone to finally see the pattern that keeps you stuck, instead of piecing it together yourself from years of therapy, books, and journaling that only ever showed you part of it? That&apos;s exactly what this is.
@@ -419,7 +419,7 @@ export default function PatternSpotterSalespageV2() {
         <div className="ps2-container">
           <h2 className="ps2-h1 ps2-h" style={{ color: "var(--cream)" }}>Every day without a name for it is another day inside it</h2>
           <p className="ps2-p" style={{ textAlign: "center", color: "rgba(245,240,232,0.8)" }}>
-            Three months from now, without naming this, you are still editing yourself mid-sentence. The pattern doesn&apos;t dissolve on its own. Naming it doesn&apos;t take months. It takes four questions.
+            Three months from now, without naming this, you are still editing yourself mid-sentence. The pattern doesn&apos;t dissolve on its own. Naming it doesn&apos;t take months. It takes five questions.
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Name my pattern</a>

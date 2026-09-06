@@ -59,6 +59,13 @@ const FIELDS: {
       "What do you wish you could say, do, or feel instead? What does the version of you who is not running this pattern actually want in that situation?",
     rows: 3,
   },
+  {
+    key: "triedAlready",
+    label: "What you've already tried, and why it did or didn't work",
+    placeholder:
+      "Have you already said something, set a boundary, had the conversation, or tried some other way to handle this? What did you do, and in your own words, why do you think it worked or didn't? If you haven't tried anything yet, say that.",
+    rows: 3,
+  },
 ];
 
 export default function QuestionForm({
@@ -73,7 +80,7 @@ export default function QuestionForm({
   const [answers, setAnswers] = useState<Answers>(
     () =>
       initialAnswers ??
-      loadDraft() ?? { situation: "", story: "", origin: "", want: "" }
+      loadDraft() ?? { situation: "", story: "", origin: "", want: "", triedAlready: "" }
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -113,7 +120,7 @@ export default function QuestionForm({
   return (
     <div>
       <div className="text-center mb-3 flex items-center justify-center gap-2 flex-wrap">
-        <span className="eyebrow-chip">{answeredCount} / 4 answered</span>
+        <span className="eyebrow-chip">{answeredCount} / {FIELDS.length} answered</span>
         {typeof creditsRemaining === "number" && (
           <span className="eyebrow-chip">
             {creditsRemaining} reading{creditsRemaining === 1 ? "" : "s"} left

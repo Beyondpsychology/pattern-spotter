@@ -4,18 +4,20 @@ import { HYPOTHESIS_PROMPT, formatAnswers } from "@/lib/prompts";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
-  const { situation, story, origin, want, email } = body ?? {};
+  const { situation, story, origin, want, triedAlready, email } = body ?? {};
 
   if (
     typeof situation !== "string" ||
     typeof story !== "string" ||
     typeof origin !== "string" ||
     typeof want !== "string" ||
+    typeof triedAlready !== "string" ||
     typeof email !== "string" ||
     !situation.trim() ||
     !story.trim() ||
     !origin.trim() ||
     !want.trim() ||
+    !triedAlready.trim() ||
     !email.trim()
   ) {
     return NextResponse.json({ error: "missing_fields" }, { status: 400 });
@@ -23,7 +25,7 @@ export async function POST(req: NextRequest) {
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  const userMessage = formatAnswers({ situation, story, origin, want });
+  const userMessage = formatAnswers({ situation, story, origin, want, triedAlready });
 
   let response;
   try {

@@ -24,7 +24,7 @@ const VERIFY_PURCHASE_DELAY_MS = 2000;
 // that turned out to need payment, so that after a round trip through
 // Stripe's hosted checkout (a full page navigation that wipes all React
 // state) the reading can be generated straight away instead of sending
-// someone all the way back to the 4 questions.
+// someone all the way back to the 5 questions.
 const PENDING_GENERATION_KEY = "pattern-spotter:pending-generation";
 
 type PendingGeneration = { email: string; answers: Answers; belief: string };

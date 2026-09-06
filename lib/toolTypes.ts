@@ -3,6 +3,7 @@ export interface Answers {
   story: string;
   origin: string;
   want: string;
+  triedAlready: string;
 }
 
 export interface SessionRec {

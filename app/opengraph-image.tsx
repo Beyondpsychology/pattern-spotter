@@ -58,7 +58,7 @@ export default function OpengraphImage() {
             maxWidth: 820,
           }}
         >
-          Answer four questions and find out which pattern is still running your life.
+          Answer five questions and find out which pattern is still running your life.
         </div>
       </div>
     ),

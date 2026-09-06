@@ -42,19 +42,21 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json().catch(() => null);
-    const { situation, story, origin, want, email, belief } = body ?? {};
+    const { situation, story, origin, want, triedAlready, email, belief } = body ?? {};
 
     if (
       typeof situation !== "string" ||
       typeof story !== "string" ||
       typeof origin !== "string" ||
       typeof want !== "string" ||
+      typeof triedAlready !== "string" ||
       typeof email !== "string" ||
       typeof belief !== "string" ||
       !situation.trim() ||
       !story.trim() ||
       !origin.trim() ||
       !want.trim() ||
+      !triedAlready.trim() ||
       !email.trim() ||
       !belief.trim()
     ) {
@@ -98,7 +100,7 @@ export async function POST(req: NextRequest) {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
     const userMessage =
-      formatAnswers({ situation, story, origin, want }) +
+      formatAnswers({ situation, story, origin, want, triedAlready }) +
       `\n\nCONFIRMED BELIEF (the user selected this as the one that feels most true):\n${belief}`;
 
     let response;

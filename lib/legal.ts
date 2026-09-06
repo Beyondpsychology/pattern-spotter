@@ -5,4 +5,4 @@ export const CRISIS_TEXT =
   "If you are in crisis or having thoughts of harming yourself, please reach out for immediate support — findahelpline.com lists crisis lines by country, available anytime.";
 
 export const AI_DISCLOSURE_TEXT =
-  "The Pattern Spotter is powered by AI, built on Myrthe's own clinical framework and methodology, not a general-purpose chatbot. It generates one structured reading from your four answers rather than a back-and-forth conversation.";
+  "The Pattern Spotter is powered by AI, built on Myrthe's own clinical framework and methodology, not a general-purpose chatbot. It generates one structured reading from your five answers rather than a back-and-forth conversation.";
