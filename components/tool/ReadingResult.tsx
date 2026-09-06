@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { ReadingResultData } from "@/lib/toolTypes";
-import { ONE_ON_ONE_URL } from "@/lib/products";
+import { MEMBERSHIP_URL } from "@/lib/products";
 import CopyButton from "./CopyButton";
 
 export default function ReadingResult({
@@ -109,7 +109,7 @@ export default function ReadingResult({
               href="https://beyondpsychology.eu/overcome-people-pleasing/"
               target="_blank"
               rel="noopener noreferrer"
-              className="block text-center btn-primary bg-terracotta"
+              className="block text-center btn-primary"
             >
               The Overcome People Pleasing Toolkit
             </a>
@@ -117,14 +117,18 @@ export default function ReadingResult({
         )}
 
         {(sessions.length > 0 || toolkitFit) && <div className="border-t border-cream/15 my-6" />}
-        <p className="eyebrow eyebrow-on-dark text-base mb-4">Or, go deeper — live</p>
+        <p className="text-cream/80 mb-4">
+          If this is a pattern you keep circling back to, not a one-time
+          feeling, and you wish to have access to all tools at once, explore
+          the membership.
+        </p>
         <a
-          href={ONE_ON_ONE_URL}
+          href={MEMBERSHIP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="block text-center btn-primary bg-terracotta"
+          className="block text-center btn-primary"
         >
-          1-on-1 Guidance with Myrthe
+          Explore the membership →
         </a>
       </div>
 
@@ -133,7 +137,7 @@ export default function ReadingResult({
         <button
           onClick={handleDownload}
           disabled={downloading}
-          className="btn-primary bg-brown inline-block w-auto px-8"
+          className="btn-primary inline-block w-auto px-8"
         >
           {downloading ? "Preparing your PDF..." : "Download as PDF"}
         </button>

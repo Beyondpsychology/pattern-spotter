@@ -2,7 +2,7 @@ import PDFDocument from "pdfkit";
 import fs from "fs";
 import path from "path";
 import type { ReadingResultData } from "@/lib/toolTypes";
-import { ONE_ON_ONE_URL } from "@/lib/products";
+import { MEMBERSHIP_URL } from "@/lib/products";
 import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 
 const DARK = "#2C3535";
@@ -203,12 +203,23 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
 
       y += 14;
       doc
+        .fillColor("#d8d2c4")
+        .font("OpenSans")
+        .fontSize(10.5)
+        .text(
+          "If this is a pattern you keep circling back to, not a one-time feeling, and you wish to have access to all tools at once, explore the membership.",
+          MARGIN,
+          y,
+          { width: contentWidth }
+        );
+      y = doc.y + 12;
+      doc
         .fillColor(MINT)
         .font("CormorantItalic")
         .fontSize(13)
-        .text("Or, go deeper — live: 1-on-1 Guidance with Myrthe", MARGIN, y, {
+        .text("Explore the membership →", MARGIN, y, {
           width: contentWidth,
-          link: ONE_ON_ONE_URL,
+          link: MEMBERSHIP_URL,
           underline: true,
         });
     }

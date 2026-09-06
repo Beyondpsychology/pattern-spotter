@@ -108,7 +108,7 @@ export default function VoiceInputButton({
       type="button"
       onClick={() => (listening ? stopListening() : startListening())}
       className={`inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full px-3 py-1 transition flex-shrink-0 ${
-        listening ? "bg-terracotta text-white" : "bg-mint/50 text-brown hover:bg-mint/80"
+        listening ? "bg-sand text-white" : "bg-mint/50 text-brown hover:bg-mint/80"
       }`}
     >
       <span

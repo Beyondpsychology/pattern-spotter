@@ -70,7 +70,7 @@ export default function MetaPixel() {
             </button>
             <button
               onClick={accept}
-              className="bg-terracotta text-white text-sm font-bold uppercase tracking-wider px-5 py-2 rounded-[6px]"
+              className="bg-sand text-white text-sm font-bold uppercase tracking-wider px-5 py-2 rounded-[6px]"
             >
               Accept
             </button>

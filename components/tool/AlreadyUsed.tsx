@@ -17,7 +17,7 @@ export default function AlreadyUsed() {
           href="https://beyondpsychology.eu/overcome-people-pleasing/"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-primary sm:w-auto px-8 bg-terracotta"
+          className="btn-primary sm:w-auto px-8"
         >
           See the toolkit
         </a>

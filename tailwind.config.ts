@@ -14,6 +14,7 @@ const config: Config = {
         mint: "#d4e4e0",
         sage: "#4a7c6f",
         brown: "#7a6248",
+        sand: "#c89878",
       },
       fontFamily: {
         display: ["var(--font-abril)", "serif"],

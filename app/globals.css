@@ -37,7 +37,7 @@
   }
 
   .btn-primary {
-    @apply w-full rounded-[6px] bg-brown text-white font-bold py-4 px-6 uppercase tracking-wider text-sm transition-all;
+    @apply w-full rounded-[6px] bg-sand text-white font-bold py-4 px-6 uppercase tracking-wider text-sm transition-all;
   }
 
   .btn-primary:hover:not(:disabled) {
