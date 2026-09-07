@@ -30,9 +30,13 @@ import { sendReadingPdfLink, logReadingTopic } from "@/lib/activeCampaign";
 import { PAYMENTS_ENABLED } from "@/lib/payments";
 
 // Give the background PDF/email work (kicked off via waitUntil below) enough
-// runway to finish after the response is sent. Vercel caps this at whatever
-// the plan allows, so this is a ceiling, not a guarantee.
-export const maxDuration = 60;
+// runway to finish after the response is sent. The full chain - the Claude
+// call, PDF rendering, the Supabase Storage upload, and several sequential
+// ActiveCampaign API calls - was observed blowing past 60s in production
+// (Vercel Runtime Timeout Error), silently killing the PDF/email pipeline
+// mid-flight. 300s is the max Vercel allows on Pro without enabling Fluid
+// Compute, and comfortably covers this chain.
+export const maxDuration = 300;
 
 export async function POST(req: NextRequest) {
   try {
