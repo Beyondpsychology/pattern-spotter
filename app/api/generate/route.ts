@@ -26,7 +26,11 @@ import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
 import { checkIpRateLimit, getClientIp } from "@/lib/rateLimit";
 import { generateReadingPdf } from "@/lib/pdf";
 import { uploadReadingPdf } from "@/lib/pdfStorage";
-import { sendReadingPdfLink, logReadingTopic } from "@/lib/activeCampaign";
+import {
+  sendReadingPdfLink,
+  logReadingTopic,
+  clearAbandonedBeforePayment,
+} from "@/lib/activeCampaign";
 import { PAYMENTS_ENABLED } from "@/lib/payments";
 
 // Give the background PDF/email work (kicked off via waitUntil below) enough
@@ -166,6 +170,8 @@ export async function POST(req: NextRequest) {
           { onConflict: "email" }
         );
         if (updateError) console.error("Failed to persist reading", updateError);
+
+        if (PAYMENTS_ENABLED) await clearAbandonedBeforePayment(normalizedEmail);
 
         try {
           const pdfBuffer = await generateReadingPdf(readingData);

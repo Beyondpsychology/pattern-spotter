@@ -5,6 +5,7 @@ const SALE_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Sale";
 const RECOMMENDED_PRODUCTS_FIELD_TITLE = "Pattern Spotter Recommended Products";
 const PATTERN_TAG_PREFIX = "pattern-";
 const REVIEW_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Review";
+const ABANDONED_TAG_NAME = "abandoned-before-payment";
 
 function getConfig() {
   const apiUrl = process.env.ACTIVECAMPAIGN_API_URL;
@@ -82,6 +83,26 @@ async function addContactTag(
     method: "POST",
     body: JSON.stringify({ contactTag: { contact: contactId, tag: tagId } }),
   });
+}
+
+async function findContactTagId(
+  config: { apiUrl: string; apiKey: string },
+  contactId: string,
+  tagId: string
+) {
+  const data = await acFetch(config, `/api/3/contacts/${contactId}/contactTags`);
+  const match = data.contactTags?.find((ct: { tag: string }) => ct.tag === tagId);
+  return match ? (match.id as string) : null;
+}
+
+async function removeContactTag(
+  config: { apiUrl: string; apiKey: string },
+  contactId: string,
+  tagId: string
+) {
+  const contactTagId = await findContactTagId(config, contactId, tagId);
+  if (!contactTagId) return;
+  await acFetch(config, `/api/3/contactTags/${contactTagId}`, { method: "DELETE" });
 }
 
 async function addContactToList(
@@ -210,6 +231,53 @@ export async function logReadingTopic(
     }
   } catch (err) {
     console.error("Reading topic sync failed", err);
+  }
+}
+
+/**
+ * Tags a contact "abandoned-before-payment": they left their email but have
+ * never completed a paid reading. Build an ActiveCampaign automation on
+ * "tag added: abandoned-before-payment" (with a wait step, then a check that
+ * the tag is still present) to follow up with people who never converted.
+ * Never throws: a failure here should never block the email gate.
+ */
+export async function tagAbandonedBeforePayment(
+  email: string,
+  firstName?: string
+): Promise<void> {
+  const config = getConfig();
+  if (!config) {
+    console.error("Abandoned-before-payment tag skipped: missing env vars");
+    return;
+  }
+
+  try {
+    const contactId = await syncContact(config, email, firstName);
+    const tagId = await getOrCreateTagId(config, ABANDONED_TAG_NAME);
+    await addContactTag(config, contactId, tagId);
+  } catch (err) {
+    console.error("Abandoned-before-payment tag failed", err);
+  }
+}
+
+/**
+ * Removes the "abandoned-before-payment" tag once a contact has actually
+ * completed a paid reading, so the segment only ever contains people who
+ * genuinely never converted. Never throws.
+ */
+export async function clearAbandonedBeforePayment(email: string): Promise<void> {
+  const config = getConfig();
+  if (!config) {
+    console.error("Clearing abandoned-before-payment tag skipped: missing env vars");
+    return;
+  }
+
+  try {
+    const contactId = await syncContact(config, email);
+    const tagId = await getOrCreateTagId(config, ABANDONED_TAG_NAME);
+    await removeContactTag(config, contactId, tagId);
+  } catch (err) {
+    console.error("Clearing abandoned-before-payment tag failed", err);
   }
 }
 

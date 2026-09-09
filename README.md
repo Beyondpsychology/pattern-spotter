@@ -157,6 +157,19 @@ way back to the first question — the round trip through Stripe's hosted
 checkout is a full page navigation, which wipes React state, so this has to
 survive in `localStorage` rather than component state.
 
+**Tracking who never converts:** anyone who leaves their email but has never
+completed a paid reading gets tagged `abandoned-before-payment` in
+ActiveCampaign (`tagAbandonedBeforePayment` in `lib/activeCampaign.ts`,
+called from `app/api/email-capture/route.ts`). The tag is removed the moment
+they actually complete a paid reading (`clearAbandonedBeforePayment`, called
+from `app/api/generate/route.ts`), so the segment only ever contains people
+who genuinely never converted, not returning customers between purchases.
+Build an ActiveCampaign automation on the trigger "tag added:
+abandoned-before-payment" (with a wait step, then a check that the tag is
+still present before sending) to follow up with this segment. Nothing to
+create in ActiveCampaign ahead of time - the tag is created automatically on
+first use.
+
 ### Turning it on
 
 1. Run this migration once in Supabase's SQL Editor (safe to run anytime,

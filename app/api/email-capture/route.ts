@@ -7,7 +7,11 @@ ALTER TABLE email_captures ADD COLUMN IF NOT EXISTS credits_remaining integer no
 
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseAdmin, normalizeEmail } from "@/lib/supabaseAdmin";
-import { syncToActiveCampaign } from "@/lib/activeCampaign";
+import {
+  syncToActiveCampaign,
+  tagAbandonedBeforePayment,
+  clearAbandonedBeforePayment,
+} from "@/lib/activeCampaign";
 import { PAYMENTS_ENABLED, checkTesterCoupon, TESTER_COUPON_CREDITS } from "@/lib/payments";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -89,6 +93,16 @@ export async function POST(req: NextRequest) {
         console.error("email-capture insert error", insertError);
         return NextResponse.json({ error: "database_error" }, { status: 500 });
       }
+    }
+
+    // Segments people who've left their email but never completed a paid
+    // reading, so an ActiveCampaign automation can follow up with them.
+    // Both functions swallow their own errors, so a tagging hiccup can never
+    // block someone from using the tool.
+    if (existing?.has_completed) {
+      await clearAbandonedBeforePayment(normalized);
+    } else {
+      await tagAbandonedBeforePayment(normalized, name);
     }
 
     return NextResponse.json({ paymentsEnabled: true, status: "ok", credits });
