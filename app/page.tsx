@@ -232,7 +232,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-stat-grid">
             <div className="ps2-stat-card"><div className="ps2-stat-num">Free</div><div className="ps2-stat-label">To start</div></div>
-            <div className="ps2-stat-card"><div className="ps2-stat-num">4</div><div className="ps2-stat-label">Questions</div></div>
+            <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Questions</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Sections</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">Instant</div><div className="ps2-stat-label">Access</div></div>
           </div>
