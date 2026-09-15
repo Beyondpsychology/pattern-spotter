@@ -355,6 +355,9 @@ export default function PatternSpotterSalespageV2() {
         <div className="ps2-container">
           <h2 className="ps2-h2 ps2-h center">What people are saying</h2>
           <div className="ps2-testimonial">
+            <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;The pattern spotter helped me get to the core of a wound I could not lay my finger on myself. Really helpful! I love how easy this is. Thank you!&quot;</p>
+          </div>
+          <div className="ps2-testimonial">
             <p className="ps2-p" style={{ fontStyle: "italic", marginBottom: 0 }}>&quot;Thank you for this! The results put tears in my eyes. It felt very personal and safe. Easy to use, and I liked the feature where you choose what fits best.&quot;</p>
           </div>
           <div className="ps2-testimonial">
