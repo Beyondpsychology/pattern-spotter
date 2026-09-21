@@ -143,10 +143,17 @@ appears right before the reading itself would be generated (the actual
 Anthropic call), when someone has 0 credits at that moment. This is
 deliberate — asking for payment after someone has already invested a few
 minutes answering the questions converts better than asking upfront. The
-paywall (`components/tool/BuyAccess.tsx`) offers 3 packs, configured in
-`lib/stripe.ts` (`CREDIT_PACKS`): 1 reading for €7.99, 3 for €19, or 5 for
-€27. The "X readings left" count shows on the question form and the reading
-itself once you have any credits.
+paywall (`components/tool/BuyAccess.tsx`) offers a single pack, configured in
+`lib/stripe.ts` (`CREDIT_PACKS`): 5 readings for €27. The "X readings left"
+count shows on the question form and the reading itself once you have any
+credits.
+
+**Currency:** the actual charge is always in EUR via Stripe - that isn't
+localized. `components/tool/BuyAccess.tsx` shows a rough USD equivalent
+underneath the price when the visitor's browser locale looks like `en-US`
+(`lib/currency.ts`, `isLikelyUsVisitor`/`formatApproxUsd`), using a fixed,
+manually-set exchange rate purely as a reference for the visitor, not an
+attempt at real geolocation or a live rate.
 
 If someone already answered the questions and picked a hypothesis before
 hitting the paywall, their answers + chosen belief are stashed in
@@ -198,8 +205,8 @@ first use.
   Every route branches on this flag: unset/false keeps the original
   `has_completed` logic untouched; `true` switches to `credits_remaining`.
 - `components/tool/BuyAccess.tsx` — shown right before generating the reading
-  when someone has 0 credits, offering the 3 packs from `CREDIT_PACKS`.
-  Picking one calls `/api/create-checkout-session` with that pack's `id`,
+  when someone has 0 credits, offering the single pack from `CREDIT_PACKS`.
+  Buying it calls `/api/create-checkout-session` with that pack's `id`,
   which creates a Stripe Checkout Session (storing the pack's credit count in
   the session's own metadata, not re-derived from price later) and redirects
   to Stripe's hosted payment page.

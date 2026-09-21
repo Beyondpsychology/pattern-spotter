@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { CREDIT_PACKS, type CreditPack } from "@/lib/stripe";
+import { useEffect, useState } from "react";
+import { CREDIT_PACKS } from "@/lib/stripe";
 import { trackInitiateCheckout } from "@/lib/metaPixel";
 import { loadTrafficSource } from "@/lib/trafficSource";
+import { isLikelyUsVisitor, formatApproxUsd } from "@/lib/currency";
 
-const BEST_VALUE_ID = "pack-5";
+const PACK = CREDIT_PACKS[0];
 
 function formatEuros(cents: number) {
   const euros = cents / 100;
@@ -19,17 +20,22 @@ export default function BuyAccess({
   name: string;
   email: string;
 }) {
-  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showUsd, setShowUsd] = useState(false);
 
-  async function handleBuy(pack: CreditPack) {
+  useEffect(() => {
+    setShowUsd(isLikelyUsVisitor());
+  }, []);
+
+  async function handleBuy() {
     setError(null);
-    setLoadingId(pack.id);
+    setLoading(true);
     try {
       const res = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, packId: pack.id, trafficSource: loadTrafficSource() }),
+        body: JSON.stringify({ name, email, packId: PACK.id, trafficSource: loadTrafficSource() }),
       });
 
       if (!res.ok) throw new Error();
@@ -37,11 +43,11 @@ export default function BuyAccess({
       const data = await res.json();
       if (!data.url) throw new Error();
 
-      trackInitiateCheckout(pack);
+      trackInitiateCheckout(PACK);
       window.location.href = data.url;
     } catch {
       setError("Something went wrong. Please try again.");
-      setLoadingId(null);
+      setLoading(false);
     }
   }
 
@@ -51,36 +57,30 @@ export default function BuyAccess({
       <h1 className="text-3xl mb-4 leading-tight">Unlock it now</h1>
       <div className="divider" />
       <p className="text-dark/80 leading-relaxed mb-10 max-w-[480px] mx-auto">
-        Choose one reading now, or a pack to come back to for different
-        situations, different layers, the same pattern seen from a new angle
-        each time.
+        One pack, five readings to come back to for different situations,
+        different layers, the same pattern seen from a new angle each time.
       </p>
 
       {error && <p className="text-terracotta text-sm mb-4">{error}</p>}
 
-      <div className="grid gap-4 sm:grid-cols-3 max-w-2xl mx-auto">
-        {CREDIT_PACKS.map((pack) => {
-          const isBestValue = pack.id === BEST_VALUE_ID;
-          return (
-            <button
-              key={pack.id}
-              type="button"
-              onClick={() => handleBuy(pack)}
-              disabled={loadingId !== null}
-              className={`card text-center disabled:opacity-50 disabled:cursor-not-allowed ${
-                isBestValue ? "border-2 border-terracotta" : ""
-              }`}
-            >
-              {isBestValue && <p className="eyebrow-chip mb-3">Best value</p>}
-              <p className="eyebrow text-lg mb-1">{pack.label}</p>
-              <p className="font-display text-4xl mb-4 text-dark">{formatEuros(pack.priceCents)}</p>
-              <p className="text-sm font-semibold text-brown">
-                {loadingId === pack.id ? "Redirecting..." : "Get this pack"}
-              </p>
-            </button>
-          );
-        })}
-      </div>
+      <button
+        type="button"
+        onClick={handleBuy}
+        disabled={loading}
+        className="card text-center disabled:opacity-50 disabled:cursor-not-allowed max-w-xs mx-auto block w-full"
+      >
+        <p className="eyebrow text-lg mb-1">{PACK.label}</p>
+        <p className="font-display text-4xl mb-1 text-dark">{formatEuros(PACK.priceCents)}</p>
+        {showUsd && (
+          <p className="text-xs text-dark/50 mb-3">
+            approx. {formatApproxUsd(PACK.priceCents)} — charged in EUR
+          </p>
+        )}
+        {!showUsd && <div className="mb-4" />}
+        <p className="text-sm font-semibold text-brown">
+          {loading ? "Redirecting..." : "Unlock now"}
+        </p>
+      </button>
     </div>
   );
 }

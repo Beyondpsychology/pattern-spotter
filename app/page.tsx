@@ -45,8 +45,8 @@ const faqs = [
   { q: "How does the Pattern Spotter actually work?", a: "You answer five questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button, and you also get the whole thing as a PDF, downloadable on the spot and emailed to you." },
   { q: "Is this AI?", a: "Yes — the Pattern Spotter is powered by AI, built on Myrthe's own clinical framework and the exact methodology she uses in real sessions, not a general-purpose chatbot. It's not a back-and-forth conversation: you answer five questions and get one structured reading built from them, and it's not a replacement for therapy." },
   { q: "Is this private? Who sees what I type in?", a: "We ask for your email to give you your reading, that's it. What you write is used only to generate it." },
-  { q: "What does it cost?", a: "Answering the five questions and seeing your possible patterns is free. You only choose a price once your reading is ready to reveal: from €7.99 for one reading, up to €27 for a 5-pack." },
-  { q: "Can I run it more than once?", a: "Yes — buy one reading at a time, or a pack of 3 or 5 to come back to later, any time you want to go deeper: different situations, different layers, the same pattern seen from a new angle." },
+  { q: "What does it cost?", a: "Answering the five questions and seeing your possible patterns is free. Once your reading is ready to reveal, unlocking it is €27 for a pack of 5 readings." },
+  { q: "Can I run it more than once?", a: "Yes — one pack gives you 5 readings to come back to later, any time you want to go deeper: different situations, different layers, the same pattern seen from a new angle." },
 ];
 
 function FaqItem({ item }: { item: { q: string; a: string } }) {
@@ -228,7 +228,7 @@ export default function PatternSpotterSalespageV2() {
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
-            <p className="ps2-cta-subtext">Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
+            <p className="ps2-cta-subtext">Free to start — €27 for 5 readings once yours is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
           <div className="ps2-stat-grid">
             <div className="ps2-stat-card"><div className="ps2-stat-num">Free</div><div className="ps2-stat-label">To start</div></div>
@@ -321,7 +321,7 @@ export default function PatternSpotterSalespageV2() {
             ))}
           </div>
           <div className="ps2-cta-wrap">
-            <a href="/tool" className="ps2-btn on-mint">Start spotting from €7.99</a>
+            <a href="/tool" className="ps2-btn on-mint">Start spotting for €27</a>
           </div>
         </div>
       </section>
@@ -377,7 +377,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Show me my pattern</a>
-            <p className="ps2-cta-subtext">Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
+            <p className="ps2-cta-subtext">Free to start — €27 for 5 readings once yours is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
       </section>
@@ -392,7 +392,7 @@ export default function PatternSpotterSalespageV2() {
             <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)", marginBottom: 0 }}>Free to</p>
             <div className="ps2-price-big">Begin now</div>
             <a href="/tool" className="ps2-btn on-mint">I am ready</a>
-            <p className="ps2-cta-subtext" style={{ color: "rgba(255,255,255,0.85)" }}>Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
+            <p className="ps2-cta-subtext" style={{ color: "rgba(255,255,255,0.85)" }}>Free to start — €27 for 5 readings once yours is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
       </section>
@@ -467,7 +467,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
-            <p className="ps2-cta-subtext">Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
+            <p className="ps2-cta-subtext">Free to start — €27 for 5 readings once yours is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
       </section>
@@ -481,7 +481,7 @@ export default function PatternSpotterSalespageV2() {
           </div>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Start my reading</a>
-            <p className="ps2-cta-subtext">Free to start — pricing begins at just €7.99 once your reading is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
+            <p className="ps2-cta-subtext">Free to start — €27 for 5 readings once yours is ready. Instant access, no account needed. Five questions, five sections back. Written by a psychologist, not a chatbot. Sent to your inbox as a PDF.</p>
           </div>
         </div>
       </section>
