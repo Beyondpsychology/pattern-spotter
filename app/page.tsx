@@ -45,6 +45,7 @@ const faqs = [
   { q: "How does the Pattern Spotter actually work?", a: "You answer five questions, choose which explanation feels most true, and get five sections back: the pattern, where it came from, where it's still running, where you're less of a victim than you think, and a practice to try. Each section sits in its own card with a copy button, and you also get the whole thing as a PDF, downloadable on the spot and emailed to you." },
   { q: "Is this AI?", a: "Yes — the Pattern Spotter is powered by AI, built on Myrthe's own clinical framework and the exact methodology she uses in real sessions, not a general-purpose chatbot. It's not a back-and-forth conversation: you answer five questions and get one structured reading built from them, and it's not a replacement for therapy." },
   { q: "Is this private? Who sees what I type in?", a: "We ask for your email to give you your reading, that's it. What you write is used only to generate it." },
+  { q: "Do I need to answer in English?", a: "No — answer in whatever language feels natural, we'll understand it. Your reading itself always comes back in English." },
   { q: "What does it cost?", a: "Answering the five questions and seeing your possible patterns is free. Once your reading is ready to reveal, unlocking it is €27 for a pack of 5 readings." },
   { q: "Can I run it more than once?", a: "Yes — one pack gives you 5 readings to come back to later, any time you want to go deeper: different situations, different layers, the same pattern seen from a new angle." },
 ];

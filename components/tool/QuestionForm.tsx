@@ -130,6 +130,9 @@ export default function QuestionForm({
       <p className="eyebrow text-base mb-2 text-center">
         What you write here is private. It is used only to generate your reading, never stored, and never seen by us.
       </p>
+      <p className={`text-xs text-dark/45 text-center max-w-md mx-auto ${voiceSupported ? "mb-2" : "mb-8"}`}>
+        Answer in whatever language feels natural — your reading itself always comes back in English.
+      </p>
       {voiceSupported && (
         <p className="text-xs text-dark/45 text-center mb-8 max-w-md mx-auto">
           Prefer to talk? Voice input is transcribed by your browser&apos;s
