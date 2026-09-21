@@ -232,7 +232,7 @@ export default function PatternSpotterSalespageV2() {
             <p className="ps2-cta-subtext">€27 for 5 readings. Instant access, no account needed. Five questions, five sections back. Built by a psychologist. Sent to your inbox as a PDF.</p>
           </div>
           <div className="ps2-stat-grid">
-            <div className="ps2-stat-card"><div className="ps2-stat-num">Free</div><div className="ps2-stat-label">To start</div></div>
+            <div className="ps2-stat-card"><div className="ps2-stat-num">€27</div><div className="ps2-stat-label">5 readings</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Questions</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Sections</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">Instant</div><div className="ps2-stat-label">Access</div></div>
