@@ -148,12 +148,8 @@ paywall (`components/tool/BuyAccess.tsx`) offers a single pack, configured in
 count shows on the question form and the reading itself once you have any
 credits.
 
-**Currency:** the actual charge is always in EUR via Stripe - that isn't
-localized. `components/tool/BuyAccess.tsx` shows a rough USD equivalent
-underneath the price when the visitor's browser locale looks like `en-US`
-(`lib/currency.ts`, `isLikelyUsVisitor`/`formatApproxUsd`), using a fixed,
-manually-set exchange rate purely as a reference for the visitor, not an
-attempt at real geolocation or a live rate.
+**Currency:** the charge is always in EUR via Stripe, shown as such
+everywhere - not localized per visitor.
 
 If someone already answered the questions and picked a hypothesis before
 hitting the paywall, their answers + chosen belief are stashed in

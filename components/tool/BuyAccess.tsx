@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CREDIT_PACKS } from "@/lib/stripe";
 import { trackInitiateCheckout } from "@/lib/metaPixel";
 import { loadTrafficSource } from "@/lib/trafficSource";
-import { isLikelyUsVisitor, formatApproxUsd } from "@/lib/currency";
 
 const PACK = CREDIT_PACKS[0];
 
@@ -22,11 +21,6 @@ export default function BuyAccess({
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showUsd, setShowUsd] = useState(false);
-
-  useEffect(() => {
-    setShowUsd(isLikelyUsVisitor());
-  }, []);
 
   async function handleBuy() {
     setError(null);
@@ -70,13 +64,7 @@ export default function BuyAccess({
         className="card text-center disabled:opacity-50 disabled:cursor-not-allowed max-w-xs mx-auto block w-full"
       >
         <p className="eyebrow text-lg mb-1">{PACK.label}</p>
-        <p className="font-display text-4xl mb-1 text-dark">{formatEuros(PACK.priceCents)}</p>
-        {showUsd && (
-          <p className="text-xs text-dark/50 mb-3">
-            approx. {formatApproxUsd(PACK.priceCents)} — charged in EUR
-          </p>
-        )}
-        {!showUsd && <div className="mb-4" />}
+        <p className="font-display text-4xl mb-4 text-dark">{formatEuros(PACK.priceCents)}</p>
         <p className="text-sm font-semibold text-brown">
           {loading ? "Redirecting..." : "Unlock now"}
         </p>
