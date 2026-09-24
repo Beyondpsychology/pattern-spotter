@@ -104,6 +104,21 @@ export default function QuestionForm({
 
   const answeredCount = Object.values(answers).filter((v) => v.trim()).length;
 
+  function handleSaveAnswers() {
+    const text = FIELDS.map((field) => `${field.label}\n${answers[field.key] || "(not answered)"}`).join(
+      "\n\n"
+    );
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "pattern-spotter-answers.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
@@ -173,6 +188,13 @@ export default function QuestionForm({
 
         <button type="submit" disabled={loading} className="btn-primary">
           {loading ? "Reading..." : "Show me the pattern"}
+        </button>
+        <button
+          type="button"
+          onClick={handleSaveAnswers}
+          className="block mx-auto mt-4 text-sm text-dark/50 underline hover:text-dark"
+        >
+          Save my answers as a text file
         </button>
       </form>
     </div>

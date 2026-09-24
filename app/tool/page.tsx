@@ -60,6 +60,46 @@ function clearPendingGeneration() {
   }
 }
 
+// Holds name + email + answers + hypotheses as soon as hypotheses come back,
+// purely client-side (never sent to or stored by us), so that closing the
+// tab mid-way through choosing a hypothesis doesn't lose everything and send
+// someone all the way back to the email gate. Cleared the moment a reading
+// is actually shown.
+const IN_PROGRESS_SESSION_KEY = "pattern-spotter:in-progress-session";
+
+type InProgressSession = { name: string; email: string; answers: Answers; hypotheses: string[] };
+
+function saveInProgressSession(name: string, email: string, answers: Answers, hypotheses: string[]) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(
+      IN_PROGRESS_SESSION_KEY,
+      JSON.stringify({ name, email, answers, hypotheses })
+    );
+  } catch {
+    // ignore storage errors (private browsing, quota, etc.)
+  }
+}
+
+function loadInProgressSession(): InProgressSession | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(IN_PROGRESS_SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearInProgressSession() {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(IN_PROGRESS_SESSION_KEY);
+  } catch {
+    // ignore storage errors (private browsing, quota, etc.)
+  }
+}
+
 function ToolPageInner() {
   const searchParams = useSearchParams();
   const [stage, setStage] = useState<Stage>("email");
@@ -109,6 +149,59 @@ function ToolPageInner() {
       setPaymentsEnabled(true);
       setStage("buy-access");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Resumes a session where someone answered the questions, got their
+  // hypotheses, and then closed the tab before picking one - restores from
+  // localStorage instead of sending them all the way back to the email
+  // gate. Skipped when returning from Stripe checkout, which has its own
+  // resume path above.
+  useEffect(() => {
+    if (searchParams.get("checkout")) return;
+
+    const saved = loadInProgressSession();
+    if (!saved) return;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/email-capture", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: saved.name, email: saved.email }),
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        // In free mode, someone could have completed their one reading
+        // elsewhere since this session was saved - show that instead of a
+        // now-meaningless stale hypothesis list.
+        if (!data.paymentsEnabled && data.status === "already_completed") {
+          clearInProgressSession();
+          if (data.reading) {
+            setName(saved.name);
+            setEmail(saved.email);
+            setReading(data.reading);
+            setStage("reading");
+          }
+          return;
+        }
+
+        setName(saved.name);
+        setEmail(saved.email);
+        setAnswers(saved.answers);
+        setHypotheses(saved.hypotheses);
+
+        if (data.paymentsEnabled) {
+          setPaymentsEnabled(true);
+          setCredits(data.credits ?? 0);
+        }
+
+        setStage("hypotheses");
+      } catch {
+        // stay on the email gate if this fails for any reason
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -227,6 +320,7 @@ function ToolPageInner() {
 
       const data = await res.json();
       setHypotheses(data.hypotheses);
+      saveInProgressSession(name, email, submittedAnswers, data.hypotheses);
       setStage("hypotheses");
     } catch {
       setQuestionsError("Something went wrong. Please try again.");
@@ -265,6 +359,7 @@ function ToolPageInner() {
         if (data?.reading) {
           clearDraftAnswers();
           clearPendingGeneration();
+          clearInProgressSession();
           if (typeof data.creditsRemaining === "number") setCredits(data.creditsRemaining);
           setReading(data.reading);
           setStage("reading");
@@ -281,6 +376,7 @@ function ToolPageInner() {
       const data = await res.json();
       clearDraftAnswers();
       clearPendingGeneration();
+      clearInProgressSession();
       if (typeof data.creditsRemaining === "number") setCredits(data.creditsRemaining);
       setReading(data);
       setStage("reading");

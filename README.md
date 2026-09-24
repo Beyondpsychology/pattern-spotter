@@ -160,6 +160,21 @@ way back to the first question — the round trip through Stripe's hosted
 checkout is a full page navigation, which wipes React state, so this has to
 survive in `localStorage` rather than component state.
 
+**Surviving a closed tab, not just a Stripe round trip:** separately, as
+soon as hypotheses come back, name + email + answers + hypotheses are saved
+to `localStorage` too (`pattern-spotter:in-progress-session`). If someone
+closes the tab while choosing a hypothesis and comes back later, an effect
+in `app/tool/page.tsx` restores that session (re-validating the email via
+`/api/email-capture` first, so credits/payment state stay correct) and
+resumes straight at the hypothesis screen instead of sending them all the
+way back to the email gate. Cleared the moment a reading is actually shown.
+Purely client-side, same as the question-form draft below - never sent to
+or stored by us.
+
+Separately, `components/tool/QuestionForm.tsx` has a "Save my answers as a
+text file" link under the submit button, so someone can keep their own copy
+of what they wrote - a plain client-side download, not something we store.
+
 **Tracking who never converts:** anyone who leaves their email but has never
 completed a paid reading gets tagged `abandoned-before-payment` in
 ActiveCampaign (`tagAbandonedBeforePayment` in `lib/activeCampaign.ts`,
