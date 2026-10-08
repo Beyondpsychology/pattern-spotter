@@ -94,7 +94,7 @@ export default function EmailGate({
           </div>
         )}
 
-        {error && <p className="text-terracotta text-sm mb-4">{error}</p>}
+        {error && <p className="text-lavender text-sm mb-4">{error}</p>}
         <button type="submit" disabled={loading} className="btn-primary">
           {loading ? "Checking..." : "Start"}
         </button>

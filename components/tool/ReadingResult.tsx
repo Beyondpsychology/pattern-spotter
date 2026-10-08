@@ -58,7 +58,7 @@ export default function ReadingResult({
       <div className="flex flex-col gap-6">
         {sections.map((section, i) => (
           <div key={i} className="card relative pl-7">
-            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-terracotta rounded-l-card" />
+            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-lavender rounded-l-card" />
             <h3 className="text-xl mb-4">{section.heading}</h3>
             <p className="whitespace-pre-wrap leading-relaxed text-dark/90 mb-4">
               {section.body}
@@ -133,7 +133,7 @@ export default function ReadingResult({
       </div>
 
       <div className="mt-8 text-center">
-        {downloadError && <p className="text-terracotta text-sm mb-4">{downloadError}</p>}
+        {downloadError && <p className="text-lavender text-sm mb-4">{downloadError}</p>}
         <button
           onClick={handleDownload}
           disabled={downloading}

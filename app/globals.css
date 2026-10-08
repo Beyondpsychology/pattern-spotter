@@ -32,7 +32,7 @@
   .field-textarea:focus {
     outline: none;
     border-width: 2px;
-    border-color: theme("colors.terracotta");
+    border-color: theme("colors.lavender");
     padding: 11px 15px;
   }
 

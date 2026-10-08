@@ -55,7 +55,7 @@ export default function BuyAccess({
         different layers, the same pattern seen from a new angle each time.
       </p>
 
-      {error && <p className="text-terracotta text-sm mb-4">{error}</p>}
+      {error && <p className="text-lavender text-sm mb-4">{error}</p>}
 
       <button
         type="button"

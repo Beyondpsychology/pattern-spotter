@@ -68,14 +68,12 @@ const PS2_STYLES = `
         .ps2-root {
           --dark: #2C3535;
           --cream: #F5F0E8;
-          --terracotta: #D9735C;
           --mint: #d4e4e0;
           --brown: #7a6248;
           --eyebrow: #c89878;
           --text: #1a1208;
           --lavender: #807bb7;
           --mint-btn: #c89878;
-          --terracotta-bright: #c4522a;
           --peach: #f2e2da;
           font-family: 'Open Sans', sans-serif;
           font-weight: 300;
@@ -129,14 +127,14 @@ const PS2_STYLES = `
         .ps2-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
         .ps2-btn.outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.6); }
         .ps2-btn.on-mint { background: var(--mint-btn); }
-        .ps2-btn.bright { background: var(--terracotta-bright); }
+        .ps2-btn.bright { background: var(--lavender); }
         .ps2-cta-wrap { text-align: center; margin-top: 32px; }
         .ps2-cta-subtext { font-size: 13px; color: #6a6357; margin-top: 14px; max-width: 480px; margin-left: auto; margin-right: auto; }
         .ps2-section.dark .ps2-cta-subtext, .ps2-section.lavender .ps2-cta-subtext { color: rgba(255,255,255,0.75); }
         .ps2-stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
         @media (min-width: 560px) { .ps2-stat-grid { grid-template-columns: repeat(4, 1fr); } }
         .ps2-stat-card { background: #fff; border-radius: 16px; padding: 28px 12px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
-        .ps2-stat-num { font-family: 'Abril Fatface', serif; font-size: 30px; color: var(--terracotta); margin-bottom: 4px; }
+        .ps2-stat-num { font-family: 'Abril Fatface', serif; font-size: 30px; color: var(--lavender); margin-bottom: 4px; }
         .ps2-stat-label { font-size: 13px; color: #4a453c; }
 
         .ps2-grid2 { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
@@ -156,13 +154,13 @@ const PS2_STYLES = `
         .ps2-steps { margin-top: 40px; display: flex; flex-direction: column; gap: 0; }
         .ps2-step { display: flex; gap: 20px; padding: 24px 0; border-top: 1px solid rgba(44,53,53,0.12); }
         .ps2-step:last-child { border-bottom: 1px solid rgba(44,53,53,0.12); }
-        .ps2-step-num { font-family: 'Abril Fatface', serif; font-size: 22px; color: var(--terracotta); flex-shrink: 0; width: 36px; }
+        .ps2-step-num { font-family: 'Abril Fatface', serif; font-size: 22px; color: var(--lavender); flex-shrink: 0; width: 36px; }
         .ps2-step-title { font-weight: 700; font-size: 17px; margin: 0 0 6px; color: var(--dark); }
         .ps2-step-body { font-size: 14.5px; color: #4a453c; margin: 0; line-height: 1.6; }
 
         .ps2-checklist { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; }
         .ps2-check-item { display: flex; gap: 12px; align-items: flex-start; font-size: 15.5px; line-height: 1.6; }
-        .ps2-check-icon { color: var(--terracotta); flex-shrink: 0; margin-top: 2px; }
+        .ps2-check-icon { color: var(--lavender); flex-shrink: 0; margin-top: 2px; }
 
         .ps2-testimonial {
           background: #fff; border-radius: 16px; padding: 28px; margin-top: 20px;
@@ -383,8 +381,8 @@ export default function PatternSpotterSalespageV2() {
         </div>
       </section>
 
-      {/* GET IT NOW / bright terracotta CTA block */}
-      <section className="ps2-section" style={{ background: "var(--terracotta-bright)", color: "#fff" }} id="tool">
+      {/* GET IT NOW CTA block */}
+      <section className="ps2-section" style={{ background: "var(--lavender)", color: "#fff" }} id="tool">
         <div className="ps2-container">
           <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)" }}>You are invited to</p>
           <h2 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>Get the Pattern Spotter now</h2>

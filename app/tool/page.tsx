@@ -432,7 +432,7 @@ function ToolPageInner() {
           {stage === "questions" && (
             <>
               {questionsError && (
-                <p className="text-terracotta text-sm mb-4 text-center">{questionsError}</p>
+                <p className="text-lavender text-sm mb-4 text-center">{questionsError}</p>
               )}
               <QuestionForm
                 initialAnswers={answers ?? undefined}
@@ -447,7 +447,7 @@ function ToolPageInner() {
           {stage === "hypotheses" && (
             <>
               {hypothesesError && (
-                <p className="text-terracotta text-sm mb-4 text-center">{hypothesesError}</p>
+                <p className="text-lavender text-sm mb-4 text-center">{hypothesesError}</p>
               )}
               <HypothesisSelection hypotheses={hypotheses} onSelect={handleHypothesisSelect} />
             </>

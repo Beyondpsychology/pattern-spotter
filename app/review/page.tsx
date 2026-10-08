@@ -82,7 +82,7 @@ function ReviewPageInner() {
                   onClick={() => setRating(star)}
                   aria-label={`${star} star${star === 1 ? "" : "s"}`}
                   className={`text-3xl leading-none transition ${
-                    star <= rating ? "text-terracotta" : "text-dark/20"
+                    star <= rating ? "text-lavender" : "text-dark/20"
                   }`}
                 >
                   ★
@@ -128,7 +128,7 @@ function ReviewPageInner() {
               className="field-textarea mb-6"
             />
 
-            {error && <p className="text-terracotta text-sm mb-4">{error}</p>}
+            {error && <p className="text-lavender text-sm mb-4">{error}</p>}
             <button type="submit" disabled={submitting} className="btn-primary">
               {submitting ? "Submitting..." : "Submit review"}
             </button>

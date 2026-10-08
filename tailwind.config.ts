@@ -10,7 +10,6 @@ const config: Config = {
       colors: {
         dark: "#2C3535",
         cream: "#F5F0E8",
-        terracotta: "#D9735C",
         mint: "#d4e4e0",
         lavender: "#807bb7",
         brown: "#7a6248",

@@ -7,7 +7,6 @@ import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 
 const DARK = "#2C3535";
 const CREAM = "#F5F0E8";
-const TERRACOTTA = "#D9735C";
 const MINT = "#d4e4e0";
 const LAVENDER = "#807bb7";
 const TEXT = "#1a1208";
@@ -62,7 +61,7 @@ function drawCircularPhoto(
     doc.image(photoBuffer, x, y, { width: size, height: size });
     doc.restore();
   } else {
-    doc.fillOpacity(0.25).fillColor(TERRACOTTA);
+    doc.fillOpacity(0.25).fillColor(LAVENDER);
     doc.circle(x + size / 2, y + size / 2, size / 2).fill();
     doc.fillOpacity(1);
   }
@@ -136,7 +135,7 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
       if (i > 0) doc.moveDown(1.4);
 
       const barY = doc.y + 3;
-      doc.rect(doc.page.margins.left, barY, 4, 15).fill(TERRACOTTA);
+      doc.rect(doc.page.margins.left, barY, 4, 15).fill(LAVENDER);
 
       doc
         .fillColor(TEXT)
