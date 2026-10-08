@@ -245,7 +245,10 @@ export default function PatternSpotterSalespageV2() {
             <span className="ps2-quote-highlight">without needing me in the room</span>.
           </p>
           <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 28 }}>
-            Answer five questions and get the reading I&apos;d give you if you were sitting across from me: honest, precise, and kind. You finally see why you do what you do, where it started, and why it made complete sense. Not because something is wrong with you. Because there never was. So you can finally understand yourself on a deeper level, and get the knowledge to truly start changing your life.
+            Answer five questions and get the reading I&apos;d give you if you were sitting across from me: honest, precise, and kind. You finally see why you do what you do, where it started, and why it made complete sense. Not because something is wrong with you, because there never was, but because you had to learn this pattern to stay safe.
+          </p>
+          <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 16 }}>
+            Start your Pattern Spotter, finally understand yourself on a deeper level, and get the knowledge to truly start changing your life.
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">See my pattern</a>
