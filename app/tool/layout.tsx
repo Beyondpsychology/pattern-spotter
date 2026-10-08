@@ -3,7 +3,7 @@ import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 
 export default function ToolLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-sage flex flex-col">
+    <div className="min-h-screen bg-lavender flex flex-col">
       <SiteHeader />
       <div className="flex-1">{children}</div>
       <footer className="px-6 py-10 md:px-16">

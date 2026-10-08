@@ -73,7 +73,7 @@ const PS2_STYLES = `
           --brown: #7a6248;
           --eyebrow: #c89878;
           --text: #1a1208;
-          --sage: #4a7c6f;
+          --lavender: #807bb7;
           --mint-btn: #c89878;
           --terracotta-bright: #c4522a;
           --peach: #f2e2da;
@@ -96,7 +96,7 @@ const PS2_STYLES = `
         .ps2-section.mint { background: var(--mint); }
         .ps2-section.white { background: #fff; }
         .ps2-section.cream { background: var(--cream); }
-        .ps2-section.sage { background: var(--sage); color: #fff; }
+        .ps2-section.lavender { background: var(--lavender); color: #fff; }
         .ps2-section.dark { background: var(--dark); color: var(--cream); }
 
         .ps2-eyebrow {
@@ -132,7 +132,7 @@ const PS2_STYLES = `
         .ps2-btn.bright { background: var(--terracotta-bright); }
         .ps2-cta-wrap { text-align: center; margin-top: 32px; }
         .ps2-cta-subtext { font-size: 13px; color: #6a6357; margin-top: 14px; max-width: 480px; margin-left: auto; margin-right: auto; }
-        .ps2-section.dark .ps2-cta-subtext, .ps2-section.sage .ps2-cta-subtext { color: rgba(255,255,255,0.75); }
+        .ps2-section.dark .ps2-cta-subtext, .ps2-section.lavender .ps2-cta-subtext { color: rgba(255,255,255,0.75); }
         .ps2-stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
         @media (min-width: 560px) { .ps2-stat-grid { grid-template-columns: repeat(4, 1fr); } }
         .ps2-stat-card { background: #fff; border-radius: 16px; padding: 28px 12px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
@@ -206,7 +206,7 @@ export default function PatternSpotterSalespageV2() {
       <style dangerouslySetInnerHTML={{ __html: PS2_STYLES }} />
 
       {/* HERO */}
-      <section className="ps2-section sage hero-pad" style={{ position: "relative" }}>
+      <section className="ps2-section lavender hero-pad" style={{ position: "relative" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="https://beyondpsychology.eu/wp-content/uploads/2026/08/New-black-white-logo-BP-1-scaled.png"
@@ -447,8 +447,8 @@ export default function PatternSpotterSalespageV2() {
         </div>
       </section>
 
-      {/* WHAT'S INSIDE / sage RECAP */}
-      <section className="ps2-section sage">
+      {/* WHAT'S INSIDE / lavender RECAP */}
+      <section className="ps2-section lavender">
         <div className="ps2-container">
           <h2 className="ps2-h1 ps2-h" style={{ color: "#fff" }}>RECAP: what&apos;s inside</h2>
           <div className="ps2-checklist" style={{ marginTop: 32 }}>

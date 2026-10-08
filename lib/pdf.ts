@@ -9,10 +9,10 @@ const DARK = "#2C3535";
 const CREAM = "#F5F0E8";
 const TERRACOTTA = "#D9735C";
 const MINT = "#d4e4e0";
-const SAGE = "#4a7c6f";
+const LAVENDER = "#807bb7";
 const TEXT = "#1a1208";
 const BODY_TEXT = "#2a2620";
-const MUTED_ON_SAGE = "#d8d2c4";
+const MUTED_ON_LAVENDER = "#d8d2c4";
 
 const MARGIN = 60;
 
@@ -85,7 +85,7 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
     const contentWidth = pageWidth - MARGIN * 2;
 
     // ---------- TITLE PAGE ----------
-    doc.rect(0, 0, pageWidth, pageHeight).fill(SAGE);
+    doc.rect(0, 0, pageWidth, pageHeight).fill(LAVENDER);
 
     doc.fillColor(CREAM).font("Abril").fontSize(15).text("Beyond Psychology", MARGIN, 56);
 
@@ -103,7 +103,7 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
       .text("The Pattern Spotter", MARGIN, doc.y + 14, { width: contentWidth, align: "center" });
 
     doc
-      .fillColor(MUTED_ON_SAGE)
+      .fillColor(MUTED_ON_LAVENDER)
       .font("OpenSans")
       .fontSize(11)
       .text(
@@ -114,14 +114,14 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
       );
 
     doc
-      .fillColor(MUTED_ON_SAGE)
+      .fillColor(MUTED_ON_LAVENDER)
       .font("OpenSans")
       .fontSize(9)
       .text("Beyond Psychology · beyondpsychology.eu", MARGIN, pageHeight - 70, {
         width: contentWidth / 2,
       });
     doc
-      .fillColor(MUTED_ON_SAGE)
+      .fillColor(MUTED_ON_LAVENDER)
       .font("OpenSans")
       .fontSize(9)
       .text("Prepared for you", MARGIN + contentWidth / 2, pageHeight - 70, {
@@ -227,7 +227,7 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
 
     // ---------- ABOUT PAGE ----------
     doc.addPage({ size: "A4", margin: 0 });
-    doc.rect(0, 0, pageWidth, pageHeight).fill(SAGE);
+    doc.rect(0, 0, pageWidth, pageHeight).fill(LAVENDER);
 
     let ay = 90;
     doc.fillColor(MINT).font("CormorantItalic").fontSize(13).text("about beyond psychology", MARGIN, ay);
@@ -250,7 +250,7 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
       "Beyond Psychology is not for pathology, but for change. For real healing, emotional maturity, and freedom. We do not treat what you feel as something to fix. We treat it as the place to begin: to return to yourself, beyond the patterns you inherited and the shame you were taught to carry, and to become what this world has rarely made room for: autonomous, sovereign, emotionally mature, and free.",
     ];
 
-    doc.fillColor(MUTED_ON_SAGE).font("OpenSans").fontSize(9.5);
+    doc.fillColor(MUTED_ON_LAVENDER).font("OpenSans").fontSize(9.5);
     aboutParagraphs.forEach((paragraph) => {
       doc.text(paragraph, MARGIN, ay, { width: contentWidth, lineGap: 3 });
       ay = doc.y + 10;
@@ -274,7 +274,7 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
       .fontSize(8.5)
       .text("Psychologist & Founder of Beyond Psychology", textX, doc.y + 2, { width: textWidth });
     doc
-      .fillColor(MUTED_ON_SAGE)
+      .fillColor(MUTED_ON_LAVENDER)
       .font("OpenSans")
       .fontSize(8.5)
       .text(
@@ -286,17 +286,17 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
 
     const legalY = Math.max(doc.y, ay + photoSize) + 22;
     doc
-      .fillColor(MUTED_ON_SAGE)
+      .fillColor(MUTED_ON_LAVENDER)
       .font("OpenSans")
       .fontSize(7)
       .text(CRISIS_TEXT, MARGIN, legalY, { width: contentWidth, lineGap: 2, align: "center" });
     doc
-      .fillColor(MUTED_ON_SAGE)
+      .fillColor(MUTED_ON_LAVENDER)
       .font("OpenSans")
       .fontSize(7)
       .text(DISCLAIMER_TEXT, MARGIN, doc.y + 5, { width: contentWidth, lineGap: 2, align: "center" });
     doc
-      .fillColor(MUTED_ON_SAGE)
+      .fillColor(MUTED_ON_LAVENDER)
       .font("OpenSans")
       .fontSize(7)
       .text(AI_DISCLOSURE_TEXT, MARGIN, doc.y + 5, { width: contentWidth, lineGap: 2, align: "center" });
