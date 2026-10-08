@@ -91,7 +91,6 @@ const PS2_STYLES = `
         @media (min-width: 768px) { .ps2-section.hero-pad { padding-top: 88px; } }
         .ps2-hero-logo { position: absolute; top: 20px; left: 20px; height: 24px; width: auto; }
         @media (min-width: 768px) { .ps2-hero-logo { top: 24px; left: 24px; height: 36px; } }
-        .ps2-section.mint { background: var(--mint); }
         .ps2-section.white { background: #fff; }
         .ps2-section.cream { background: var(--cream); }
         .ps2-section.lavender { background: var(--lavender); color: #fff; }
@@ -134,7 +133,7 @@ const PS2_STYLES = `
         .ps2-stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 40px; }
         @media (min-width: 560px) { .ps2-stat-grid { grid-template-columns: repeat(4, 1fr); } }
         .ps2-stat-card { background: #fff; border-radius: 16px; padding: 28px 12px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
-        .ps2-stat-num { font-family: 'Abril Fatface', serif; font-size: 30px; color: var(--lavender); margin-bottom: 4px; }
+        .ps2-stat-num { font-family: 'Abril Fatface', serif; font-size: 30px; color: var(--mint-btn); margin-bottom: 4px; }
         .ps2-stat-label { font-size: 13px; color: #4a453c; }
 
         .ps2-grid2 { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
@@ -350,7 +349,7 @@ export default function PatternSpotterSalespageV2() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="ps2-section mint">
+      <section className="ps2-section white">
         <div className="ps2-container">
           <h2 className="ps2-h2 ps2-h center">What people are saying</h2>
           <div className="ps2-testimonial">
