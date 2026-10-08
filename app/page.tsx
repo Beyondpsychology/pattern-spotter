@@ -109,7 +109,7 @@ const PS2_STYLES = `
         .ps2-sub { font-size: 17px; line-height: 1.65; text-align: center; color: #4a453c; max-width: 560px; margin: 0 auto; }
         .ps2-p { font-size: 16px; line-height: 1.7; color: #4a453c; margin: 0 0 16px; }
         .ps2-quote {
-          font-family: var(--font-cormorant); font-weight: 700; font-style: normal;
+          font-family: 'Cormorant Garamond', serif; font-weight: 700; font-style: normal;
           font-size: 26px; line-height: 1.35; text-align: center; max-width: 680px;
           margin: 0 auto;
         }
@@ -222,7 +222,7 @@ export default function PatternSpotterSalespageV2() {
           <p className="ps2-eyebrow" style={{ color: "rgba(255,255,255,0.75)", marginTop: 32 }}>Introducing</p>
           <h2 className="ps2-h2 ps2-h" style={{ color: "#fff", textAlign: "center" }}>The Pattern Spotter</h2>
           <p className="ps2-sub" style={{ color: "rgba(255,255,255,0.9)", marginTop: 20 }}>
-            <strong>The Pattern Spotter</strong> uses the same way of reading I use in my own sessions and personal reads, the same eye for patterns, origins, and blind spots I&apos;ve built over a lifetime of doing this work. You just answer five questions, and choose the explanation that actually lands.
+            Want someone to finally see the pattern that keeps you stuck, instead of piecing it together yourself from years of therapy, books, and journaling that only ever showed you part of it? That&apos;s exactly what the Pattern Spotter does.
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">Yes, I want to see my pattern</a>
@@ -245,10 +245,7 @@ export default function PatternSpotterSalespageV2() {
             <span className="ps2-quote-highlight">without needing me in the room</span>.
           </p>
           <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 28 }}>
-            For the first time, I put everything I do in a session, the origin tracing, the blind spot mapping, the precise naming, into five questions.
-          </p>
-          <p className="ps2-p" style={{ textAlign: "center", color: "rgba(255,255,255,0.85)", maxWidth: 560, marginLeft: "auto", marginRight: "auto", marginTop: 16 }}>
-            Want someone to finally see the pattern that keeps you stuck, instead of piecing it together yourself from years of therapy, books, and journaling that only ever showed you part of it? That&apos;s exactly what this is.
+            Answer five questions and get the reading I&apos;d give you if you were sitting across from me: honest, precise, and kind. You finally see why you do what you do, where it started, and why it made complete sense. Not because something is wrong with you. Because there never was. So you can finally understand yourself on a deeper level, and get the knowledge to truly start changing your life.
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">See my pattern</a>
@@ -404,7 +401,8 @@ export default function PatternSpotterSalespageV2() {
             <img className="ps2-founder-photo" src={MYRTHE_PHOTO_URL} alt="Myrthe Glasbergen" />
             <div>
               <p className="ps2-p" style={{ fontWeight: 700, color: "var(--dark)" }}>Hey, I&apos;m Myrthe.</p>
-              <p className="ps2-p">I&apos;m a psychologist and the founder of Beyond Psychology. My work is about helping you break free from the systems that kept you small: the family system you grew up in, the attachment patterns and coping strategies you built as a child that made sense then and don&apos;t now, and the wider forces, patriarchy, capitalism, gender conditioning, that reinforced all of it, by unshaming what was never actually wrong with you. I built the Pattern Spotter because you already know the word for what you do: people-pleasing, fawning, performing. What you don&apos;t have is someone looking at your specific situation and saying clearly, here is your pattern, here is where it came from, and here is the place you&apos;re less stuck than you think.</p>
+              <p className="ps2-p">I&apos;m a psychologist and the founder of Beyond Psychology. My work is about helping you break free from the systems that kept you small: the family system you grew up in, the attachment patterns and coping strategies you built as a child that made sense then and don&apos;t now, and the wider forces, patriarchy, capitalism, gender conditioning, that reinforced all of it, by unshaming what was never actually wrong with you.</p>
+              <p className="ps2-p">I built the Pattern Spotter because you already know the word for what you do: people-pleasing, fawning, performing. What you don&apos;t have is someone looking at your specific situation and saying clearly, here is your pattern, here is where it came from, and here is the place you&apos;re less stuck than you think.</p>
               <p className="ps2-p">That&apos;s what the Pattern Spotter gives you. Not soft coaching. Precise, accurate, and without judgment.</p>
               <p className="ps2-signature">Myrthe</p>
               <div className="ps2-cta-wrap" style={{ textAlign: "left", marginTop: 24 }}>
