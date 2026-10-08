@@ -59,7 +59,7 @@ export default function ReadingResult({
         {sections.map((section, i) => (
           <div key={i} className="card relative pl-7">
             <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-lavender rounded-l-card" />
-            <h3 className="text-xl mb-4">{section.heading}</h3>
+            <h3 className="font-display text-xl mb-4">{section.heading}</h3>
             <p className="whitespace-pre-wrap leading-relaxed text-dark/90 mb-4">
               {section.body}
             </p>
@@ -71,7 +71,7 @@ export default function ReadingResult({
       </div>
 
       <div className="bg-dark text-cream rounded-card p-8 mt-10">
-        <h3 className="text-2xl mb-6">If you want to work on this more</h3>
+        <h3 className="font-display text-2xl mb-6">If you want to work on this more</h3>
 
         {sessions.length > 0 && (
           <>

@@ -48,7 +48,7 @@ export default function BuyAccess({
   return (
     <div className="text-center">
       <p className="eyebrow text-base mb-3">Your reading is ready</p>
-      <h1 className="text-3xl mb-4 leading-tight">Unlock it now</h1>
+      <h1 className="font-display text-3xl mb-4 leading-tight">Unlock it now</h1>
       <div className="divider" />
       <p className="text-dark/80 leading-relaxed mb-10 max-w-[480px] mx-auto">
         One pack, five readings to come back to for different situations,

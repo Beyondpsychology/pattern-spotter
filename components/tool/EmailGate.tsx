@@ -34,7 +34,7 @@ export default function EmailGate({
   return (
     <div className="text-center">
       <p className="eyebrow text-base mb-3">Introducing</p>
-      <h1 className="text-4xl md:text-5xl mb-4 leading-tight">The Pattern Spotter</h1>
+      <h1 className="font-display text-4xl md:text-5xl mb-4 leading-tight">The Pattern Spotter</h1>
       <div className="divider" />
       <p className="text-dark/80 leading-relaxed mb-10 max-w-[560px] mx-auto">
         You were never too much. You were just never safe enough to be

@@ -44,7 +44,7 @@ function ReviewPageInner() {
         <div className="max-w-[560px] mx-auto">
           <div className="bg-white rounded-card shadow-card p-8 md:p-14 text-center">
             <p className="eyebrow text-base mb-3">Thank you</p>
-            <h1 className="text-3xl mb-4 leading-tight">Your review means a lot</h1>
+            <h1 className="font-display text-3xl mb-4 leading-tight">Your review means a lot</h1>
             <div className="divider" />
             <p className="text-dark/80 leading-relaxed">
               Thank you for taking the time to share this — it genuinely helps
@@ -62,7 +62,7 @@ function ReviewPageInner() {
         <div className="bg-white rounded-card shadow-card p-8 md:p-14">
           <div className="text-center">
             <p className="eyebrow text-base mb-3">Share your experience</p>
-            <h1 className="text-3xl mb-4 leading-tight">
+            <h1 className="font-display text-3xl mb-4 leading-tight">
               How was your Pattern Spotter reading?
             </h1>
             <div className="divider" />
