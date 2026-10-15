@@ -15,6 +15,7 @@ export async function GET() {
       console.error("keep-alive: query failed", error);
       return NextResponse.json({ ok: false }, { status: 500 });
     }
+    console.log("keep-alive: ok", new Date().toISOString());
     return NextResponse.json({ ok: true, at: new Date().toISOString() });
   } catch (err) {
     console.error("keep-alive: unhandled error", err);
