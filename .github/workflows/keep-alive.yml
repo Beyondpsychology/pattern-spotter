@@ -1,0 +1,19 @@
+name: Keep Supabase alive
+
+# Independent of Vercel's own cron (see vercel.json, runs daily at 06:00 UTC).
+# Supabase's free tier pauses a project after 7 days with no API activity,
+# and that single Vercel cron has not been reliable enough on its own to
+# prevent it - this is a second, unrelated trigger (GitHub's scheduler
+# instead of Vercel's) hitting the same public endpoint 12 hours apart, so
+# one of the two missing a day doesn't matter.
+on:
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping keep-alive endpoint
+        run: curl -fsS --retry 3 --retry-delay 5 https://patternspotter.beyondpsychology.eu/api/keep-alive

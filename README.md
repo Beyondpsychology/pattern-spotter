@@ -290,14 +290,21 @@ you already hand-pick testimonials for the salespage.
 Supabase's free tier auto-pauses a project after 7 days with no API/database
 activity — visitors get a 500 error until someone notices and manually
 restores it in the Supabase dashboard. `vercel.json` runs a daily Vercel
-Cron job that hits `/api/keep-alive` (a trivial one-row read), which counts
-as activity and resets that 7-day clock, so a quiet week never takes the
-tool down silently.
+Cron job that hits `/api/keep-alive` (a trivial one-row read, retried a few
+times on transient failures), which counts as activity and resets that
+7-day clock, so a quiet week never takes the tool down silently.
+
+The Vercel Cron alone wasn't reliable enough in practice — the project still
+got auto-paused more than once despite it. `.github/workflows/keep-alive.yml`
+adds a second, independent daily ping (GitHub's scheduler instead of
+Vercel's, 12 hours apart from the Vercel cron) at the same `/api/keep-alive`
+URL, so one scheduler having an off day doesn't matter.
 
 This is a stopgap. Once real payments are flowing, upgrade the Supabase
 project to a paid plan instead — those never auto-pause, and at that point
 an unexpected pause is a lot more costly than $25/month. When that happens,
-`/api/keep-alive` and the cron entry in `vercel.json` can be deleted.
+`/api/keep-alive`, the cron entry in `vercel.json`, and
+`.github/workflows/keep-alive.yml` can all be deleted.
 
 ## Project structure
 
