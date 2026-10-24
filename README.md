@@ -332,8 +332,10 @@ Spotter" — not a login, and nothing synced into this tool's own database.
   mode) and the one-free-reading check (free mode) when a valid session
   token is present, and never decrements or writes `credits_remaining` for
   that request.
-- Members are not tagged in ActiveCampaign as "abandoned-before-payment" or
-  otherwise specially marked there — that can be added later if useful.
+- Members are tagged `pattern-spotter-member` in ActiveCampaign on their
+  first reading (`tagMember` in `lib/activeCampaign.ts`, created
+  automatically on first use), so the list can be segmented separately from
+  paying or free-tier visitors.
 
 ## Project structure
 

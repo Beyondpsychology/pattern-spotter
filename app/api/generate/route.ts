@@ -30,6 +30,7 @@ import {
   sendReadingPdfLink,
   logReadingTopic,
   clearAbandonedBeforePayment,
+  tagMember,
 } from "@/lib/activeCampaign";
 import { PAYMENTS_ENABLED } from "@/lib/payments";
 import { verifySessionToken } from "@/lib/membershipAuth";
@@ -182,6 +183,7 @@ export async function POST(req: NextRequest) {
         if (updateError) console.error("Failed to persist reading", updateError);
 
         if (PAYMENTS_ENABLED && !isMember) await clearAbandonedBeforePayment(normalizedEmail);
+        if (isMember) await tagMember(normalizedEmail);
 
         try {
           const pdfBuffer = await generateReadingPdf(readingData);

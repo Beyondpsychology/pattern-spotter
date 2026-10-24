@@ -6,6 +6,7 @@ const RECOMMENDED_PRODUCTS_FIELD_TITLE = "Pattern Spotter Recommended Products";
 const PATTERN_TAG_PREFIX = "pattern-";
 const REVIEW_NOTIFICATION_FIELD_TITLE = "Pattern Spotter New Review";
 const ABANDONED_TAG_NAME = "abandoned-before-payment";
+const MEMBER_TAG_NAME = "pattern-spotter-member";
 
 function getConfig() {
   const apiUrl = process.env.ACTIVECAMPAIGN_API_URL;
@@ -257,6 +258,29 @@ export async function tagAbandonedBeforePayment(
     await addContactTag(config, contactId, tagId);
   } catch (err) {
     console.error("Abandoned-before-payment tag failed", err);
+  }
+}
+
+/**
+ * Tags a contact "pattern-spotter-member": they got a reading for free via
+ * the membership link from the WordPress site, not by paying or using a
+ * free-tier reading. Lets the list be segmented separately from regular
+ * (paying or free-tier) visitors. Tags are created automatically on first
+ * use. Never throws: a failure here should never block a member's reading.
+ */
+export async function tagMember(email: string, firstName?: string): Promise<void> {
+  const config = getConfig();
+  if (!config) {
+    console.error("Member tag skipped: missing env vars");
+    return;
+  }
+
+  try {
+    const contactId = await syncContact(config, email, firstName);
+    const tagId = await getOrCreateTagId(config, MEMBER_TAG_NAME);
+    await addContactTag(config, contactId, tagId);
+  } catch (err) {
+    console.error("Member tag failed", err);
   }
 }
 
