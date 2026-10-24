@@ -306,6 +306,35 @@ an unexpected pause is a lot more costly than $25/month. When that happens,
 `/api/keep-alive`, the cron entry in `vercel.json`, and
 `.github/workflows/keep-alive.yml` can all be deleted.
 
+## Membership access (no payment, no login)
+
+Members of the separate WordPress/WooCommerce membership site get into the
+tool for free, bypassing the credits/one-free-reading gate entirely, via a
+signed link WordPress generates when an active member clicks "Open Pattern
+Spotter" — not a login, and nothing synced into this tool's own database.
+
+- The link: `https://patternspotter.beyondpsychology.eu/tool?email=<email>&name=<name>&exp=<unix seconds, now+300>&token=<hex HMAC-SHA256(secret, "email|name|exp")>`.
+- `MEMBERSHIP_LINK_SECRET` is the shared secret — set the same value in
+  WordPress (`wp-config.php` on their side) and in this project's Vercel
+  environment variables.
+- The link is only valid 5 minutes, which is too tight a window to cover an
+  entire reading (someone can easily take longer than that on the
+  questions). So `/api/membership-login` (called once, when `/tool` loads
+  with these params) checks that link once, and if it's valid, mints this
+  tool's own longer-lived session token (2 hours, see
+  `lib/membershipAuth.ts`). That second token is what actually travels with
+  the `/api/generate` call for the rest of the visit, not the original
+  WordPress link — both are HMAC-signed, nothing is ever trusted as a bare
+  client-side flag.
+- `app/tool/page.tsx` skips the email gate entirely when these link params
+  are present and verify, and jumps straight to the questions.
+- `app/api/generate/route.ts` skips both the credits check (paid-credits
+  mode) and the one-free-reading check (free mode) when a valid session
+  token is present, and never decrements or writes `credits_remaining` for
+  that request.
+- Members are not tagged in ActiveCampaign as "abandoned-before-payment" or
+  otherwise specially marked there — that can be added later if useful.
+
 ## Project structure
 
 ```

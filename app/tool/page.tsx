@@ -112,6 +112,7 @@ function ToolPageInner() {
   const [hypothesesError, setHypothesesError] = useState<string | null>(null);
   const [paymentsEnabled, setPaymentsEnabled] = useState(false);
   const [credits, setCredits] = useState<number | null>(null);
+  const [membership, setMembership] = useState<{ token: string; exp: number } | null>(null);
 
   // Lets a link like /tool?email=%EMAIL% (e.g. from the reading-delivery
   // email, so someone with credits left doesn't have to retype their
@@ -198,6 +199,43 @@ function ToolPageInner() {
         }
 
         setStage("hypotheses");
+      } catch {
+        // stay on the email gate if this fails for any reason
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Membership link from the WordPress site (?email=&name=&exp=&token=,
+  // signed, 5-minute window - see lib/membershipAuth.ts). Verified once
+  // here; on success the tool gets its own longer-lived session token,
+  // which travels with /api/generate for the rest of this visit so an
+  // unhurried reading doesn't run past the original 5-minute link. Jumps
+  // straight to the questions, skipping the email gate entirely.
+  useEffect(() => {
+    if (searchParams.get("checkout")) return;
+
+    const linkEmail = searchParams.get("email");
+    const linkName = searchParams.get("name");
+    const linkExp = searchParams.get("exp");
+    const linkToken = searchParams.get("token");
+    if (!linkEmail || !linkName || !linkExp || !linkToken) return;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/membership-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: linkEmail, name: linkName, exp: linkExp, token: linkToken }),
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data.ok) return;
+
+        setName(data.name);
+        setEmail(data.email);
+        setMembership({ token: data.sessionToken, exp: data.sessionExp });
+        setStage("questions");
       } catch {
         // stay on the email gate if this fails for any reason
       }
@@ -351,7 +389,12 @@ function ToolPageInner() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...targetAnswers, email: targetEmail, belief }),
+        body: JSON.stringify({
+          ...targetAnswers,
+          email: targetEmail,
+          belief,
+          ...(membership ? { membershipToken: membership.token, membershipExp: membership.exp } : {}),
+        }),
       });
 
       if (res.status === 403 || res.status === 402) {

@@ -32,6 +32,7 @@ import {
   clearAbandonedBeforePayment,
 } from "@/lib/activeCampaign";
 import { PAYMENTS_ENABLED } from "@/lib/payments";
+import { verifySessionToken } from "@/lib/membershipAuth";
 
 // Give the background PDF/email work (kicked off via waitUntil below) enough
 // runway to finish after the response is sent. The full chain - the Claude
@@ -50,7 +51,8 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json().catch(() => null);
-    const { situation, story, origin, want, triedAlready, email, belief } = body ?? {};
+    const { situation, story, origin, want, triedAlready, email, belief, membershipToken, membershipExp } =
+      body ?? {};
 
     if (
       typeof situation !== "string" ||
@@ -72,6 +74,11 @@ export async function POST(req: NextRequest) {
     }
 
     const normalizedEmail = normalizeEmail(email);
+    const isMember =
+      typeof membershipToken === "string" &&
+      (typeof membershipExp === "string" || typeof membershipExp === "number") &&
+      verifySessionToken(normalizedEmail, membershipExp, membershipToken);
+
     const supabase = getSupabaseAdmin();
 
     const { data: existing, error: selectError } = await supabase
@@ -87,7 +94,10 @@ export async function POST(req: NextRequest) {
 
     const creditsBeforeThisRequest = existing?.credits_remaining ?? 0;
 
-    if (PAYMENTS_ENABLED) {
+    if (isMember) {
+      // Members never need credits and are never capped at one free reading
+      // - skip both gates entirely.
+    } else if (PAYMENTS_ENABLED) {
       if (creditsBeforeThisRequest <= 0) {
         return NextResponse.json(
           {
@@ -165,13 +175,13 @@ export async function POST(req: NextRequest) {
             has_completed: true,
             reading: readingData,
             completed_at: new Date().toISOString(),
-            ...(PAYMENTS_ENABLED ? { credits_remaining: creditsAfterThisRequest } : {}),
+            ...(PAYMENTS_ENABLED && !isMember ? { credits_remaining: creditsAfterThisRequest } : {}),
           },
           { onConflict: "email" }
         );
         if (updateError) console.error("Failed to persist reading", updateError);
 
-        if (PAYMENTS_ENABLED) await clearAbandonedBeforePayment(normalizedEmail);
+        if (PAYMENTS_ENABLED && !isMember) await clearAbandonedBeforePayment(normalizedEmail);
 
         try {
           const pdfBuffer = await generateReadingPdf(readingData);
@@ -192,7 +202,7 @@ export async function POST(req: NextRequest) {
       sections,
       sessions,
       toolkitFit,
-      ...(PAYMENTS_ENABLED ? { creditsRemaining: creditsAfterThisRequest } : {}),
+      ...(PAYMENTS_ENABLED && !isMember ? { creditsRemaining: creditsAfterThisRequest } : {}),
     });
   } catch (err) {
     console.error("generate unhandled error", err);
