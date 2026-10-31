@@ -10,6 +10,20 @@ import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 // the kind of transient network blip that would otherwise burn through a
 // whole day's only attempt. Not needed once the Supabase project is on a
 // paid plan (those never auto-pause).
+//
+// Both schedulers were confirmed firing successfully every day (checked via
+// GitHub's own run history and Vercel's logs) and Supabase still flagged
+// the project for pausing - meaning the HTTP request was succeeding without
+// the underlying call actually reaching Supabase. Next.js's App Router
+// caches fetch() by default, including fetch() calls made deep inside a
+// library like supabase-js, unless a route explicitly opts out - so this
+// route could have been re-running our own code (hence the differing
+// timestamps already visible in the logs) while the actual network request
+// to Supabase was served from Next.js's cache instead of ever leaving the
+// server. force-dynamic + force-no-store rule that out entirely.
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 const RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 1500;
 

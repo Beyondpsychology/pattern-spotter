@@ -15,6 +15,17 @@ export function getSupabaseAdmin() {
 
   return createClient(url, serviceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
+    // Next.js's App Router caches fetch() by default, including calls made
+    // deep inside a library like this client's own fetch - without this,
+    // every query here risks silently serving a stale cached response
+    // instead of actually reaching Supabase. Confirmed this was masking a
+    // real problem for the keep-alive route specifically (see its own
+    // comment), but it's wrong for every query in this app, not just that
+    // one - every route here wants live data (credits, has_completed, etc).
+    global: {
+      fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+        fetch(input, { ...init, cache: "no-store" }),
+    },
   });
 }
 
