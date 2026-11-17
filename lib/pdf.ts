@@ -187,15 +187,15 @@ export async function generateReadingPdf(reading: ReadingResultData): Promise<Bu
         });
       }
 
-      if (reading.toolkitFit) {
+      if (reading.toolkit) {
         y += 14;
         doc
           .fillColor(MINT)
           .font("CormorantItalic")
           .fontSize(13)
-          .text("Or, the complete path: The Overcome People Pleasing Toolkit", MARGIN, y, {
+          .text(`Or, the complete path: ${reading.toolkit.name}`, MARGIN, y, {
             width: contentWidth,
-            link: "https://beyondpsychology.eu/overcome-people-pleasing/",
+            link: reading.toolkit.url,
             underline: true,
           });
         y = doc.y + 14;

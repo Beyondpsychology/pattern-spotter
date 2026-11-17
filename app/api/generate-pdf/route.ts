@@ -4,13 +4,17 @@ import { generateReadingPdf } from "@/lib/pdf";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => null);
-    const { sections, sessions, toolkitFit } = body ?? {};
+    const { sections, sessions, toolkit } = body ?? {};
 
-    if (!Array.isArray(sections) || !Array.isArray(sessions) || typeof toolkitFit !== "boolean") {
+    if (
+      !Array.isArray(sections) ||
+      !Array.isArray(sessions) ||
+      !(toolkit === null || typeof toolkit === "object")
+    ) {
       return NextResponse.json({ error: "missing_fields" }, { status: 400 });
     }
 
-    const pdfBuffer = await generateReadingPdf({ sections, sessions, toolkitFit });
+    const pdfBuffer = await generateReadingPdf({ sections, sessions, toolkit });
 
     return new NextResponse(new Blob([pdfBuffer as unknown as BlobPart], { type: "application/pdf" }), {
       status: 200,

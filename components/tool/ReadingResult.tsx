@@ -9,12 +9,14 @@ export default function ReadingResult({
   reading,
   creditsRemaining,
   email,
+  isMember,
 }: {
   reading: ReadingResultData;
   creditsRemaining?: number | null;
   email?: string;
+  isMember?: boolean;
 }) {
-  const { sections, sessions, toolkitFit } = reading;
+  const { sections, sessions, toolkit } = reading;
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
 
@@ -25,7 +27,7 @@ export default function ReadingResult({
       const res = await fetch("/api/generate-pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sections, sessions, toolkitFit }),
+        body: JSON.stringify({ sections, sessions, toolkit }),
       });
 
       if (!res.ok) throw new Error();
@@ -101,35 +103,39 @@ export default function ReadingResult({
           </>
         )}
 
-        {toolkitFit && (
+        {toolkit && (
           <>
             {sessions.length > 0 && <div className="border-t border-cream/15 my-6" />}
             <p className="eyebrow eyebrow-on-dark text-base mb-4">Or, the complete path</p>
             <a
-              href="https://beyondpsychology.eu/overcome-people-pleasing/"
+              href={toolkit.url}
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center btn-primary"
             >
-              The Overcome People Pleasing Toolkit
+              {toolkit.name}
             </a>
           </>
         )}
 
-        {(sessions.length > 0 || toolkitFit) && <div className="border-t border-cream/15 my-6" />}
-        <p className="text-cream/80 mb-4">
-          If this is a pattern you keep circling back to, not a one-time
-          feeling, and you wish to have access to all tools at once, explore
-          the membership.
-        </p>
-        <a
-          href={MEMBERSHIP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block text-center btn-primary"
-        >
-          Explore the membership →
-        </a>
+        {!isMember && (
+          <>
+            {(sessions.length > 0 || toolkit) && <div className="border-t border-cream/15 my-6" />}
+            <p className="text-cream/80 mb-4">
+              If this is a pattern you keep circling back to, not a one-time
+              feeling, and you wish to have access to all tools at once, explore
+              the membership.
+            </p>
+            <a
+              href={MEMBERSHIP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center btn-primary"
+            >
+              Explore the membership →
+            </a>
+          </>
+        )}
       </div>
 
       <div className="mt-8 text-center">

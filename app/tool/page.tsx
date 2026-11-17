@@ -448,6 +448,7 @@ function ToolPageInner() {
             reading={reading}
             creditsRemaining={paymentsEnabled ? credits : null}
             email={email}
+            isMember={!!membership}
           />
         </div>
       </main>

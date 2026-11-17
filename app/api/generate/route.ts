@@ -153,7 +153,12 @@ export async function POST(req: NextRequest) {
       .map((name) => matchProduct(name, isMember))
       .filter((entry): entry is { name: string; url: string } => entry !== null);
 
-    const readingData = { sections, sessions, toolkitFit };
+    // Resolved here (not left as a bare flag for the client) so the one
+    // hardcoded toolkit link always goes through matchProduct and respects
+    // isMember, the same as every other session link.
+    const toolkit = toolkitFit ? matchProduct("Overcome People Pleasing Toolkit", isMember) : null;
+
+    const readingData = { sections, sessions, toolkit };
 
     // Everything below (marking has_completed, generating the PDF, uploading
     // it, and pushing the link to ActiveCampaign) runs in the background via
@@ -203,7 +208,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       sections,
       sessions,
-      toolkitFit,
+      toolkit,
       ...(PAYMENTS_ENABLED && !isMember ? { creditsRemaining: creditsAfterThisRequest } : {}),
     });
   } catch (err) {

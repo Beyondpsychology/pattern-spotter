@@ -19,7 +19,7 @@ export interface ReadingSectionData {
 export interface ReadingResultData {
   sections: ReadingSectionData[];
   sessions: SessionRec[];
-  toolkitFit: boolean;
+  toolkit: SessionRec | null;
 }
 
 export type Stage =
