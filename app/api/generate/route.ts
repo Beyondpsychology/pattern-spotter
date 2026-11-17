@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
     const { sections, sessionNames, toolkitFit, patternLabel } = parseGenerateResponse(raw);
 
     const sessions = sessionNames
-      .map((name) => matchProduct(name))
+      .map((name) => matchProduct(name, isMember))
       .filter((entry): entry is { name: string; url: string } => entry !== null);
 
     const readingData = { sections, sessions, toolkitFit };
