@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   Frown, AlertTriangle, HelpCircle, CloudRain,
   Sparkles, Heart, Sunrise, CheckCircle2,
-  ArrowRight, Check, Plus, Minus,
+  ArrowRight, Check, Plus, Minus, Star,
 } from "lucide-react";
 import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 import { trackViewContent } from "@/lib/metaPixel";
@@ -33,6 +33,12 @@ const steps = [
   { title: "Name where you first learned this was the safest way to be", body: "A memory, a person, a period, whatever comes to mind first." },
   { title: "Choose what feels most true, then receive your reading", body: "Pick the explanation that lands, even if it stings, then get five sections back, sent to your inbox as a PDF too." },
   { title: "Use the practice to try, then run it again with new information", body: "Each pass goes deeper. Different situations, different layers, the same pattern seen from a new angle." },
+];
+
+const quickTestimonials = [
+  "The pattern spotter helped me get to the core of a wound I could not lay my finger on myself. Really helpful! I love how easy this is. Thank you!",
+  "The story I might be telling myself really resonated. A beautiful insight came out of it.",
+  "You don't get the feeling you did something wrong, but you do get complete honesty.",
 ];
 
 const objections = [
@@ -222,6 +228,15 @@ const PS2_STYLES = `
         .ps2-mock-result::before { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; background: var(--lavender); border-radius: 2px; }
         .ps2-mock-result-h { font-size: 11px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
         .ps2-mock-result-line { height: 6px; border-radius: 3px; background: rgba(44,53,53,0.12); margin-bottom: 5px; }
+
+        .ps2-quote-photo { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid var(--peach); display: block; margin: 0 auto; }
+        .ps2-quote-name { font-size: 12.5px; letter-spacing: 0.04em; color: rgba(255,255,255,0.75); text-align: center; margin: 14px 0 0; }
+
+        .ps2-teaser-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 36px; }
+        @media (min-width: 760px) { .ps2-teaser-grid { grid-template-columns: repeat(3, 1fr); } }
+        .ps2-teaser-card { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
+        .ps2-teaser-stars { display: flex; gap: 2px; margin-bottom: 12px; color: var(--mint-btn); }
+        .ps2-teaser-quote { font-size: 14.5px; line-height: 1.6; color: #4a453c; font-style: italic; margin: 0; }
 `;
 
 export default function PatternSpotterSalespageV2() {
@@ -368,7 +383,10 @@ export default function PatternSpotterSalespageV2() {
       {/* WHY THIS EXISTS */}
       <section className="ps2-section dark">
         <div className="ps2-container">
-          <p className="ps2-quote" style={{ color: "var(--cream)" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="ps2-quote-photo" src={MYRTHE_PHOTO_URL} alt="Myrthe Glasbergen" />
+          <p className="ps2-quote-name">Myrthe Glasbergen, Founder &amp; Psychologist</p>
+          <p className="ps2-quote" style={{ color: "var(--cream)", marginTop: 28 }}>
             Because I can see the whole architecture of a pattern within minutes, sitting across from someone, I built a way to give you that same reading,{" "}
             <span className="ps2-quote-highlight">without needing me in the room</span>.
           </p>
@@ -380,6 +398,26 @@ export default function PatternSpotterSalespageV2() {
           </p>
           <div className="ps2-cta-wrap">
             <a href="/tool" className="ps2-btn on-mint">See my pattern</a>
+          </div>
+        </div>
+      </section>
+
+      {/* QUICK TESTIMONIALS TEASER */}
+      <section className="ps2-section cream">
+        <div className="ps2-container" style={{ maxWidth: 940 }}>
+          <p className="ps2-eyebrow">Already helped many</p>
+          <h2 className="ps2-h2 ps2-h center">What people are saying</h2>
+          <div className="ps2-teaser-grid">
+            {quickTestimonials.map((t, i) => (
+              <div className="ps2-teaser-card" key={i}>
+                <div className="ps2-teaser-stars">
+                  {Array.from({ length: 5 }).map((_, j) => (
+                    <Star key={j} size={15} fill="currentColor" strokeWidth={0} />
+                  ))}
+                </div>
+                <p className="ps2-teaser-quote">&quot;{t}&quot;</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
