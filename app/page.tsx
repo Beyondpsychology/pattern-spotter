@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { CRISIS_TEXT, DISCLAIMER_TEXT, AI_DISCLOSURE_TEXT } from "@/lib/legal";
 import { trackViewContent } from "@/lib/metaPixel";
+import { MEMBERSHIP_URL } from "@/lib/products";
 
 const MYRTHE_PHOTO_URL =
   "https://beyondpsychology.eu/wp-content/uploads/2025/07/Myrthe-team-photo-3.png";
@@ -191,6 +192,36 @@ const PS2_STYLES = `
         .ps2-faq-body { padding: 0 0 22px; font-size: 14.5px; color: #4a453c; line-height: 1.65; max-width: 620px; }
 
         .ps2-footer-note { text-align: center; padding: 32px 24px; font-size: 12px; color: #9a9284; }
+
+        .ps2-announce { background: var(--mint-btn); color: #fff; text-align: center; padding: 12px 20px; font-size: 13px; font-weight: 600; line-height: 1.4; }
+        .ps2-announce a { color: #fff; text-decoration: underline; font-weight: 700; }
+        @media (min-width: 768px) { .ps2-announce { font-size: 14px; } }
+
+        .ps2-phones { display: flex; flex-direction: column; gap: 48px; margin-top: 48px; align-items: center; }
+        @media (min-width: 860px) { .ps2-phones { flex-direction: row; justify-content: center; align-items: flex-start; gap: 24px; } }
+        .ps2-phone-col { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 240px; }
+        .ps2-phone-num { font-family: 'Abril Fatface', serif; font-size: 14px; color: var(--lavender); letter-spacing: 0.1em; margin-bottom: 14px; }
+        .ps2-phone-frame { width: 200px; height: 406px; background: var(--dark); border-radius: 34px; padding: 10px; box-shadow: 0 20px 44px rgba(44,53,53,0.2); position: relative; flex-shrink: 0; }
+        .ps2-phone-notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 60px; height: 16px; background: var(--dark); border-radius: 0 0 10px 10px; z-index: 2; }
+        .ps2-phone-screen { width: 100%; height: 100%; background: #fff; border-radius: 24px; overflow: hidden; padding: 24px 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+        .ps2-phone-title { font-weight: 700; font-size: 16px; color: var(--dark); margin: 16px 0 4px; }
+        .ps2-phone-body { font-size: 13.5px; color: #4a453c; line-height: 1.55; }
+
+        .ps2-mock-field { text-align: left; border: 1.5px solid rgba(44,53,53,0.14); border-radius: 8px; padding: 8px 10px; }
+        .ps2-mock-label { display: block; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--lavender); margin-bottom: 4px; }
+        .ps2-mock-text { display: block; font-size: 11px; color: #4a453c; line-height: 1.4; }
+        .ps2-mock-text.short { width: 60%; }
+        .ps2-mock-btn { margin-top: auto; background: var(--mint-btn); color: #fff; text-align: center; border-radius: 6px; padding: 9px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+
+        .ps2-mock-option { text-align: left; border: 1.5px solid rgba(44,53,53,0.14); border-radius: 8px; padding: 10px; font-size: 11px; color: #4a453c; line-height: 1.4; display: flex; gap: 8px; align-items: flex-start; }
+        .ps2-mock-option.is-selected { border-color: var(--lavender); background: rgba(128,123,183,0.08); }
+        .ps2-mock-dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid rgba(44,53,53,0.3); flex-shrink: 0; margin-top: 1px; }
+        .ps2-mock-option.is-selected .ps2-mock-dot { border-color: var(--lavender); background: var(--lavender); }
+
+        .ps2-mock-result { text-align: left; border-radius: 8px; background: #fafaf7; padding: 10px; position: relative; padding-left: 16px; }
+        .ps2-mock-result::before { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 3px; background: var(--lavender); border-radius: 2px; }
+        .ps2-mock-result-h { font-size: 11px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+        .ps2-mock-result-line { height: 6px; border-radius: 3px; background: rgba(44,53,53,0.12); margin-bottom: 5px; }
 `;
 
 export default function PatternSpotterSalespageV2() {
@@ -201,6 +232,17 @@ export default function PatternSpotterSalespageV2() {
   return (
     <div className="ps2-root">
       <style dangerouslySetInnerHTML={{ __html: PS2_STYLES }} />
+
+      {/* ANNOUNCEMENT BANNER */}
+      <div className="ps2-announce">
+        <p>
+          The Pattern Spotter is also available in the membership —{" "}
+          <a href={MEMBERSHIP_URL} target="_blank" rel="noopener noreferrer">
+            become a member here
+          </a>
+          .
+        </p>
+      </div>
 
       {/* HERO */}
       <section className="ps2-section lavender hero-pad" style={{ position: "relative" }}>
@@ -233,6 +275,92 @@ export default function PatternSpotterSalespageV2() {
             <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Questions</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">5</div><div className="ps2-stat-label">Sections</div></div>
             <div className="ps2-stat-card"><div className="ps2-stat-num">Instant</div><div className="ps2-stat-label">Access</div></div>
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS / 3 PHONES */}
+      <section className="ps2-section white">
+        <div className="ps2-container" style={{ maxWidth: 980 }}>
+          <p className="ps2-eyebrow">How it works</p>
+          <h2 className="ps2-h2 ps2-h center">From five questions to your full pattern, in three steps</h2>
+          <div className="ps2-phones">
+            <div className="ps2-phone-col">
+              <span className="ps2-phone-num">STEP 01</span>
+              <div className="ps2-phone-frame">
+                <div className="ps2-phone-notch" />
+                <div className="ps2-phone-screen">
+                  <div className="ps2-mock-field">
+                    <span className="ps2-mock-label">Situation</span>
+                    <span className="ps2-mock-text">The same thing keeps happening when I...</span>
+                  </div>
+                  <div className="ps2-mock-field">
+                    <span className="ps2-mock-label">The story</span>
+                    <span className="ps2-mock-text short">I tell myself it&apos;s because...</span>
+                  </div>
+                  <div className="ps2-mock-field">
+                    <span className="ps2-mock-label">Where it started</span>
+                    <span className="ps2-mock-text short">I think it started when...</span>
+                  </div>
+                  <div className="ps2-mock-btn">Continue</div>
+                </div>
+              </div>
+              <p className="ps2-phone-title">Fill in your story</p>
+              <p className="ps2-phone-body">Answer five short questions about the situation you keep finding yourself in.</p>
+            </div>
+
+            <div className="ps2-phone-col">
+              <span className="ps2-phone-num">STEP 02</span>
+              <div className="ps2-phone-frame">
+                <div className="ps2-phone-notch" />
+                <div className="ps2-phone-screen">
+                  <div className="ps2-mock-option">
+                    <span className="ps2-mock-dot" />
+                    <span>You learned to go quiet to stay safe around conflict.</span>
+                  </div>
+                  <div className="ps2-mock-option is-selected">
+                    <span className="ps2-mock-dot" />
+                    <span>You learned your needs were too much, so you stopped voicing them.</span>
+                  </div>
+                  <div className="ps2-mock-option">
+                    <span className="ps2-mock-dot" />
+                    <span>You learned love was conditional on being easy.</span>
+                  </div>
+                  <div className="ps2-mock-btn">See my reading</div>
+                </div>
+              </div>
+              <p className="ps2-phone-title">Choose what resonates</p>
+              <p className="ps2-phone-body">Pick the explanation that actually lands, even if it stings.</p>
+            </div>
+
+            <div className="ps2-phone-col">
+              <span className="ps2-phone-num">STEP 03</span>
+              <div className="ps2-phone-frame">
+                <div className="ps2-phone-notch" />
+                <div className="ps2-phone-screen">
+                  <div className="ps2-mock-result">
+                    <div className="ps2-mock-result-h">The pattern</div>
+                    <div className="ps2-mock-result-line" style={{ width: "92%" }} />
+                    <div className="ps2-mock-result-line" style={{ width: "80%" }} />
+                    <div className="ps2-mock-result-line" style={{ width: "60%" }} />
+                  </div>
+                  <div className="ps2-mock-result">
+                    <div className="ps2-mock-result-h">Where it started</div>
+                    <div className="ps2-mock-result-line" style={{ width: "85%" }} />
+                    <div className="ps2-mock-result-line" style={{ width: "70%" }} />
+                  </div>
+                  <div className="ps2-mock-result">
+                    <div className="ps2-mock-result-h">Where it&apos;s still running</div>
+                    <div className="ps2-mock-result-line" style={{ width: "88%" }} />
+                  </div>
+                </div>
+              </div>
+              <p className="ps2-phone-title">Get your pattern in full</p>
+              <p className="ps2-phone-body">Five sections back: the pattern, its origin, and where it&apos;s still running.</p>
+            </div>
+          </div>
+          <div className="ps2-cta-wrap">
+            <a href="/tool" className="ps2-btn on-mint">See my pattern</a>
           </div>
         </div>
       </section>
