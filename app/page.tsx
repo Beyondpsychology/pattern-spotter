@@ -236,7 +236,7 @@ export default function PatternSpotterSalespageV2() {
       {/* ANNOUNCEMENT BANNER */}
       <div className="ps2-announce">
         <p>
-          The Pattern Spotter is also available in the membership —{" "}
+          The Pattern Spotter is also available in the membership, from €9,99/month —{" "}
           <a href={MEMBERSHIP_URL} target="_blank" rel="noopener noreferrer">
             become a member here
           </a>
